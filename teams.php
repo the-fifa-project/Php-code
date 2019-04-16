@@ -9,10 +9,10 @@
 require 'header.php';
 
 //add here a query
-?>
+ ?>
 
     <main>
-        <h2>home pagina</h2>
+        <h2>teams</h2>
     </main>
 
 <?php

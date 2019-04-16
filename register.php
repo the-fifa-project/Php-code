@@ -12,7 +12,7 @@ require 'header.php';
 ?>
 
     <main>
-        <h2>home pagina</h2>
+
     </main>
 
 <?php
