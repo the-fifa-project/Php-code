@@ -12,7 +12,9 @@ require 'header.php';
 ?>
 
     <main>
+        <form action="includes/controller.php" method="post">
 
+        </form>
     </main>
 
 <?php
