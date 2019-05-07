@@ -19,6 +19,7 @@ require 'header.php';
             <input type="text" name="lastname" required>
             <input type="email" name="email" required>
             <input type="password" name="password" required>
+            <input type="password" name="passwordconfirm" required>
             <input type="submit" name="submit" value="register">
         </form>
     </main>

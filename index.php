@@ -8,7 +8,10 @@
 
 require 'header.php';
 
-//add here a query
+if (isset($_SESSION[id]))
+{
+    echo "inlogged as {$_SESSION['firstname']}";
+}
 ?>
 
     <main>
