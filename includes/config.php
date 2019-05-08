@@ -8,7 +8,8 @@
 
 // here comes the database connection.
 $dbHost = "localhost";
-$dbName = "the-fifa-project";
+//$dbName = "the-fifa-project";
+$dbName = "fifa-test";
 $dbUser = "root";
 $dbPass = "";
 
