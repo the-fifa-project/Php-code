@@ -31,6 +31,15 @@ require 'includes/config.php';
                 {
                     echo $_SESSION['username'];
                 }
+
+                if(isset($_SESSION['id']) || isset($_SESSION['username']) || isset($_SESSION['admin']))
+                {
+                    echo "<form action=\"includes/controller.php\" method=\"post\">
+                <input type=\"hidden\" name=\"type\" value=\"logout\">
+                <input type=\"submit\" name=\"submit\" value=\"Logout\">
+            </form>";
+                }
             ?>
+
         </div>
     </header>

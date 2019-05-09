@@ -134,6 +134,15 @@ if ($_POST['type'] === 'login')
     exit;
 }
 
+if ($_POST['type'] === 'logout')
+{
+    session_destroy();
+
+    $msg = "Logged Out";
+    header("location: ../index.php?msg=$msg");
+    exit;
+}
+
 
 if ($_POST['type'] === 'createteam')
 {

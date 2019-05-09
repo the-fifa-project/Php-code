@@ -11,20 +11,30 @@ require 'header.php';
 $sql = "SELECT * FROM teams";
 $query = $db->query($sql);
 $teams = $query->fetchAll(2);
-
-//add here a query
  ?>
 
 
 
     <main>
-        <h2>teams</h2>
+        <h2>All Teams</h2>
 		<?php
-			foreach ($teams as $team) {
-				echo "<a href="teams-detail.php?id={$team['id']}">{$team['name']}</a>";
+			foreach ($teams as $team)
+			{
+				echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
 			}
 
 		?>
+
+        <h2>Your Team(s)</h2>
+        <?php
+            foreach ($teams as $team)
+            {
+                if ($team['owner'] === $_SESSION['id'])
+                {
+                    echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
+                }
+            }
+        ?>
 
     </main>
 <div class="team-creator">
