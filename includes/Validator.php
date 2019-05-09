@@ -66,14 +66,6 @@ class Validator
         return password_verify($pwd, $hash);
     }
 
-
-  /*
-   * TODO ---------------------------------------------------------------------------------
-   * TODO TESTEN
-   * TODO ---------------------------------------------------------------------------------
-   */
-
-
     //checks of the email already used in the database / tabel
     public static function DatabaseQueryEmail($email, $table_Name, $db)
     {
@@ -90,11 +82,6 @@ class Validator
     }
 
 
-  /*
-   * TODO ---------------------------------------------------------------------------------
-   * TODO TESTEN END
-   * TODO ---------------------------------------------------------------------------------
-   */
 
 
 

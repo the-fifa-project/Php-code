@@ -17,8 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' )
 
 //TODO: REGISTER
 
-if ($_POST['type'] === 'register')
-{
+if ($_POST['type'] === 'register') {
     var_dump($_POST);
 
     $firstName = htmlentities($_POST['firstname']);
@@ -30,120 +29,70 @@ if ($_POST['type'] === 'register')
     $registers_date = date("Y-m-d H:i:s");
 
     //TODO: checken of an field is empty
-    if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($passwordConfirm))
-    {
+    if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($passwordConfirm)) {
         header("location: ../register.php?msg=1 of meer velden zijn leeg");
         exit;
     }
 
     //TODO: email validade
-    if (!Validator::EmailValidate($email))
-    {
+    if (!Validator::EmailValidate($email)) {
         header('location: ../register.php?msg=email is not valid');
         exit;
     }
 
-  //TODO: password checken of gelijk is aan pwd confirm
-  if (!Validator::PasswordConfirm($password, $passwordConfirm))
-  {
-    //TODO: send back to register page wit h error code (password not match.
-    header('location: ../register.php?msg=passwords don\'t match');
-    exit;
-  }
+    //TODO: password checken of gelijk is aan pwd confirm
+    if (Validator::PasswordConfirm($password, $passwordConfirm)) {
+        //TODO: send back to register page wit h error code (password not match.
+        header('location: ../register.php?msg=passwords don\'t match');
+        exit;
+    }
 
-  if (Validator::PasswordLength($password))
-  {
-    $msg = "Password needs to be 7 chars long";
-    header("location: ../register.php?msg=$msg");
-    exit;
-  }
+    if (Validator::PasswordLength($password)) {
+        $msg = "Password needs to be 7 chars long";
+        header("location: ../register.php?msg=$msg");
+        exit;
+    }
 
-  if (!Validator::PasswordIncludesUpper($password))
-  {
-    $msg = "Password must have 1 uppercase character";
-    header("location: ../register.php?msg=$msg");
-    exit;
-  }
-  if (!Validator::PasswordIncludesLower($password))
-  {
-    $msg = "Password must have a lowercase character";
-    header("location: ../register.php?msg=$msg");
-    exit;
-  }
-  if (!Validator::PasswordIncludesNumber($password))
-  {
-      $msg = "Password must have a number";
-      header("location: ../register.php?msg=$msg");
-      exit;
-  }
+    if (!Validator::PasswordIncludesUpper($password)) {
+        $msg = "Password must have 1 uppercase character";
+        header("location: ../register.php?msg=$msg");
+        exit;
+    }
+    if (!Validator::PasswordIncludesLower($password)) {
+        $msg = "Password must have a lowercase character";
+        header("location: ../register.php?msg=$msg");
+        exit;
+    }
+    if (!Validator::PasswordIncludesNumber($password)) {
+        $msg = "Password must have a number";
+        header("location: ../register.php?msg=$msg");
+        exit;
+    }
 
-  $passwordHash =  Validator::PasswordHash($password);
+    $passwordHash = Validator::PasswordHash($password);
 
-  /*
-   * TODO ---------------------------------------------------------------------------------
-   * TODO TESTEN
-   * TODO ---------------------------------------------------------------------------------
-   */
-
-
-
-  if (Validator::DatabaseQueryEmail($email, "users", $db))
-  {
+    if (Validator::DatabaseQueryEmail($email, "users", $db)) {
         $msg = "Email already used";
         header("location: ../login.php?msg=$msg");
         exit;
-  }
-
-//  $sql = "SELECT id, email FROM users WHERE email = :email";
-//
-//    //TODO: checken if email already exist in database
-//    $sql = "SELECT * FROM users WHERE email = :email";
-//    $prepare = $db->prepare($sql);
-//    $prepare->execute([
-//        ':email' => $email
-//    ]);
-//    $user = $prepare->fetch(2);
-//    $count = $prepare->rowCount();
-//
-//    if ($count > 0)
-//    {
-//        $msg = "Email already used";
-//        header("location: ../login.php?msg=$msg");
-//        exit;
-//    }
-
-
+    }
 
     //TODO: inserten in database.
-    /*$sql = "INSERT INTO users (`firstname`, `middlename`, `lastname`, `email`, `password`, `registers_date`)
-                  VALUES (:firstname, :middlename, :lastname, :email, :password, :registers_date)";*/
-    $sql = "INSERT INTO users (`email`, `password`) 
-                  VALUES (:email, :password)";
+    $sql = "INSERT INTO users (`firstname`, `middlename`, `lastname`, `email`, `password`, `registers_date`)
+                  VALUES (:firstname, :middlename, :lastname, :email, :password, :registers_date)";
     $prepare = $db->prepare($sql);
     $prepare->execute([
-//       ':firstname' => $firstName,
-//       ':middlename' => $middleName,
-//       ':lastname' => $lastName,
-       ':email' => $email,
-       ':password' => $passwordHash,
-//       ':registers_date' => $registers_date
+        ':firstname' => $firstName,
+        ':middlename' => $middleName,
+        ':lastname' => $lastName,
+        ':email' => $email,
+        ':password' => $passwordHash,
+        ':registers_date' => $registers_date
     ]);
 
-    //TODO: create an session when register succesfull :D
-    $sql = "SELECT * FROM users WHERE email = $email";
-    $query = $db->query($sql);
-    $user = $query->fetch(2);
-    $_SESSION['id'] = $user['id'];
-    $_SESSION['firstname'] = $user['firstname'];
-
-    header("location: ../index.php?msg=Account succesful created");
+    $msg = "account succesfull created";
+    header("location: ../login.php?msg=$msg");
     exit;
-
-  /*
-   * TODO ---------------------------------------------------------------------------------
-   * TODO TESTEN END
-   * TODO ---------------------------------------------------------------------------------
-   */
 }
 
 //TODO: LOGIN
