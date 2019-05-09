@@ -78,7 +78,7 @@ if ($_POST['type'] === 'register') {
     }
 
     //TODO: inserten in database.
-    $sql = "INSERT INTO users (`firstname`, `middelname`, `lastname`, `email`, `password`, `registers-date`)
+    $sql = "INSERT INTO users (`firstname`, `middlename`, `lastname`, `email`, `password`, `registers_date`)
                   VALUES (:firstname, :middlename, :lastname, :email, :password, :registers_date)";
     $prepare = $db->prepare($sql);
     $prepare->execute([
