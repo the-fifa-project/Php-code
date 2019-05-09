@@ -25,4 +25,12 @@ require 'includes/config.php';
         <a href="teams.php">teams</a>
         <a href="login.php">login</a>
         <a href="register.php">register</a>
+        <div>
+            <?php
+                if(isset($_SESSION['id']) && isset($_SESSION['username']))
+                {
+                    echo $_SESSION['username'];
+                }
+            ?>
+        </div>
     </header>

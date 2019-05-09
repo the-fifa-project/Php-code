@@ -102,13 +102,34 @@ if ($_POST['type'] === 'login')
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users WHERE email = :email, password = :password";
+    if (Validator::DatabaseQueryEmail($email, "users", $db) === false)
+    {
+        $msg = "Account don't exist";
+        header("location: ../login.php?msg=$msg");
+        exit;
+    }
+
+    $sql = "SELECT * FROM users WHERE email = :email";
     $prepare = $db->prepare($sql);
     $prepare->execute([
-        ':email' => $email,
-//        ':password' => password_verify($password, $Hash)
+        ':email' => $email
     ]);
+    $user = $prepare->fetch(2);
+
+    if (Validator::PasswordVerify($password, $user['password']) === false)
+    {
+        $msg = "Password or Email not match";
+        header("location: ../login.php?msg=$msg");
+        exit;
+    };
+
+    $_SESSION['id'] = $user['id'];
+    $_SESSION['username'] = $user['firstname'];
+    if ($user['administrator'] !== null)
+    {
+        $_SESSION['admin'] = $user['administrator'];
+    }
     // Check if I have a record with both this email and password combination.
     // if so, then log in.
-
+    exit;
 }

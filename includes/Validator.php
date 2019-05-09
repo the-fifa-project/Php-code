@@ -57,7 +57,11 @@ class Validator
     {
         $_SESSION['id'] = $id;
         $_SESSION['username'] = $username;
-        $_SESSION['admin'] = $admin;
+        if ($admin !== null)
+        {
+            $_SESSION['admin'] = $admin;
+        }
+        exit;
     }
 
     //checks of the passwordt is the same as the hashed password
