@@ -18,7 +18,9 @@ $dbPass = "";
 try {
     $db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUser, $dbPass);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
+	}
+ catch (PDOException $e) 
+ {
     echo "<div class='note' style='background: #fedde9; padding: 10px; margin: 10px; font-family: courier'>
                 <h4>Error!</h4>
                 <p>
@@ -26,7 +28,7 @@ try {
                 </p>
               </div>";
     die($e->getMessage());
-}
+ }
 
 // and a session_start for checking if there is an user thats logged in
 session_start();

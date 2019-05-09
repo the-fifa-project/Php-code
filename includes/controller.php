@@ -133,3 +133,30 @@ if ($_POST['type'] === 'login')
     // if so, then log in.
     exit;
 }
+
+
+if ($_POST['type'] === 'createteam')
+{
+    $owner =    $_SESSION['id'];
+    $teamname = $_POST['teamname'];
+    $createdAt = date("Y-m-d H:i:s");
+
+    if(strlen($teamname) > 30)
+    {
+        $msg = "name is to long!";
+        header("location: ../teams.php?msg=$msg");
+        exit;
+    }
+
+    $sql = "INSERT INTO teams (`owner`, `name`, `created-at`) VALUES (:owner, :name, :created_at)";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        ':owner' => $owner,
+        ':name' => $teamname,
+        ':created_at' => $createdAt
+    ]);
+
+    $msg = "team succesfull created!";
+    header("location: ../teams.php?msg=$msg");
+    exit;
+}

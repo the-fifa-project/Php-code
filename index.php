@@ -8,9 +8,9 @@
 
 require 'header.php';
 
-if (isset($_SESSION[id]))
+if (isset($_SESSION['id']))
 {
-    echo "inlogged as {$_SESSION['firstname']}";
+    echo "inlogged as {$_SESSION['username']}";
 }
 ?>
 
