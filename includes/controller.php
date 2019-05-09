@@ -25,7 +25,7 @@ if ($_POST['type'] === 'register') {
     $lastName = htmlentities($_POST['lastname']);
     $email = htmlentities($_POST['email']);
     $password = htmlentities(trim($_POST['password']));
-    $passwordConfirm = htmlentities(trim(_POST['passwordconfirm']));
+    $passwordConfirm = htmlentities(trim($_POST['passwordconfirm']));
     $registers_date = date("Y-m-d H:i:s");
 
     //TODO: checken of an field is empty
@@ -41,7 +41,7 @@ if ($_POST['type'] === 'register') {
     }
 
     //TODO: password checken of gelijk is aan pwd confirm
-    if (Validator::PasswordConfirm($password, $passwordConfirm)) {
+    if (!Validator::PasswordConfirm($password, $passwordConfirm)) {
         //TODO: send back to register page wit h error code (password not match.
         header('location: ../register.php?msg=passwords don\'t match');
         exit;
@@ -78,7 +78,7 @@ if ($_POST['type'] === 'register') {
     }
 
     //TODO: inserten in database.
-    $sql = "INSERT INTO users (`firstname`, `middlename`, `lastname`, `email`, `password`, `registers_date`)
+    $sql = "INSERT INTO users (`firstname`, `middelname`, `lastname`, `email`, `password`, `registers-date`)
                   VALUES (:firstname, :middlename, :lastname, :email, :password, :registers_date)";
     $prepare = $db->prepare($sql);
     $prepare->execute([
