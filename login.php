@@ -12,7 +12,12 @@ require 'header.php';
 ?>
 
     <main>
-
+        <form action="includes/controller.php" method="post">
+            <input type="hidden" name="type" value="login">
+            <input type="email" name="email" required>
+            <input type="password" name="password" required>
+            <input type="submit" name="submit">
+        </form>
     </main>
 
 <?php
