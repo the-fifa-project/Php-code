@@ -196,15 +196,18 @@ footer{
     width: 100%;
 }
 
-.teams-main{
-    margin-top: 10%;
+/* ----- TEAMS ----- */
+
+main .AllTeams h2 {
+    border-bottom: 2px solid black;
+    padding-right: 200px;
+    padding-bottom: 10px;
 }
 
-.team-view{
-    display: flex;
-}
-.your-teams{
-    margin-left: 5%;
+main .YourTeams h2 {
+    border-bottom: 2px solid black;
+    padding-right: 600px;
+    padding-bottom: 10px;
 }
 
 .main-home{
@@ -235,6 +238,7 @@ footer{
     margin-left: 30px;
     background-color: #30C5FF;
 }
+
 
 
 

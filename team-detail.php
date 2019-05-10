@@ -15,12 +15,6 @@ if (!isset($id))
     header("location: teams.php");
 }
 
-/*
- * SELECT teams.id as teamid, `team-players`.id as teamplayerid FROM `team-players`
-INNER JOIN `teams` ON `team-players`.team = teams.id
-
- */
-
 $sql = "SELECT 
             `team-players`.firstname as first, 
             `team-players`.middelname as middle, 
@@ -41,4 +35,14 @@ foreach ($teamPlayers as $player)
     echo "</tr>";
 }
 echo "</table>";
+
+if (isset($_SESSION['admin']) && $_SESSION['admin'] === $_SESSION['id'])
+{
+    echo "<form action=\"includes/controller.php\" method=\"post\">
+    <input type=\"hidden\" name=\"type\" value=\"deleteteam\">
+    <input type=\"hidden\" name=\"teamid\" value=\"$id\">
+    <input type=\"submit\" name=\"submit\" value=\"DELETE\">
+</form>";
+}
 ?>
+
