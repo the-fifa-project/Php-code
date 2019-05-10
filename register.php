@@ -36,4 +36,28 @@ require 'header.php';
 
 <?php
 
+    if ($_POST['type'] === 'register') {
+        var_dump($_POST);
+
+        require 'config.php';
+
+        $name = $_POST['firstname'];
+        $name = $_POST['middlename'];
+        $name = $_POST['lastname'];
+        $email = $_POST['email'];
+        $pwd = $_POST['password'];
+        $pwd_confirm = $_POST['password_confirm'];
+
+        $sql = "INSERT INTO users (`firstname`, `middlename`, `lastname`, `email`,`password`)
+                VALUES (:firstname, :middlename, :lastname, :email, :password)";
+
+        $prepare = $db->prepare($sql);
+
+        $prepare->execute([
+            ':email' => $email,
+            ':password' => $pwd
+        ]);
+
 require 'footer.php';
+
+?>

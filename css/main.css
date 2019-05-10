@@ -162,6 +162,19 @@ footer{
     height: 10%;
 }
 
+/* ----- TEAMS ----- */
+
+main .AllTeams h2 {
+    border-bottom: 2px solid black;
+    padding-right: 200px;
+    padding-bottom: 10px;
+}
+
+main .YourTeams h2 {
+    border-bottom: 2px solid black;
+    padding-right: 600px;
+    padding-bottom: 10px;
+}
 
 
 

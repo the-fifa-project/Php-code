@@ -13,19 +13,26 @@ $query = $db->query($sql);
 $teams = $query->fetchAll(2);
  ?>
 
-
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/normalize.css">
+
     <main>
-        <h2>All Teams</h2>
+        <div class="main">
+            <div class="AllTeams">
+                <h2>All Teams</h2>
+            </div>
+
 		<?php
 			foreach ($teams as $team) {
 				echo "<a href=\"teams-detail.php?id={$team['id']}\">{$team['name']}</a>";
 			}
-
 		?>
 
-        <h2>Your Team(s)</h2>
+        <div class="main">
+            <div class="YourTeams">
+                <h2>Your Team(s)</h2>
+            </div>
+
         <?php
             foreach ($teams as $team)
             {
