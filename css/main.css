@@ -148,7 +148,6 @@ header .username{
 }
 
 .main{
-    margin-left: 7%;
     display: flex;
     margin: 0;
     height: 100vh;
@@ -164,7 +163,7 @@ main input:last-child{
 
 main .login {
     margin: 100px auto;
-    height: 40%;
+    height: 45%;
     width: 320px;
     padding: 2%;
     border-radius: 20px;
@@ -177,6 +176,10 @@ main .register{
     padding: 2%;
     border-radius: 20px;
     background: rgba(255,255,255,0.75);
+}
+
+main p,h1,h2{
+    justify-content: center;
 }
 
 main input{
@@ -205,6 +208,35 @@ main .YourTeams h2 {
     border-bottom: 2px solid black;
     padding-right: 600px;
     padding-bottom: 10px;
+}
+
+.main-home{
+    display: flex;
+}
+
+.home-welcome{
+    margin: 100px auto;
+    width: 320px;
+    padding: 2%;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.75);
+}
+
+.home-download{
+    margin: 100px auto;
+    width: 320px;
+    padding: 2%;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.75);
+}
+
+.home-download input{
+    border: 1px solid grey;
+    border-radius: 0;
+    width: 200px;
+    height: 40px;
+    margin-left: 30px;
+    background-color: #30C5FF;
 }
 
 
