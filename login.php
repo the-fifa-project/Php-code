@@ -10,8 +10,6 @@ require 'header.php';
 
 //add here a query
 ?>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/normalize.css">
     <main>
         <div class="main">
         <div class="login">

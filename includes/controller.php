@@ -155,7 +155,7 @@ if ($_POST['type'] === 'createteam')
     if(strlen($teamname) > 30)
     {
         $msg = "name is to long!";
-        header("location: ../teams.php?msg=$msg");
+        header("location: ../index.php?msg=$msg");
         exit;
     }
 
@@ -168,6 +168,22 @@ if ($_POST['type'] === 'createteam')
     ]);
 
     $msg = "team succesfull created!";
-    header("location: ../teams.php?msg=$msg");
+    header("location: ../index.php?msg=$msg");
     exit;
+}
+
+if ($_POST['type'] === 'deleteteam')
+{
+    $teamId = $_POST['teamid'];
+
+    $sql = "DELETE FROM `teams` WHERE `teams`.`id` = :id";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        ':id' => $teamId
+    ]);
+
+    $msg = "Team succesvol verwijderd";
+    header("location: index.php?msg=$msg");
+    exit;
+
 }

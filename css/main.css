@@ -105,18 +105,12 @@ textarea {
     box-sizing: border-box;
 }
 
-body{
+.container {
     top: 0;
-    height: 100vh;
-    overflow: hidden;
-    background: url(../img/Background_image.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    /*object-fit: contain;*/
-    /*width: 100%;*/
+    max-width: 960px;
+    padding: 80px 10px 10px 10px;
+    margin: 0 auto;
 }
-
 header{
     position: fixed;
     top: 0;
@@ -146,8 +140,16 @@ header .username{
     display: flex;
     align-items: center;
 }
-
+main {
+    top: 0;
+    min-height: 100vh;
+    background: url(../img/Background_image.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 .main{
+
     display: flex;
     margin: 0;
     height: 100vh;
