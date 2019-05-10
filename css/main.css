@@ -101,12 +101,31 @@ textarea {
  /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+* {
+    box-sizing: border-box;
+}
+
+body{
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: url(../img/Background_image.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /*object-fit: contain;*/
+    /*width: 100%;*/
+}
+
 header{
+    position: fixed;
+    top: 0;
     width: 100%;
     height: 60px;
-    background-color: #757576;
+    background: rgba(48, 197, 255, 0.5);
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 
 header .nav{
@@ -131,7 +150,8 @@ header .username{
 .main{
     margin-left: 7%;
     display: flex;
-    height: 98%;
+    margin: 0;
+    height: 100vh;
 }
 
 main form p{
@@ -142,24 +162,35 @@ main input:last-child{
     margin-top: 5%;
 }
 
-main .login input{
-    border: 1px solid #757576;
-    border-radius: 10px;
+main .login {
+    margin: 100px auto;
+    height: 40%;
+    width: 320px;
+    padding: 2%;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.75);
 }
 
-main .register input{
-    border: 1px solid #757576;
-    border-radius: 10px;
+main .register{
+    margin: 100px auto;
+    width: 320px;
+    padding: 2%;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.75);
 }
-.background img{
-    border: 1px solid #757576;
-    float: right;
-    width: 90%;
+
+main input{
+    padding: 2px 5px;
+    border: 1px solid #30C5FF;
+    border-radius: 10px;
 }
 
 footer{
-    background-color: #757576;
-    height: 10%;
+    position: fixed;
+    bottom: 0;
+    background: rgba(48, 197, 255, 0.5);
+    clear: both;
+    width: 100%;
 }
 
 /* ----- TEAMS ----- */

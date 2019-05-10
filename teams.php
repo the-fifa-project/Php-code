@@ -24,9 +24,10 @@ $teams = $query->fetchAll(2);
 
 		<?php
 			foreach ($teams as $team) {
-				echo "<a href=\"teams-detail.php?id={$team['id']}\">{$team['name']}</a>";
+				echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
 			}
 		?>
+            </div>
 
         <div class="main">
             <div class="YourTeams">
@@ -34,15 +35,23 @@ $teams = $query->fetchAll(2);
             </div>
 
         <?php
+        if (isset($_SESSION['id']))
+        {
             foreach ($teams as $team)
             {
-                if ($team['owner'] === $_SESSION['id'])
+                if (isset($_SESSION['id']))
                 {
                     echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
                 }
             }
+        }
+        else
+        {
+            echo "<p>om jou teams te kunnen zien moet je <a href='login.php'>Inloggen</a>, of om een team aan te maken</p>";
+        }
         ?>
-
+            </div>
+            </div>
     </main>
 <div class="team-creator">
 	<form action="includes/controller.php" method="post">
@@ -51,6 +60,7 @@ $teams = $query->fetchAll(2);
 		<input type="submit" name="submit" value="team aanmaken">
 	</form>
 </div>
+    </div>
 
 
 
