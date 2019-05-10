@@ -17,6 +17,9 @@ $teams = $query->fetchAll(2);
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/normalize.css">
     <main>
+        <div class="teams-main">
+            <div class="team-view">
+            <div class="all-teams">
         <h2>All Teams</h2>
 		<?php
 			foreach ($teams as $team) {
@@ -24,7 +27,9 @@ $teams = $query->fetchAll(2);
 			}
 
 		?>
+            </div>
 
+            <div class="your-teams">
         <h2>Your Team(s)</h2>
         <?php
         if (isset($_SESSION['id']))
@@ -42,7 +47,8 @@ $teams = $query->fetchAll(2);
             echo "<p>om jou teams te kunnen zien moet je <a href='login.php'>Inloggen</a>, of om een team aan te maken</p>";
         }
         ?>
-
+            </div>
+            </div>
     </main>
 <div class="team-creator">
 	<form action="includes/controller.php" method="post">
@@ -51,6 +57,7 @@ $teams = $query->fetchAll(2);
 		<input type="submit" name="submit" value="team aanmaken">
 	</form>
 </div>
+    </div>
 
 
 

@@ -101,6 +101,10 @@ textarea {
  /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+* {
+    box-sizing: border-box;
+}
+
 body{
     top: 0;
     height: 100vh;
@@ -146,6 +150,7 @@ header .username{
 .main{
     margin-left: 7%;
     display: flex;
+    margin: 0;
     height: 100vh;
 }
 
@@ -160,6 +165,7 @@ main input:last-child{
 main .login {
     margin: 100px auto;
     height: 40%;
+    width: 320px;
     padding: 2%;
     border-radius: 20px;
     background: rgba(255,255,255,0.75);
@@ -167,23 +173,17 @@ main .login {
 
 main .register{
     margin: 100px auto;
-    height: 70%;
+    width: 320px;
     padding: 2%;
     border-radius: 20px;
     background: rgba(255,255,255,0.75);
 }
 
-main .login input{
+main input{
+    padding: 2px 5px;
     border: 1px solid #30C5FF;
     border-radius: 10px;
 }
-
-main .register input{
-    border: 1px solid #30C5FF;
-    border-radius: 10px;
-}
-
-
 
 footer{
     position: fixed;
@@ -193,7 +193,16 @@ footer{
     width: 100%;
 }
 
+.teams-main{
+    margin-top: 10%;
+}
 
+.team-view{
+    display: flex;
+}
+.your-teams{
+    margin-left: 5%;
+}
 
 
 

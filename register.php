@@ -13,7 +13,6 @@ require 'header.php';
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/normalize.css">
     <main>
-        <div class="main">
         <div class="register">
             <h2>Register</h2>
         <form action="includes/controller.php" method="post">
@@ -27,7 +26,6 @@ require 'header.php';
             <p>Already have an account? <a href="../Php-code/login.php">Login here!</a></p>
             <input type="submit" name="submit" value="register">
         </form>
-        </div>
         </div>
     </main>
 
