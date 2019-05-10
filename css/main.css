@@ -101,9 +101,66 @@ textarea {
  /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+header{
+    width: 100%;
+    height: 60px;
+    background-color: #757576;
+    display: flex;
+    justify-content: space-around;
+}
 
+header .nav{
+    width: 60%;
+    display: flex;
+    align-items: center;
+}
 
+header .nav a{
+    font-size: 1.1em;
+    margin-right: 3%;
+    text-decoration: none;
+    color: black;
+}
 
+header .username{
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+}
+
+.main{
+    margin-left: 7%;
+    display: flex;
+    height: 98%;
+}
+
+main form p{
+    margin-bottom: -1%;
+}
+
+main input:last-child{
+    margin-top: 5%;
+}
+
+main .login input{
+    border: 1px solid #757576;
+    border-radius: 10px;
+}
+
+main .register input{
+    border: 1px solid #757576;
+    border-radius: 10px;
+}
+.background img{
+    border: 1px solid #757576;
+    float: right;
+    width: 90%;
+}
+
+footer{
+    background-color: #757576;
+    height: 10%;
+}
 
 
 

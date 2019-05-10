@@ -7,15 +7,12 @@
  */
 
 require 'header.php';
-
-if (isset($_SESSION['id']))
-{
-    echo "inlogged as {$_SESSION['username']}";
-}
 ?>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
 
     <main>
-        <h2>home pagina</h2>
+        <h1>Home page</h1>
     </main>
 
 <?php

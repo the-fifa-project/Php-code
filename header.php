@@ -21,15 +21,20 @@ require 'includes/config.php';
 </head>
 <body>
     <header>
+        <div class="logo">
+            <img src="" alt="logo">
+        </div>
+        <div class="nav">
         <a href="index.php">home</a>
         <a href="teams.php">teams</a>
         <a href="login.php">login</a>
         <a href="register.php">register</a>
-        <div>
+        </div>
+        <div class="username">
             <?php
                 if(isset($_SESSION['id']) && isset($_SESSION['username']))
                 {
-                    echo $_SESSION['username'];
+                    echo "<p>Welcome back <br></p>" . $_SESSION['username'] . "<p>!</p>";
                 }
 
                 if(isset($_SESSION['id']) || isset($_SESSION['username']) || isset($_SESSION['admin']))
