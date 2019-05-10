@@ -22,7 +22,7 @@ require 'includes/config.php';
 <body>
     <header>
         <div class="logo">
-            <img src="" alt="logo">
+            FIFA PROJECT
         </div>
         <div class="nav">
         <a href="index.php">home</a>
@@ -32,11 +32,6 @@ require 'includes/config.php';
         </div>
         <div class="username">
             <?php
-                if(isset($_SESSION['id']) && isset($_SESSION['username']))
-                {
-                    echo "<p>Welcome back <br></p>" . $_SESSION['username'] . "<p>!</p>";
-                }
-
                 if(isset($_SESSION['id']) || isset($_SESSION['username']) || isset($_SESSION['admin']))
                 {
                     echo "<form action=\"includes/controller.php\" method=\"post\">
