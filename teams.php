@@ -42,6 +42,12 @@ $teams = $query->fetchAll(2);
                 if (isset($_SESSION['id']))
                 {
                     echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
+                    echo "<div class=\"team-creator\">
+	                            <form action=\"includes/controller.php\" method=\"post\">
+		                        <input type=\"hidden\" name=\"type\" value=\"createteam\">
+		                        <input type=\"text\" name=\"teamname\" required>
+		                        <input type=\"submit\" name=\"submit\" value=\"team aanmaken\">
+	                            </form>";
                 }
             }
         }
@@ -53,12 +59,7 @@ $teams = $query->fetchAll(2);
             </div>
             </div>
     </main>
-<div class="team-creator">
-	<form action="includes/controller.php" method="post">
-		<input type="hidden" name="type" value="createteam">
-		<input type="text" name="teamname" required>
-		<input type="submit" name="submit" value="team aanmaken">
-	</form>
+
 </div>
     </div>
 

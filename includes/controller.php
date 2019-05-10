@@ -125,9 +125,9 @@ if ($_POST['type'] === 'login')
 
     $_SESSION['id'] = $user['id'];
     $_SESSION['username'] = $user['firstname'];
-    if ($user['administrator'] !== null)
+    if ($user['administrator'] !== null || $user['dev_admin'] !== null)
     {
-        $_SESSION['admin'] = $user['administrator'];
+        $_SESSION['admin'] = $user['id'];
     }
     // Check if I have a record with both this email and password combination.
     // if so, then log in.
