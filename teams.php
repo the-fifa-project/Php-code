@@ -16,12 +16,13 @@ $teams = $query->fetchAll(2);
  ?>
 
 
-
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
     <main>
         <h2>teams</h2>
 		<?php
 			foreach ($teams as $team) {
-				echo "<a href="teams-detail.php?id={$team['id']}">{$team['name']}</a>";
+				echo "<a href=\"teams-detail.php?id={$team['id']}\">{$team['name']}</a>";
 			}
 
 		?>

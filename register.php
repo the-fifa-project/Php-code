@@ -10,18 +10,28 @@ require 'header.php';
 
 //add here a query
 ?>
-
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.css">
     <main>
+        <div class="main">
+        <div class="register">
+            <h2>Register</h2>
         <form action="includes/controller.php" method="post">
             <input type="hidden" name="type" value="register">
-            <input type="text" name="firstname" required>
-            <input type="text" name="middlename">
-            <input type="text" name="lastname" required>
-            <input type="email" name="email" required>
-            <input type="password" name="password" required>
-            <input type="password" name="passwordconfirm" required>
+            <p>Firstname:</p> <input type="text" name="firstname" required>
+            <p>Middlename:</p> <input type="text" name="middlename">
+            <p>Lastname</p> <input type="text" name="lastname" required>
+            <p>Email:</p> <input type="email" name="email" required>
+            <p>Password:</p> <input type="password" name="password" required>
+            <p>Confirm password:</p> <input type="password" name="passwordconfirm" required>
+            <p>Already have an account? <a href="../Php-code/login.php">Login here!</a></p>
             <input type="submit" name="submit" value="register">
         </form>
+        </div>
+        <div class="background">
+            <img src="img/Background_image.jpg" alt="">
+        </div>
+        </div>
     </main>
 
 <?php
