@@ -15,7 +15,8 @@ require 'header.php';
             <h2>Register</h2>
         <form action="includes/controller.php" method="post">
             <input type="hidden" name="type" value="register">
-            <p>Firstname:</p> <input type="text" name="firstname" required>
+            <label for="firstname">Firstname:</label>
+            <input type="text" name="firstname" required>
             <p>Middlename:</p> <input type="text" name="middlename">
             <p>Lastname</p> <input type="text" name="lastname" required>
             <p>Email:</p> <input type="email" name="email" required>
@@ -28,7 +29,6 @@ require 'header.php';
     </main>
 
 <?php
-
 require 'footer.php';
 
 ?>
