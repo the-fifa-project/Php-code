@@ -195,25 +195,53 @@ footer{
 
 /* ----- TEAMS ----- */
 
-main .AllTeams h2 {
-    border-bottom: 2px solid black;
-    padding-right: 200px;
-    padding-bottom: 10px;
+.Teams-Info {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5%;
 }
 
-main .YourTeams h2 {
+.Your-Teams {
+    width: 400px;
     border-bottom: 2px solid black;
-    padding-right: 600px;
     padding-bottom: 10px;
+    margin-top: 5%;
 }
 
+.All-Teams {
+    width: 800px;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+    margin-top: 5%;
+}
 
+.Your-Team-Name {
+    height: 150px;
+    width: 250px;
+    padding: 1%;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.75);
+    margin-top: 2%;
+    margin-left: 10%;
+}
 
+.Your-Team-Name .Scores {
+    display: flex;
+    justify-content: space-between;
+}
 
+.Your-Team-Name .Info {
+    display: flex;
+    justify-content: space-between;
+}
 
+.Your-Team-Name h3 {
+    font-size: 18px;
+}
 
-
-
+.Your-Team-Name p {
+    line-height: 1px;
+}
 
 
 

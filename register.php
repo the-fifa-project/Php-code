@@ -17,7 +17,8 @@ require 'header.php';
             <h2>Register</h2>
         <form action="includes/controller.php" method="post">
             <input type="hidden" name="type" value="register">
-            <p>Firstname:</p> <input type="text" name="firstname" required>
+            <label for="firstname">Firstname:</label>
+            <input type="text" name="firstname" required>
             <p>Middlename:</p> <input type="text" name="middlename">
             <p>Lastname</p> <input type="text" name="lastname" required>
             <p>Email:</p> <input type="email" name="email" required>
@@ -30,29 +31,6 @@ require 'header.php';
     </main>
 
 <?php
-
-    if ($_POST['type'] === 'register') {
-        var_dump($_POST);
-
-        require 'config.php';
-
-        $name = $_POST['firstname'];
-        $name = $_POST['middlename'];
-        $name = $_POST['lastname'];
-        $email = $_POST['email'];
-        $pwd = $_POST['password'];
-        $pwd_confirm = $_POST['password_confirm'];
-
-        $sql = "INSERT INTO users (`firstname`, `middlename`, `lastname`, `email`,`password`)
-                VALUES (:firstname, :middlename, :lastname, :email, :password)";
-
-        $prepare = $db->prepare($sql);
-
-        $prepare->execute([
-            ':email' => $email,
-            ':password' => $pwd
-        ]);
-
 require 'footer.php';
 
 ?>
