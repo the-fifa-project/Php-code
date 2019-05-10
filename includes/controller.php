@@ -73,7 +73,7 @@ if ($_POST['type'] === 'register') {
 
     if (Validator::DatabaseQueryEmail($email, "users", $db)) {
         $msg = "Email already used";
-        header("location: ../login.php?msg=$msg");
+        header("location: ../register.php?msg=$msg");
         exit;
     }
 
@@ -131,6 +131,8 @@ if ($_POST['type'] === 'login')
     }
     // Check if I have a record with both this email and password combination.
     // if so, then log in.
+    $msg = "Logged in";
+    header("location: ../index.php?msg=$msg");
     exit;
 }
 

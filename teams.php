@@ -20,20 +20,27 @@ $teams = $query->fetchAll(2);
         <h2>All Teams</h2>
 		<?php
 			foreach ($teams as $team) {
-				echo "<a href=\"teams-detail.php?id={$team['id']}\">{$team['name']}</a>";
+				echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
 			}
 
 		?>
 
         <h2>Your Team(s)</h2>
         <?php
+        if (isset($_SESSION['id']))
+        {
             foreach ($teams as $team)
             {
-                if ($team['owner'] === $_SESSION['id'])
+                if (isset($_SESSION['id']))
                 {
                     echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
                 }
             }
+        }
+        else
+        {
+            echo "<p>om jou teams te kunnen zien moet je <a href='login.php'>Inloggen</a>, of om een team aan te maken</p>";
+        }
         ?>
 
     </main>
