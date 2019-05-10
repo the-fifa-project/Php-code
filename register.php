@@ -28,9 +28,6 @@ require 'header.php';
             <input type="submit" name="submit" value="register">
         </form>
         </div>
-        <div class="background">
-            <img src="img/Background_image.jpg" alt="">
-        </div>
         </div>
     </main>
 
