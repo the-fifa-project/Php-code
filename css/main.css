@@ -156,7 +156,7 @@ main {
     z-index: -2;
     min-height: 100vh;
     background: #2d2d2d;
-    background: url(../img/Background_image.jpg);
+    background: url(../img/Background_image.jpg) !important;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -259,12 +259,15 @@ footer{
     display: block;
     margin: 10px 0;
 }
+.your-teams a span p {
+    color: #555555;
+}
 .your-teams h2 {
     height: auto;
     margin: 0;
     padding: 0;
-    color: #ffffff;
-    border-bottom: 2px solid #ffffff;
+    color: #838383;
+    border-bottom: 2px solid #838383;
 }
 .your-teams p {
     color: #fff;
@@ -292,8 +295,8 @@ footer{
 #teams h2 {
     margin: 0;
     padding: 0;
-    color: #fff;
-    border-bottom: 2px solid #ffffff;
+    color: #838383;
+    border-bottom: 2px solid #838383;
 }
 
 .teams a {

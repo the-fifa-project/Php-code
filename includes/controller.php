@@ -168,7 +168,7 @@ if ($_POST['type'] === 'createteam')
     ]);
 
     $msg = "team succesfull created!";
-    header("location: ../index.php?msg=$msg");
+    header("location: ../teams.php?msg=$msg");
     exit;
 }
 
