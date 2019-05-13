@@ -59,11 +59,16 @@ else
                                 </span>
                             </a>";
                         }
+                        echo "
+                    <form action=\"includes/controller.php\" method=\"post\">
+                        <input type=\"hidden\" name=\"type\" value=\"createteam\">
+                        <input type=\"text\" name=\"teamname\" placeholder='team naam'>
+                        <input type=\"submit\" name=\"submit\"   value=\"Nieuw team aanmaken!\">
+                    </form>";
                     }
                     else
                     {
                         echo "<p>Om teams te kunnen aanmaken en of zien moet je <a href='login.php'>ingelogd</a> zijn, Nog geen account <a href='register.php'>registreer</a> nu!</p>.";
-
                     }
                     ?>
 <!--                        <a href="team-detail.php?id=1" class="team-card">-->
