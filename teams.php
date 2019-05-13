@@ -8,100 +8,149 @@
 
 require 'header.php';
 	
-$sql = "SELECT * FROM teams";
+$sql = "SELECT `users`.`firstname` as owner, `teams`.`name` as name, `teams`.`goals` as goals, `teams`.`wins` as wins, `teams`.`loses` as loses, `users`.`id` as ownerid 
+                FROM `teams` 
+                LEFT JOIN `users` 
+                ON `teams`.`owner` = `users`.id";
 $query = $db->query($sql);
 $teams = $query->fetchAll(2);
+
+if (isset($_SESSION['id']))
+{
+    $sql = "SELECT `users`.`firstname` as owner, `teams`.`name` as name, `teams`.`goals` as goals, `teams`.`wins` as wins, `teams`.`loses` as loses, `users`.`id` as ownerid 
+                FROM `teams` 
+                INNER JOIN `users` 
+                ON `teams`.`owner` = `users`.id 
+                WHERE `teams`.owner = :userid";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        ':userid' => $_SESSION['id']
+    ]);
+    $yourTeams = $prepare->fetchAll(2);
+}
+else
+{
+
+}
  ?>
 
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/normalize.css">
-
     <main>
+        <div class="container">
+            <div class="row">
 
-    <div class="Teams">
+                <div class="teams your-teams">
+                    <h2>Your Teams</h2>
+                    <?php
+                    if (isset($_SESSION['id']))
+                    {
+                        foreach ($yourTeams as $yourTeam)
+                        {
+                            echo "<a href=\"team-detail.php?id=1\" class=\"team-card\">";
+                            echo "<h3>{$yourTeam['name']}</h3>";
+                            echo "<span class=\"stats\">";
+                            echo "
+                                 <p class=\"goals\">Goals: {$yourTeam['goals']}</p>
+                                 <p class=\"wins\">Wins: {$yourTeam['wins']}</p>
+                                 <p class=\"loses\">Loses: {$yourTeam['loses']}</p>";
+                            echo "</span>
+                             <span class=\"members\">";
+                            echo "<p class=\"owner\">Owner: {$yourTeam['owner']}</p>
+                                 <p class=\"players\">Players: 6</p>
+                                </span>
+                            </a>";
+                        }
+                    }
+                    else
+                    {
+                        echo "<p>Om teams te kunnen aanmaken en of zien moet je <a href='login.php'>ingelogd</a> zijn, Nog geen account <a href='register.php'>registreer</a> nu!</p>.";
 
-        <div class="Teams-Info">
+                    }
+                    ?>
+<!--                        <a href="team-detail.php?id=1" class="team-card">-->
+<!--                            <h3>Amokes</h3>-->
+<!--                            <span class="stats">-->
+<!--                             <p class="goals">Goals: 3</p>-->
+<!--                             <p class="wins">Wins: 2</p>-->
+<!--                             <p class="loses">Loses: 1</p>-->
+<!--                         </span>-->
+<!--                         <span class="members">-->
+<!--                             <p class="owner">Owner: Glenn</p>-->
+<!--                             <p class="players">Players: 6</p>-->
+<!--                            </span>-->
+<!--                    </a>-->
 
-            <div class="Your-Teams">
-                <h2>Your Team(s)</h2>
-            </div>
-
-            <div class="All-Teams">
-                <h2>All Teams</h2>
-            </div>
-
-        </div>
-
-        <div class="Your-Team-Names">
-            <div class="Your-Team-Name">
-                <h3>TEAM NAME</h3>
-
-                <div class="Scores">
-                    <p>Goals: 3</p>
-                    <p>Wins: 2</p>
-                    <p>Loses: 1</p>
+<!--                    als je hier op een div klikt moet er een popup komen!-->
                 </div>
+                <div id="teams">
+                    <h2>All Teams</h2>
+                    <div class="teams all-teams">
 
-                <div class="Info">
-                    <p>Owner: Username</p>
-                    <p>Players: 6</p>
+                    <?php
+                            foreach ($teams as $team)
+                            {
+                                echo "<a href=\"team-detail.php?id=1\" class=\"team-card\">";
+                                echo "<h3>{$team['name']}</h3>";
+                                echo "<span class=\"stats\">";
+                                echo "
+                             <p class=\"goals\">Goals: {$team['goals']}</p>
+                             <p class=\"wins\">Wins: {$team['wins']}</p>
+                             <p class=\"loses\">Loses: {$team['loses']}</p>";
+                                echo "</span>
+                         <span class=\"members\">";
+                                echo "<p class=\"owner\">Owner: {$team['owner']}</p>
+                             <p class=\"players\">Players: 6</p>
+                            </span>
+                        </a>";
+                            }
+                    ?>
+
+<!--                    <a href="team-detail.php?id=1" class="team-card">-->
+<!--                        <h3>Amokes</h3>-->
+<!--                        <span class="stats">-->
+<!--                             <p class="goals">Goals: 3</p>-->
+<!--                             <p class="wins">Wins: 2</p>-->
+<!--                             <p class="loses">Loses: 1</p>-->
+<!--                         </span>-->
+<!--                        <span class="members">-->
+<!--                             <p class="owner">Owner: Glenn</p>-->
+<!--                             <p class="players">Players: 6</p>-->
+<!--                            </span>-->
+<!--                    </a>-->
+<!---->
+<!--                    <a href="team-detail.php?id=1" class="team-card">-->
+<!--                        <h3>Amokes</h3>-->
+<!--                        <span class="stats">-->
+<!--                             <p class="goals">Goals: 3</p>-->
+<!--                             <p class="wins">Wins: 2</p>-->
+<!--                             <p class="loses">Loses: 1</p>-->
+<!--                         </span>-->
+<!--                        <span class="members">-->
+<!--                             <p class="owner">Owner: Glenn</p>-->
+<!--                             <p class="players">Players: 6</p>-->
+<!--                            </span>-->
+<!--                    </a>-->
+<!---->
+<!---->
+<!--                    <a href="team-detail.php?id=1" class="team-card">-->
+<!--                        <h3>Amokes</h3>-->
+<!--                        <span class="stats">-->
+<!--                             <p class="goals">Goals: 3</p>-->
+<!--                             <p class="wins">Wins: 2</p>-->
+<!--                             <p class="loses">Loses: 1</p>-->
+<!--                         </span>-->
+<!--                        <span class="members">-->
+<!--                             <p class="owner">Owner: Glenn</p>-->
+<!--                             <p class="players">Players: 6</p>-->
+<!--                            </span>-->
+<!--                    </a>-->
                 </div>
-
+            </div>
             </div>
         </div>
-
-        <div class="All-Team-Names">
-            <div class="Team-Name">
-                <h3>TEAM NAME</h3>
-                <p>Goals: 3</p>
-                <p>Wins: 2</p>
-                <p>Loses: 1</p>
-                <p>Owner: Username</p>
-                <p>Players: 6</p>
-            </div>
-        </div>
-
-    </div>
-
-		<?php
-			foreach ($teams as $team) {
-				echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
-			}
-		?>
-
-        <?php
-        if (isset($_SESSION['id']))
-        {
-            foreach ($teams as $team)
-            {
-                if (isset($_SESSION['id']))
-                {
-                    echo "<a href=\"team-detail.php?id={$team['id']}\">{$team['name']}</a>";
-                    echo "<div class=\"team-creator\">
-	                            <form action=\"includes/controller.php\" method=\"post\">
-		                        <input type=\"hidden\" name=\"type\" value=\"createteam\">
-		                        <input type=\"text\" name=\"teamname\" required>
-		                        <input type=\"submit\" name=\"submit\" value=\"team aanmaken\">
-	                            </form>";
-                }
-            }
-        }
-        else
-        {
-            echo "<p>om jou teams te kunnen zien moet je <a href='login.php'>Inloggen</a>, of om een team aan te maken</p>";
-        }
-        ?>
-            </div>
-            </div>
     </main>
-
-</div>
-    </div>
-
-
-
-
-
 <?php
-
 require 'footer.php';
+
+
+
+

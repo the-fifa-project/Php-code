@@ -8,8 +8,6 @@
 
 require 'header.php';
 ?>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/normalize.css">
 
     <main>
         <div class="main-home">
