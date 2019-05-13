@@ -101,7 +101,18 @@ textarea {
  /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.eot');
+    src: url('../fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Roboto-Regular.woff2') format('woff2'),
+    url('../fonts/Roboto-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
+    font-family: 'Roboto';
     box-sizing: border-box;
 }
 
@@ -142,8 +153,10 @@ header .username{
 }
 main {
     top: 0;
+    z-index: -2;
     min-height: 100vh;
-    background: url(../img/Background_image.jpg);
+    background: #2d2d2d;
+    /*background: url(../img/Background_image.jpg);*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -198,45 +211,10 @@ footer{
     width: 100%;
 }
 
-/* ----- TEAMS ----- */
-
-.Teams-Info {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 5%;
-}
-
-.Your-Teams {
-    width: 400px;
-    border-bottom: 2px solid black;
-    padding-bottom: 10px;
-    margin-top: 5%;
-}
-
-.All-Teams {
-    width: 800px;
-    border-bottom: 2px solid black;
-    padding-bottom: 10px;
-    margin-top: 5%;
-}
-
-.Your-Team-Name {
-    height: 150px;
-    width: 250px;
-    padding: 1%;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.75);
-    margin-top: 2%;
-    margin-left: 10%;
-}
 .main-home{
     display: flex;
 }
 
-.Your-Team-Name .Scores {
-    display: flex;
-    justify-content: space-between;
-}
 .home-welcome{
     margin: 100px auto;
     width: 320px;
@@ -245,10 +223,6 @@ footer{
     background: rgba(255,255,255,0.75);
 }
 
-.Your-Team-Name .Info {
-    display: flex;
-    justify-content: space-between;
-}
 .home-download{
     margin: 100px auto;
     width: 320px;
@@ -257,9 +231,6 @@ footer{
     background: rgba(255,255,255,0.75);
 }
 
-.Your-Team-Name h3 {
-    font-size: 18px;
-}
 .home-download input{
     border: 1px solid grey;
     border-radius: 0;
@@ -269,11 +240,81 @@ footer{
     background-color: #30C5FF;
 }
 
-.Your-Team-Name p {
-    line-height: 1px;
+ /* --- Teams --- */
+.row {
+    display: flex;
+    /*grid-template-columns: 1fr 2fr;*/
+    /*grid-template-areas: "your-teams all-teams" "your-teams all-teams";*/
+    width: 100%;
+}
+.your-teams {
+    width: 33%;
+    grid-area: your-teams;
+    /*display: grid;*/
+    padding: 0 10px;
+    grid-row-gap: 10px;
+    /*grid-template-columns: 1fr;*/
+}
+.your-teams a {
+    display: block;
+    margin: 10px 0;
+}
+.your-teams h2 {
+    height: auto;
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+}
+.your-teams p {
+    color: #fff;
+}
+.your-teams p a {
+    background: none;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    color: #b3d4fc;
+}
+#teams {
+    width: 66%;
+}
+.all-teams {
+    margin-top: 10px;
+    grid-area: all-teams;
+    display: grid;
+    padding: 0 10px;
+    grid-column-gap: 15px;
+    grid-row-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+}
+#teams h2 {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    border-bottom: 2px solid #ffffff;
 }
 
-
+.teams a {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #555555;
+}
+.teams a span {
+    display: flex;
+    justify-content: space-between;
+}
+.teams a h3 {
+    margin: 0;
+}
+.teams a span p {
+    margin: 0;
+}
 
 
 
