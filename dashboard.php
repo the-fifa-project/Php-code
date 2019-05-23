@@ -7,6 +7,7 @@
  */
 
 require 'header.php';
+require 'Validator.php';
 ?>
 
 <!-- search for nabvar for dashboard bootstrap 4 -->

@@ -6,7 +6,6 @@
  * Time: 12:08
  */
 
-require 'Validator.php';
 
 // here comes the database connection.
 $dbHost = "localhost";

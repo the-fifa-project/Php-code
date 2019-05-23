@@ -7,6 +7,7 @@
  */
 
 require 'config.php';
+require 'Validator.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' )
 {
