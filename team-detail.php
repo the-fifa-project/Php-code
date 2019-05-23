@@ -15,17 +15,17 @@ if (!isset($id))
     header("location: index.php");
 }
 
-$sql = "SELECT 
-            `team-players`.firstname as first, 
-            `team-players`.middelname as middle, 
-            `team-players`.lastname as last, 
-            teams.name as team FROM `team-players`
-            INNER JOIN teams ON `team-players`.team = :id";
-$prepare = $db->prepare($sql);
-$prepare->execute([
-    ':id' => $id
-]);
-$teamPlayers = $prepare->fetchAll(2);
+// $sql = "SELECT 
+//             `team-players`.firstname as first, 
+//             `team-players`.middelname as middle, 
+//             `team-players`.lastname as last, 
+//             teams.name as team FROM `team-players`
+//             INNER JOIN teams ON `team-players`.team = :id";
+// $prepare = $db->prepare($sql);
+// $prepare->execute([
+//     ':id' => $id
+// ]);
+// $teamPlayers = $prepare->fetchAll(2);
 ?>
 
 
@@ -39,13 +39,18 @@ $teamPlayers = $prepare->fetchAll(2);
                     <td>middelnaam:</td>
                     <td>Achternaam:</td>
                 </tr>
+                <tr>
+                    <td>Test</td>
+                    <td>Test</td>
+                    <td>Test</td>
+                </tr>
                 <?php
-                    foreach ($teamPlayers as $player)
-                    {
-                        echo "<tr>";
-                        echo "<td>{$player['first']}</td><td>{$player['middle']}</td><td>{$player['last']}</td>";
-                        echo "</tr>";
-                    }
+                    // foreach ($teamPlayers as $player)
+                    // {
+                    //     echo "<tr>";
+                    //     echo "<td>{$player['first']}</td><td>{$player['middle']}</td><td>{$player['last']}</td>";
+                    //     echo "</tr>";
+                    // }
                 ?>
             </table>
         </div>
