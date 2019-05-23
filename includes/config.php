@@ -6,10 +6,11 @@
  * Time: 12:08
  */
 
+require 'Validator.php';
+
 // here comes the database connection.
 $dbHost = "localhost";
 $dbName = "the-fifa-project";
-//$dbName = "fifa-test";
 $dbUser = "root";
 $dbPass = "";
 
@@ -31,7 +32,4 @@ try {
  }
 
 // and a session_start for checking if there is an user thats logged in
-if(session_status() == PHP_SESSION_NONE){
-    //session has not started
-    session_start();
-}
+session_start();

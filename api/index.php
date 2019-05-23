@@ -7,11 +7,20 @@
  */
 
 require '../includes/config.php';
-$sql = "SELECT * FROM teams";
-$query = $db->query($sql);
-$api = $query->fetchAll(2); //PDO::FETCH_ASSOC == 2
 
-header('Content-Type: application/json');
-$json = json_encode($api);
+if (isset($_GET['apikey']) && $_GET['apikey'] === "$2VAo@5JGt8%")
+{
+    $sql = "SELECT * FROM teams";
+    $query = $db->query($sql);
+    $api = $query->fetchAll(2); //PDO::FETCH_ASSOC == 2
 
-echo $json;
+    header('Content-Type: application/json');
+    $json = json_encode($api);
+
+    echo $json;
+}
+else
+{
+    header("location: ../index.php");
+    exit;
+}

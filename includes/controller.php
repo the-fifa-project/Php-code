@@ -7,11 +7,10 @@
  */
 
 require 'config.php';
-require 'Validator.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' )
 {
-    header("location: ..//index.php");
+    header("location: ../index.php");
     exit;
 }
 
@@ -20,52 +19,52 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' )
 if ($_POST['type'] === 'register') {
     var_dump($_POST);
 
-    $firstName = htmlentities($_POST['firstname']);
-    $middleName = htmlentities($_POST['middlename']);
-    $lastName = htmlentities($_POST['lastname']);
-    $email = htmlentities($_POST['email']);
+    $firstName = htmlentities(trim($_POST['firstname']));
+    $middleName = htmlentities(trim($_POST['middlename']));
+    $lastName = htmlentities(trim($_POST['lastname']));
+    $email = htmlentities(trim($_POST['email']));
     $password = htmlentities(trim($_POST['password']));
     $passwordConfirm = htmlentities(trim($_POST['passwordconfirm']));
     $registers_date = date("Y-m-d H:i:s");
 
     //TODO: checken of an field is empty
     if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($passwordConfirm)) {
-        header("location: ../register.php?msg=1 of meer velden zijn leeg");
+        header("location: ../login.php?action=register&registermsg=1 of meer velden zijn leeg");
         exit;
     }
 
     //TODO: email validade
     if (!Validator::EmailValidate($email)) {
-        header('location: ../register.php?msg=email is not valid');
+        header('location: ../login.php?action=register&registermsg=email is not valid');
         exit;
     }
 
     //TODO: password checken of gelijk is aan pwd confirm
     if (!Validator::PasswordConfirm($password, $passwordConfirm)) {
         //TODO: send back to register page wit h error code (password not match.
-        header('location: ../register.php?msg=passwords don\'t match');
+        header('location: ../login.php?action=register&registermsg=passwords don\'t match');
         exit;
     }
 
     if (Validator::PasswordLength($password)) {
         $msg = "Password needs to be 7 chars long";
-        header("location: ../register.php?msg=$msg");
+        header("location: ../login.php?action=register&registermsg=$msg");
         exit;
     }
 
     if (!Validator::PasswordIncludesUpper($password)) {
         $msg = "Password must have 1 uppercase character";
-        header("location: ../register.php?msg=$msg");
+        header("location: ../login.php?action=register&registermsg=$msg");
         exit;
     }
     if (!Validator::PasswordIncludesLower($password)) {
         $msg = "Password must have a lowercase character";
-        header("location: ../register.php?msg=$msg");
+        header("location: ../login.php?action=register&registermsg=$msg");
         exit;
     }
     if (!Validator::PasswordIncludesNumber($password)) {
         $msg = "Password must have a number";
-        header("location: ../register.php?msg=$msg");
+        header("location: ../login.php?action=register&registermsg$msg");
         exit;
     }
 
@@ -73,7 +72,7 @@ if ($_POST['type'] === 'register') {
 
     if (Validator::DatabaseQueryEmail($email, "users", $db)) {
         $msg = "Email already used";
-        header("location: ../register.php?msg=$msg");
+        header("location: ../login.php?action=register&registermsg=$msg");
         exit;
     }
 
@@ -91,7 +90,7 @@ if ($_POST['type'] === 'register') {
     ]);
 
     $msg = "account succesfull created";
-    header("location: ../login.php?msg=$msg");
+    header("location: ../login.php");//?msg=$msg");
     exit;
 }
 
@@ -99,13 +98,13 @@ if ($_POST['type'] === 'register') {
 
 if ($_POST['type'] === 'login')
 {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = htmlentities(trim($_POST['email']));
+    $password = htmlentities(trim($_POST['password']));
 
     if (Validator::DatabaseQueryEmail($email, "users", $db) === false)
     {
         $msg = "Account don't exist";
-        header("location: ../login.php?msg=$msg");
+        header("location: ../login.php?loginmsg=$msg");
         exit;
     }
 
@@ -119,7 +118,7 @@ if ($_POST['type'] === 'login')
     if (Validator::PasswordVerify($password, $user['password']) === false)
     {
         $msg = "Password or Email not match";
-        header("location: ../login.php?msg=$msg");
+        header("location: ../login.php?loginmsg=$msg");
         exit;
     };
 
@@ -149,13 +148,13 @@ if ($_POST['type'] === 'logout')
 if ($_POST['type'] === 'createteam')
 {
     $owner =    $_SESSION['id'];
-    $teamname = $_POST['teamname'];
+    $teamname = htmlentities(trim($_POST['team-name']));
     $createdAt = date("Y-m-d H:i:s");
 
     if(strlen($teamname) > 30)
     {
         $msg = "name is to long!";
-        header("location: ../index.php?msg=$msg");
+        header("location: ../index.php?errmsg=$msg");
         exit;
     }
 
@@ -172,9 +171,26 @@ if ($_POST['type'] === 'createteam')
     exit;
 }
 
-if ($_POST['type'] === 'deleteteam')
+if ($_POST['type'] === 'deleteteam' && isset($_SESSION['admin']))
 {
-    $teamId = $_POST['teamid'];
+    $teamId = htmlentities($_POST['teamid']);
+    $confirm = htmlentities(trim(strtolower($_POST['team-name-confirm'])));
+
+    $sql = "SELECT * FROM `teams` WHERE `id` = :id";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'id' => $teamId
+    ]);
+    $teamToDelete = $prepare->fetch(2);
+
+    var_dump($teamToDelete);
+    echo $confirm;
+    if(strtolower($teamToDelete['name']) !== strtolower($confirm))
+    {
+        $msg = "Team namen kommen niet overeen";
+        header("location: ../team_detail.php?id=$teamId&delmsg=$msg");
+        exit;
+    }
 
     $sql = "DELETE FROM `teams` WHERE `teams`.`id` = :id";
     $prepare = $db->prepare($sql);
@@ -183,7 +199,14 @@ if ($_POST['type'] === 'deleteteam')
     ]);
 
     $msg = "Team succesvol verwijderd";
-    header("location: index.php?msg=$msg");
+    header("location: ../index.php?msg=$msg");
     exit;
 
+}
+
+if($_POST['type'] === "editteam")
+{
+    $newName = htmlentities(trim($_POST['new-team-name']));
+//    TODO team naam aanpassen !! UPDATE!!
+//    use editmsg for to let see a error on the screen
 }
