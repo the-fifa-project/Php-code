@@ -19,6 +19,17 @@ if (isset($_GET['apikey']) && $_GET['apikey'] === "$2VAo@5JGt8%")
 
     echo $json;
 }
+else if (isset($_GET['apikey']) && $_GET['apikey'] === "Rz7^8p2%4VYk")
+{
+    $sql = "SELECT * FROM `matches`";
+    $query = $db->query($sql);
+    $api = $query->fetchAll(2); //PDO::FETCH_ASSOC == 2
+
+    header('Content-Type: application/json');
+    $json = json_encode($api);
+
+    echo $json;
+}
 else
 {
     header("location: ../index.php");
