@@ -258,17 +258,18 @@ if($_POST['type'] === "editteam")
 if($_POST['type'] === "generate")
 {
     // set post methode into variables
-    $startTime = 
 
     //select every team
     $sql = "SELECT * FROM `teams` WHERE `entered` = 1";
     $query = $db->query($sql);
     $teams = $query->fetchAll(2);
+    $teamCount = $query->rowCount();
+    echo $teamCount;
 
     //select the settings
     $sql = "SELECT * FROM `settings`";
     $query = $db->query($sql);
-    $settings = $query->fetchAll(2);
+    $settings = $query->fetch(2);
 
     //create 1 empty array for putting evrey team in it 
     $teamsArray = array();
@@ -276,30 +277,61 @@ if($_POST['type'] === "generate")
 
     //set every team in the teamArray
     foreach ($teams as $team) {
-        array_push($teamsArray, $team['name']);
+        array_push($teamsArray, $team['id']);
     }
+    
+    //set the settings into variables
+    $fields = $settings['fields'];
+    $timeStart = '9:00';
+    $timeMatch = $settings['match_time'];
+    $timeHalf = $settings['half_time']; 
+    $timeBreak = $settings['break_time'];
+    $timeTotal = $timeMatch + $timeBreak + $timeHalf;
+    $splitTime = strtotime($timeStart);
 
     //set the counter for the forloop
     $arrLength = count($teamsArray);
     $count = 1;
     $fieldCounter = 1;
-    var_dump($settings);
+    // var_dump($settings);
+
     if ($settings['fields'] == 0)
     {
         //sendback to dashboard
         echo "no field sleceted";
     }
 
-    //set the settings into variables
-    $fields = $settings['fields'];
-    $timeStart = '9:00';
-    $timeMatch = $settings['match_time'];
-    $timeHalf = $settings['half_time'];
-    $timeBreak = $settings['break_time'];
-    $timeTotal = $timeM + $timeP + $timeR;
-    $endTime = strtotime($timeS);
+    // delete the latest competition
+    "DELETE FROM `matches`";
 
-
+    // make the new competition
+    for ($i = 0; $i < $arrLength; $i++) {
+        for ($j = 0; $j < count($teamsArray); $j++) {
+            if ($teamsArray[0] !== $teamsArray[$j]) {
+                $sql = "INSERT INTO `matches`(`team1`, `team2`, `time`, `field`) 
+                        VALUES (:team1, :team2, :time, :field)";
+                $prepare = $db->prepare($sql);
+                $prepare->execute([
+                    'team1' => $teamsArray[0],
+                    'team2' => $teamsArray[$j],
+                    'time' => date('H:i', $splitTime),
+                    'field' => $fields,
+                ]);
+                if ($fieldCounter < $fields)
+                {
+                    $fieldCounter++;
+                }
+                else
+                {
+                    $fieldCounter = 1;
+                }
+                $count++;
+                $timeStart = date('H:i', $splitTime);
+                $splitTime = strtotime("+$timeTotal minutes", strtotime($$timeStart));
+            }
+        }
+        array_shift($teamsArray);
+    }
 
     exit;
 }

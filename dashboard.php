@@ -13,23 +13,6 @@
 
 
 require 'header.php';
-// require 'includes/Validator.php';
-require "includes/Validator.php";
-
-
-// var_dump($teams);
-
-$teamsArray = array();
-$compititionArry = array();
-
-foreach ($teams as $team) {
-  array_push($teamsArray, $team['name']);
-}
-
-$arrLength = count($teamsArray);
-$count = 1;
-
-// time
 
 ?>
 

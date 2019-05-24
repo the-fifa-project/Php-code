@@ -1,30 +1,31 @@
 <?php
 require 'header.php';
 
+//checks of er een id is meegegeven
 if (!isset($_GET['id'])) {
   header("location: teams.php");
   exit;
 }
+
+// select the information of the teams (owner, goals, wins and more)
 $teamID = $_GET['id'];
 $sql = "SELECT * FROM `teams` WHERE id = :id";
 $prepare = $db->prepare($sql);
 $prepare->execute([
-    'id' => $teamID['id']
+    'id' => $teamID
 ]);
 $team = $prepare->fetch(2);
 
-//TODO aanpassen
+//selecteert de gebruikers die in de team zitten
 $sql = "SELECT `user_team`.`id` as user_team, `user_team`.`user` as user_id, `user_team`.`team` as team_id, users.firstname as fname, users.middlename as Mname, users.lastname as lname, teams.name as Tname, teams.owner as Towner, teams.goals as goals, teams.wins as wins, teams.loses as Loses FROM `user_team`
 INNER JOIN `users` ON user_team.user = users.id
 INNER JOIN `teams` ON user_team.team = teams.id
 WHERE user_team.team = :id";
 $prepare = $db->prepare($sql);
 $prepare->execute([
-  'id' => $teamID['id']
+  'id' => $teamID
 ]);
 $player = $prepare->fetch(2);
-//var_dump($team);
-//die;
 ?>
 
 <main>
@@ -58,10 +59,14 @@ $player = $prepare->fetch(2);
 
 
           <?php
+          //checkt of someone is logged in
           if (!isset($_SESSION['id']))
           {
 //              todo print text uit dat je moet ingelogd zijn om bij een team aan te sluiten en of iemand toevoegen!
           }
+
+          // checkt of there is someone logged in and of he is a admin or owner
+          // if he is an onwer/admin he can edit the team.
           if (isset($_SESSION['id']) && (int)$team['owner'] === $_SESSION['id'] || isset($_SESSION['admin']) && $_SESSION['admin'] !== null && $_SESSION['admin'] === $_SESSION['id']) {
             echo "
             <!-- alleen te zien als je owner van een team bent! -->
@@ -69,19 +74,27 @@ $player = $prepare->fetch(2);
               <button type=\"button\" class=\"w-100 btn btn-warning text-white btn-sm mx-1 my-1\" style=\"font-size: 1rem\" data-toggle=\"modal\" data-target=\"#Modal-edit\">Team Aanpassen</button>
             </div>";
           }
+
+          //checks of someone logged in and of he is an admin
+          // if he is an admin than the button to delete a team is printed out
           if (isset($_SESSION['admin']) && $_SESSION['admin'] !== null && $_SESSION['admin'] === $_SESSION['id']) {
             echo "<!-- alleen te zien als je als admin bent ingelogd -->
             <div class=\"col-md-12\">
               <button type=\"button\" class=\"w-100 btn btn-danger btn-sm mx-1 my-1\" style=\"font-size: 1rem\" data-toggle=\"modal\" data-target=\"#Modal-delete\">Team Verwijderen</button>
             </div>";
           }
-          if (isset($_SESSION['id']) && $player['user_id'] === $_SESSION['id'])//controleren of die al in de team zit !!!
+          
+          // checks of an user is already in an team
+          // if he is already in an team he can invite someone 
+          if (isset($_SESSION['id']) && $player['user_id'] === $_SESSION['id'])
           {
             echo "<div class=\"col-md-12\">
             <button type=\"button\" class=\"w-100 btn btn-primary btn-sm mx-1 my-1\" style=\"font-size: 1rem\" data-toggle=\"modal\" data-target=\"#Modal-invite\">Speler Toevoegen</button>
           </div>";
           }
-          else if(isset($_SESSION['id']))// controleren of die niet in de team it
+
+          // here prints out a button to join the team if he isn't joined the team
+          else if(isset($_SESSION['id']))
           {
             echo "<!-- alleen te zien als je niet in de team zit en bent ingelogd -->
             <div class=\"col-md-12\">
@@ -89,10 +102,6 @@ $player = $prepare->fetch(2);
             </div>";
           }
           ?>
-
-          <!-- alleen te zien als je in de team zit en bent ingelogd -->
-
-          
         </div>
 
       </div>
@@ -129,6 +138,8 @@ $player = $prepare->fetch(2);
       <!-- end row -->
 
       <?php
+      //modal for the delete button same
+      // checkt of there is someone logged in and of he is a admin or owner
       if (isset($_SESSION['id']) && (int)$team['owner'] === $_SESSION['id'] || isset($_SESSION['admin']) && $_SESSION['admin'] !== null && $_SESSION['admin'] === $_SESSION['id']) {
         echo "<!-- modal for edit (need to be team owner) -->
         <div id=\"Modal-edit\" class=\"modal fade\" role=\"dialog\">
@@ -142,31 +153,30 @@ $player = $prepare->fetch(2);
                     <div class=\"modal-body\">
                         <form class=\"form row\" action=\"includes/controller.php\" method=\"post\">
                             <input type='hidden' name='type' value='editteam'>
-                            
                             <div class=\"form-group col-sm-12 mb-0\">
-						        <p class=\"m-0\">Wil je jou team aanpassen? hier kan je jou team een andere naam geven</p>
-							</div>";
+						                  <p class=\"m-0\">Wil je jou team aanpassen? hier kan je jou team een andere naam geven</p>
+							              </div>";
 
-                            if (isset($_GET['editmsg']))
-                            {
-                                echo "<div class=\"form-group col-sm-12 shadow-sm bg-danger text-white px-2 py-1 rounded my-2\">
-                                    <p class=\"m-0\">ingevoerde teamnaam komt niet overeen!</p>
-                                </div>";
-                            }
-                                echo "<input type=\"text\" name=\"new-team-name\" placeholder='bijv: snollebolekers' class=\"col mr-1 form-control shadow-sm\" id=\"team-name\">
-
-                            <button type=\"submit\" class=\"col-4 btn btn-warning text-white\">Aanpassen</button>
-                        </form>
-                    </div>
-                    <div class=\"modal-footer\">
-                        <button type=\"button\" class=\"btn btn-default text-danger\" data-dismiss=\"modal\">Annulleer</button>
-                    </div>
+        //checks of there is an error message seted
+        if (isset($_GET['editmsg']))
+        {
+          echo "<div class=\"form-group col-sm-12 shadow-sm bg-danger text-white px-2 py-1 rounded my-2\">
+                  <p class=\"m-0\">ingevoerde teamnaam komt niet overeen!</p>
+                </div>";
+        }
+        echo "             <input type=\"text\" name=\"new-team-name\" placeholder='bijv: snollebolekers' class=\"col mr-1 form-control shadow-sm\" id=\"team-name\">
+                         <button type=\"submit\" class=\"col-4 btn btn-warning text-white\">Aanpassen</button>
+                       </form>
+                     </div>
+                     <div class=\"modal-footer\">
+                       <button type=\"button\" class=\"btn btn-default text-danger\" data-dismiss=\"modal\">Annulleer</button>
+                     </div>
                    </div>
-                </div>
-            </div>";
+                 </div>
+               </div>";
       }
 
-
+      
       if (isset($_SESSION['admin']) && $_SESSION['admin'] !== null && $_SESSION['admin'] === $_SESSION['id']) {
         echo "<div id=\"Modal-delete\" class=\"modal fade\" role=\"dialog\">
         <div class=\"modal-dialog\">
@@ -181,11 +191,13 @@ $player = $prepare->fetch(2);
               <form class=\"form row\" action=\"includes/controller.php\" method=\"post\">
                 <input type='hidden' name='type' value='deleteteam'>
                 <input type='hidden' name='teamid' value='{$team['id']}'>";
-                if (isset($_GET['delmsg'])) {
-						echo  "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2 col-sm-12\">
-								        <p class=\"m-0\">{$_GET['delmsg']}</p>
-								   </div>";
-					}
+        //checks of there is an error message seted
+        if (isset($_GET['delmsg'])) 
+        {
+					echo  "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2 col-sm-12\">
+						        <p class=\"m-0\">{$_GET['delmsg']}</p>
+							   </div>";
+				}
                 echo "
                   <input type=\"text\" name=\"team-name-confirm\" placeholder='{$team['name']}' class=\"col mr-1 form-control shadow-sm\" id=\"email-login\">
                 
