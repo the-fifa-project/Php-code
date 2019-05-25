@@ -467,3 +467,19 @@ if ($_POST['type'] === "settingsEditor")
     
     exit;
 }
+
+if ($_POST['type'] === "joinTeam")
+{
+    $user = htmlentities(trim($_SESSION['id']));
+    $team = htmlentities(trim($_POST['teamId']));
+
+    $sql = "INSERT INTO `user_team`(`user`, `team`) 
+            VALUES (:user, :team)";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'user' => $user,
+        'team' => $team
+    ]);
+    header("location: ../team_detail.php?id=$team");
+    exit;
+}

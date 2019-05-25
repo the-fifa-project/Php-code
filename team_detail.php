@@ -9,7 +9,8 @@ if (!isset($_GET['id'])) {
 
 // select the information of the teams (owner, goals, wins and more)
 $teamID = $_GET['id'];
-$sql = "SELECT * FROM `teams` WHERE id = :id";
+$sql = "SELECT * FROM `teams` 
+        WHERE id = :id";
 $prepare = $db->prepare($sql);
 $prepare->execute([
     'id' => $teamID
@@ -17,10 +18,21 @@ $prepare->execute([
 $team = $prepare->fetch(2);
 
 //selecteert de gebruikers die in de team zitten
-$sql = "SELECT `user_team`.`id` as user_team, `user_team`.`user` as user_id, `user_team`.`team` as team_id, users.firstname as fname, users.middlename as Mname, users.lastname as lname, teams.name as Tname, teams.owner as Towner, teams.goals as goals, teams.wins as wins, teams.loses as Loses FROM `user_team`
-INNER JOIN `users` ON user_team.user = users.id
-INNER JOIN `teams` ON user_team.team = teams.id
-WHERE user_team.team = :id";
+$sql = "SELECT `user_team`.`id` as user_team,
+               `user_team`.`user` as user_id, 
+               `user_team`.`team` as team_id, 
+               `users`.`firstname` as fname, 
+               `users`.`middlename` as Mname, 
+               `users`.`lastname` as lname, 
+               `teams`.`name` as Tname, 
+               `teams`.`owner` as Towner, 
+               `teams`.`goals` as goals, 
+               `teams`.`wins` as wins, 
+               `teams`.`loses` as Loses 
+        FROM `user_team`
+        INNER JOIN `users` ON user_team.user = users.id
+        INNER JOIN `teams` ON user_team.team = teams.id
+        WHERE user_team.team = :id";
 $prepare = $db->prepare($sql);
 $prepare->execute([
   'id' => $teamID
@@ -107,7 +119,7 @@ $player = $prepare->fetch(2);
 
       </div>
 
-      <div class="col-sm-12">
+      <!-- <div class="col-sm-12">
         <h2 class="display-4">Statstieken</h2>
       </div>
       <div class="col-md-4 col-lg-3">
@@ -135,7 +147,7 @@ $player = $prepare->fetch(2);
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> -->
       <!-- end row -->
 
       <?php
@@ -144,103 +156,115 @@ $player = $prepare->fetch(2);
       if (isset($_SESSION['id']) && $team['owner'] === $_SESSION['id'] || isset($_SESSION['admin']))
       {
         echo "<!-- modal for edit (need to be team owner) -->
-        <div id=\"Modal-edit\" class=\"modal fade\" role=\"dialog\">
-            <div class=\"modal-dialog\">
-                <!-- Modal content-->
-                <div class=\"modal-content p-1\">
+              <div id=\"Modal-edit\" class=\"modal fade\" role=\"dialog\">
+                <div class=\"modal-dialog\">
+                  <!-- Modal content-->
+                  <form class=\"modal-content form p-1\" action=\"includes/controller.php\" method=\"post\">
                     <div class=\"modal-header\">
-                        <!-- <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button> -->
-                        <h4 class=\"modal-title\">Team Aanpassen</h4>
+                      <!-- <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button> -->
+                      <h4 class=\"modal-title\">Team Aanpassen</h4>
                     </div>
-                    <div class=\"modal-body\">
-                        <form class=\"form row\" action=\"includes/controller.php\" method=\"post\">
-                            <input type='hidden' name='type' value='editteam'>
-                            <div class=\"form-group col-sm-12 mb-0\">
-						                  <p class=\"m-0\">Wil je jou team aanpassen? hier kan je jou team een andere naam geven</p>
-							              </div>";
+                    <div class=\"modal-body row\">
+                      <input type='hidden' name='type' value='editteam'>
+                      
+                      <div class=\"form-group col-sm-12 mb-0\">
+						            <p class=\"m-0\">Wil je jou team aanpassen? hier kan je jou team een andere naam geven</p>
+                      </div>";
 
-        //checks of there is an error message seted
-        if (isset($_GET['editmsg']))
-        {
-          echo "<div class=\"form-group col-sm-12 shadow-sm bg-danger text-white px-2 py-1 rounded my-2\">
-                  <p class=\"m-0\">ingevoerde teamnaam komt niet overeen!</p>
-                </div>";
-        }
-        echo "             <input type=\"text\" name=\"new-team-name\" placeholder='bijv: snollebolekers' class=\"col mr-1 form-control shadow-sm\" id=\"team-name\">
-                         <button type=\"submit\" class=\"col-4 btn btn-warning text-white\">Aanpassen</button>
-                       </form>
-                     </div>
-                     <div class=\"modal-footer\">
-                       <button type=\"button\" class=\"btn btn-default text-danger\" data-dismiss=\"modal\">Annulleer</button>
-                     </div>
-                   </div>
-                 </div>
-               </div>";
+                      //checks of there is an error message seted
+                      if (isset($_GET['editmsg']))
+                      {
+                        echo "<div class=\"form-group col-sm-12 shadow-sm bg-danger text-white px-2 py-1 rounded my-2\">
+                                <p class=\"m-0\">ingevoerde teamnaam komt niet overeen!</p>
+                              </div>";
+                      }
+                      echo "<input type=\"text\" name=\"new-team-name\" placeholder='bijv: snollebolekers' class=\"col mr-1 form-control shadow-sm\" id=\"team-name\">
+                          </div>
+                          
+                          <div class=\"modal-footer\">
+                            <button type=\"button\" class=\"btn btn-default text-danger\" data-dismiss=\"modal\">Annulleer</button>
+                            <button type=\"submit\" class=\"col-4 btn btn-warning text-white\">Aanpassen</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>";
       }
 
-      
       if (isset($_SESSION['admin']) && $_SESSION['admin'] !== null && $_SESSION['admin'] === $_SESSION['id']) {
         echo "<div id=\"Modal-delete\" class=\"modal fade\" role=\"dialog\">
-        <div class=\"modal-dialog\">
-          <!-- Modal content-->
-          <div class=\"modal-content p-1\">
-            <div class=\"modal-header\">
-              <!-- <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button> -->
-              <h4 class=\"modal-title\">Team Verwijderen</h4>
-            </div>
-            <div class=\"modal-body\">
-              <p>Weet u zeker dat u deze team wilt verwijderen? Type de naam van de team in het balkje om de team te verwijderen.</p>
-              <form class=\"form row\" action=\"includes/controller.php\" method=\"post\">
-                <input type='hidden' name='type' value='deleteteam'>
-                <input type='hidden' name='teamid' value='{$team['id']}'>";
-        //checks of there is an error message seted
-        if (isset($_GET['delmsg'])) 
-        {
-					echo  "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2 col-sm-12\">
-						        <p class=\"m-0\">{$_GET['delmsg']}</p>
-							   </div>";
-				}
-                echo "
-                  <input type=\"text\" name=\"team-name-confirm\" placeholder='{$team['name']}' class=\"col mr-1 form-control shadow-sm\" id=\"email-login\">
-                
-                <button type=\"submit\" class=\"col-4 btn btn-danger\">Verwijderen</button>
-              </form>
-            </div>
-            <div class=\"modal-footer\">
-              <button type=\"button\" class=\"btn btn-default text-danger\" data-dismiss=\"modal\">Annuleer</button>
-            </div>
-          </div>
-        </div>
-      </div>";
+                <div class=\"modal-dialog\">
+                  
+                  <!-- Modal content-->
+                  <form class=\"modal-content form p-1\" action=\"includes/controller.php\" method=\"post\">
+            
+                    <div class=\"modal-header\">
+                      <h4 class=\"modal-title\">Team Verwijderen</h4>
+                    </div>
+            
+                    <div class=\"modal-body row\">
+                      <p>Weet u zeker dat u team <span class='text-danger'>{$team['name']}</span> wilt verwijderen? Type de naam van de team in het balkje om de team te verwijderen.</p>
+                      <input type='hidden' name='type' value='deleteteam'>
+                      <input type='hidden' name='teamid' value='{$team['id']}'>";
+                      //checks of there is an error message seted
+                      if (isset($_GET['delmsg'])) 
+                      {
+					              echo  "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2 col-sm-12\">
+						                    <p class=\"m-0\">{$_GET['delmsg']}</p>
+							                </div>";
+				              }
+                      echo "<input type=\"text\" name=\"team-name-confirm\" placeholder='{$team['name']}' class=\"col-12 mr-1 form-control shadow-sm text-danger\" id=\"email-login\">
+                          </div>
+            
+                          <div class=\"modal-footer\">
+                            <button type=\"button\" class=\"btn btn-default text-danger\" data-dismiss=\"modal\">Annuleer</button>
+                            <button type=\"submit\" class=\"btn btn-danger\">Verwijderen</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>";
+      }
+
+      if (isset($_SESSION['id']) && $player['user_id'] === $_SESSION['id'])
+      {
+
+      }
+      else if(isset($_SESSION['id']))
+      {
+
       }
       ?>
       <!-- team join form -->
       <div id="Modal-join" class="modal fade" role="dialog">
         <div class="modal-dialog">
-          <div class="modal-content">
+          <form class="modal-content" action="includes/controller.php" method="post">
             <div class="modal-header">
               <h4 class="modal-title">Speler worden</h4>
             </div>
+
             <div class="modal-body">
-              <!-- form -->
+              <p>Weet je zeker dat je deze team wilt joinen eenmaal gejoint kan je niet meer uit de team</p>
+              <input type="hidden" name="type" value="joinTeam">
+              <input type="hidden" name="teamId" value="<?=$team['id']?>">
             </div>
+
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">annuleer</button>
+              <button type="submit" class="btn btn-info">Deelnemen</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
       <!-- speler inviten -->
       <div id="Modal-invite" class="modal fade" role="dialog">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
+          <form class="modal-content">
+            <div class="modal-header was-validated" action="includes.controller.php" method="post">
               <h4 class="modal-title">Speler Inviten</h4>
             </div>
             <div class="modal-body">
               <!-- form -->
-              <form action="" class="was-validated" method="post">
+              
                 <div class="form-group">
                   <select class="custom-select" required>
                     <option value="" selected>Selecteer een gebruiker</option>
@@ -256,7 +280,7 @@ $player = $prepare->fetch(2);
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 
