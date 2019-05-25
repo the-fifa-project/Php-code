@@ -264,7 +264,12 @@ if($_POST['type'] === "generate")
     $query = $db->query($sql);
     $teams = $query->fetchAll(2);
     $teamCount = $query->rowCount();
-    echo $teamCount;
+    
+    //checks of there is more than one team thats selected 
+    if ($teamCount < 1)
+    {
+        //errormsg
+    }
 
     //select the settings
     $sql = "SELECT * FROM `settings`";
@@ -282,7 +287,7 @@ if($_POST['type'] === "generate")
     
     //set the settings into variables
     $fields = $settings['fields'];
-    $timeStart = '9:00';
+    $timeStart = '9:00:00';
     $timeMatch = $settings['match_time'];
     $timeHalf = $settings['half_time']; 
     $timeBreak = $settings['break_time'];
@@ -302,7 +307,9 @@ if($_POST['type'] === "generate")
     }
 
     // delete the latest competition
-    "DELETE FROM `matches`";
+    $resetmatches = "TRUNCATE TABLE `matches`";
+    $prepare = $db->prepare($resetmatches);
+    $prepare->execute();
 
     // make the new competition
     for ($i = 0; $i < $arrLength; $i++) {
@@ -314,7 +321,7 @@ if($_POST['type'] === "generate")
                 $prepare->execute([
                     'team1' => $teamsArray[0],
                     'team2' => $teamsArray[$j],
-                    'time' => date('H:i', $splitTime),
+                    'time' => date('H:i:s', $splitTime),
                     'field' => $fields,
                 ]);
                 if ($fieldCounter < $fields)
@@ -326,12 +333,137 @@ if($_POST['type'] === "generate")
                     $fieldCounter = 1;
                 }
                 $count++;
-                $timeStart = date('H:i', $splitTime);
-                $splitTime = strtotime("+$timeTotal minutes", strtotime($$timeStart));
+                $splitTime = strtotime("+$timeTotal minutes", strtotime($timeStart));
+                $timeStart = date('H:i:s', $splitTime);
             }
         }
         array_shift($teamsArray);
     }
 
+    exit;
+}
+
+if ($_POST['type'] === "settingsEditor")
+{
+    // when you have submited the matchtime form
+    if($_POST['setting'] === 'matchtime')
+    {
+        $matchTimeInMinutes = htmlentities(trim($_POST['matchTime']));
+        
+        //controles of the number is not smaller than 0
+        if($matchTimeInMinutes < 0 || $matchTimeInMinutes > 1440)
+        {
+            //sendback
+        }
+        
+        //controles of the input is still a number
+        if(!is_numeric($matchTimeInMinutes))
+        {
+            //sendback
+        }
+        //            
+        //            
+        //             
+        $sql = "UPDATE `settings` 
+                SET `match_time`= :match_time
+                WHERE 1";
+        $prepare = $db->prepare($sql);
+        $prepare->execute([
+            'match_time' => $matchTimeInMinutes
+        ]);
+
+        header("location: ../dashboard.php");
+        exit;
+    }
+
+    // when you have submited the breaktime form
+    else if($_POST['setting'] ==='Break')
+    {
+        $breakTimeInMinutes = htmlentities(trim($_POST['breakTime']));
+        
+        //controles of the number is not smaller than 0
+        if($breakTimeInMinutes < 0 || $breakTimeInMinutes > 1440)
+        {
+            //sendback
+        }
+        
+        if(!is_numeric($breakTimeInMinutes))
+        {
+
+        }
+        
+        $sql = "UPDATE `settings` 
+                SET `break_time`= :break_time
+                WHERE 1";
+        $prepare = $db->prepare($sql);
+        $prepare->execute([
+            'break_time' => $breakTimeInMinutes
+        ]);
+
+        header("location: ../dashboard.php");
+        exit;
+    }
+    
+    // when you have submited the halftime form
+    else if($_POST['setting'] === 'halftime')
+    {
+        $halfTimeInMinutes = htmlentities(trim($_POST['halftime']));
+        
+        //controles of the number is not smaller than 0
+        if($halfTimeInMinutes < 0 || $halfTimeInMinutes > 1440)
+        {
+            //sendback
+        }
+        
+        if(!is_numeric($halfTimeInMinutes))
+        {
+
+        }
+        
+        $sql = "UPDATE `settings` 
+                SET `half_time`= :half_time
+                WHERE 1";
+        $prepare = $db->prepare($sql);
+        $prepare->execute([
+            'half_time' => $halfTimeInMinutes
+        ]);
+
+        header("location: ../dashboard.php");
+        exit;
+    }
+    
+    // when you have submited the fields form
+    else if($_POST['setting'] === 'fields')
+    {
+        $fields = htmlentities(trim($_POST['fields']));
+        
+        //controles of the number is not smaller than 0
+        if($fields < 0)
+        {
+            //sendback
+        }
+
+        if(!is_numeric($fields))
+        {
+
+        }
+        
+        $sql = "UPDATE `settings` 
+                SET `fields`= :fields
+                WHERE 1";
+        $prepare = $db->prepare($sql);
+        $prepare->execute([
+            'fields' => $fields
+        ]);
+
+        header("location: ../dashboard.php");
+        exit;
+    }
+    
+    else
+    {
+
+    }
+    
     exit;
 }

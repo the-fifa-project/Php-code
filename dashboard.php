@@ -41,53 +41,10 @@ require 'header.php';
 
                 <div class="shadow-sm border  p-1 w-100">
                     <h2 class="h4 border-bottom pb-1">Matches</h2>
-                    <table class="table table-hover table-sm text-center">
-                        <caption>List of competitions</caption>
-                        <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Match</th>
-                            <th scope="col">Teams 1</th>
-                            <th scope="col">Team 2</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Veld</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        for ($i = 0; $i < $arrLength; $i++) {
-                            for ($j = 0; $j < count($teamsArray); $j++) {
-                                if ($teamsArray[0] !== $teamsArray[$j]) {
-                                    echo "<tr>
-                                                <th scope=\"row\">$count</th>
-                                                    <td>$teamsArray[0]</td>
-                                                    <td>$teamsArray[$j]</td>
-                                                    <td>" . date('H:i', $endTime) . "</td>
-                                                    <td>$fieldCounter</td>
-                                                </tr>";
-                                    if ($fieldCounter < $fields)
-                                    {
-                                        $fieldCounter++;
-                                    }
-                                    else
-                                    {
-                                        $fieldCounter = 1;
-                                    }
-                                    $count++;
-                                    $timeS = date('H:i', $endTime);
-                                    $endTime = strtotime("+$timeT minutes", strtotime($timeS));
-                                }
-                            }
-                            array_shift($teamsArray);
-                        }
-                        ?>
-                        </tbody>
-                    </table>
+                    
                 </div>
 
             </div>
-<!--            <div class="col border shadow-sm m-1">-->
-<!--                dsa-->
-<!--            </div>-->
         </div>
     </div>
 
@@ -95,6 +52,8 @@ require 'header.php';
     <div class="modal fade" id="time-duration" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form action="includes/controller.php" method="post" class="modal-content form">
+            <input type="hidden" name="type" value="settingsEditor">
+            <input type="hidden" name="setting" value="matchtime">
                 <div class="modal-header">
                     <h5 class="modal-title" id="timeMatchLabel">Speel tijd aanpassen</h5>
                 </div>
@@ -119,16 +78,18 @@ require 'header.php';
     <div class="modal fade" id="time-break" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form action="includes/controller.php" method="post" class="modal-content form">
+            <input type="hidden" name="type" value="settingsEditor">
+            <input type="hidden" name="setting" value="Break">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="timeMatchLabel">Speel tijd aanpassen</h5>
+                    <h5 class="modal-title" id="timeMatchLabel">Pauze tusse wedstrijden</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <p>Hier kan je de tijd van een wedstrijd instellen <strong>Let op</strong> de tijd moet in <strong>minuten</strong> gegeven worden</p>
+                        <p>Hier kan je de pauze tijd tussen wedstrijden instellen. <strong>Let op</strong> de tijd moet in <strong>minuten</strong> gegeven worden</p>
                     </div>
                     <div class="formgroup">
-                        <input type="number" name="matchTime" id="matchTime" min="0">
-                        <label for="matchTime">Minuten</label>
+                        <input type="number" name="breakTime" id="BreakTime" min="0">
+                        <label for="breakTime">Minuten</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -143,16 +104,18 @@ require 'header.php';
     <div class="modal fade" id="time-half" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form action="includes/controller.php" method="post" class="modal-content form">
+            <input type="hidden" name="type" value="settingsEditor">
+            <input type="hidden" name="setting" value="halftime">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="timeMatchLabel">Speel tijd aanpassen</h5>
+                    <h5 class="modal-title" id="timeMatchLabel">Rust instellen</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <p>Hier kan je de tijd van een wedstrijd instellen <strong>Let op</strong> de tijd moet in <strong>minuten</strong> gegeven worden</p>
+                        <p>Hier kan je de tijd van de rust instellen tussen de wedstrijden (tussen de 1ste en 2de helften). <strong>Let op</strong> de tijd moet in <strong>minuten</strong> gegeven worden</p>
                     </div>
                     <div class="formgroup">
-                        <input type="number" name="matchTime" id="matchTime" min="0">
-                        <label for="matchTime">Minuten</label>
+                        <input type="number" name="halftime" id="halftime" min="0">
+                        <label for="halftime">Minuten</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -167,6 +130,8 @@ require 'header.php';
     <div class="modal fade" id="fields" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form action="includes/controller.php" method="post" class="modal-content form">
+            <input type="hidden" name="type" value="settingsEditor">
+            <input type="hidden" name="setting" value="fields">
                 <div class="modal-header">
                     <h5 class="modal-title" id="timeMatchLabel">Velden instellen</h5>
                 </div>
@@ -176,8 +141,8 @@ require 'header.php';
                     </div>
 
                     <div class="formgroup">
-                        <input type="number" name="matchTime" id="matchTime" min="0">
-                        <label for="matchTime">Velden</label>
+                        <input type="number" name="fields" id="fields" min="0">
+                        <label for="fields">Velden</label>
                     </div>
 
                 </div>

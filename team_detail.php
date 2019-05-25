@@ -67,7 +67,8 @@ $player = $prepare->fetch(2);
 
           // checkt of there is someone logged in and of he is a admin or owner
           // if he is an onwer/admin he can edit the team.
-          if (isset($_SESSION['id']) && (int)$team['owner'] === $_SESSION['id'] || isset($_SESSION['admin']) && $_SESSION['admin'] !== null && $_SESSION['admin'] === $_SESSION['id']) {
+          if (isset($_SESSION['id']) && $team['owner'] === $_SESSION['id']|| isset($_SESSION['admin']))
+          {
             echo "
             <!-- alleen te zien als je owner van een team bent! -->
             <div class=\"col-md-12\">
@@ -140,7 +141,8 @@ $player = $prepare->fetch(2);
       <?php
       //modal for the delete button same
       // checkt of there is someone logged in and of he is a admin or owner
-      if (isset($_SESSION['id']) && (int)$team['owner'] === $_SESSION['id'] || isset($_SESSION['admin']) && $_SESSION['admin'] !== null && $_SESSION['admin'] === $_SESSION['id']) {
+      if (isset($_SESSION['id']) && $team['owner'] === $_SESSION['id'] || isset($_SESSION['admin']))
+      {
         echo "<!-- modal for edit (need to be team owner) -->
         <div id=\"Modal-edit\" class=\"modal fade\" role=\"dialog\">
             <div class=\"modal-dialog\">
