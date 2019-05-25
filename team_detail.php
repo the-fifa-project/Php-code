@@ -226,7 +226,26 @@ $player = $prepare->fetch(2);
 
       if (isset($_SESSION['id']) && $player['user_id'] === $_SESSION['id'])
       {
+        echo "<div id=\"Modal-join\" class=\"modal fade\" role=\"dialog\">
+        <div class=\"modal-dialog\">
+          <form class=\"modal-content\" action=\"includes/controller.php\" method=\"post\">
+            <div class=\"modal-header\">
+              <h4 class=\"modal-title\">Speler worden</h4>
+            </div>
 
+            <div class=\"modal-body\">
+              <p>Weet je zeker dat je deze team wilt joinen eenmaal gejoint kan je niet meer uit de team</p>
+              <input type=\"hidden\" name=\"type\" value=\"joinTeam\">
+              <input type=\"hidden\" name=\"teamId\" value=\"{$team['id']}\">
+            </div>
+
+            <div class=\"modal-footer\">
+              <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">annuleer</button>
+              <button type=\"submit\" class=\"btn btn-info\">Deelnemen</button>
+            </div>
+          </form>
+        </div>
+      </div>";
       }
       else if(isset($_SESSION['id']))
       {
@@ -234,26 +253,7 @@ $player = $prepare->fetch(2);
       }
       ?>
       <!-- team join form -->
-      <div id="Modal-join" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-          <form class="modal-content" action="includes/controller.php" method="post">
-            <div class="modal-header">
-              <h4 class="modal-title">Speler worden</h4>
-            </div>
-
-            <div class="modal-body">
-              <p>Weet je zeker dat je deze team wilt joinen eenmaal gejoint kan je niet meer uit de team</p>
-              <input type="hidden" name="type" value="joinTeam">
-              <input type="hidden" name="teamId" value="<?=$team['id']?>">
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">annuleer</button>
-              <button type="submit" class="btn btn-info">Deelnemen</button>
-            </div>
-          </form>
-        </div>
-      </div>
+      
 
       <!-- speler inviten -->
       <div id="Modal-invite" class="modal fade" role="dialog">
