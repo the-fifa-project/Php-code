@@ -42,9 +42,9 @@ if(isset($_SESSION['id']))
 
                 if (isset($_GET['loginmsg']))
                 {
-                    echo "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2\">
-                  <p class=\"m-0\">{$_GET['loginmsg']}</p>
-                </div>";
+                  echo "<div class=\"form-group shadow-sm px-2 py-1 rounded my-2 alert alert-danger\" role=\"alert\">
+                          <p class=\"m-0\">{$_GET['loginmsg']}</p>
+                        </div>";
                 }
                 echo "<div class=\"form-group\">
                     <input type='hidden' name='type' value='login'>
@@ -69,7 +69,7 @@ if(isset($_SESSION['id']))
 
                 if (isset($_GET['registermsg']))
                 {
-                    echo "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2\">
+                  echo "<div class=\"form-group shadow-sm px-2 py-1 rounded my-2 alert alert-danger\" role=\"alert\">
                   <p class=\"m-0\">{$_GET['registermsg']}</p>
                 </div>";
                 }
@@ -137,7 +137,7 @@ if(isset($_SESSION['id']))
                     <input type='hidden' name='type' value='login'>";
                 if (isset($_GET['loginmsg']))
                 {
-                    echo "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2\">
+                  echo "<div class=\"form-group shadow-sm px-2 py-1 rounded my-2 alert alert-danger\" role=\"alert\">
                   <p class=\"m-0\">{$_GET['loginmsg']}</p>
                 </div>";
                 }
@@ -162,7 +162,7 @@ if(isset($_SESSION['id']))
                     <input type='hidden' name='type' value='register'>";
                 if (isset($_GET['registermsg']))
                 {
-                    echo "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2\">
+                  echo "<div class=\"form-group shadow-sm px-2 py-1 rounded my-2 alert alert-danger\" role=\"alert\">
                   <p class=\"m-0\">{$_GET['registermsg']}</p>
                 </div>";
                 }

@@ -81,7 +81,7 @@ $allTeams = $query->fetchAll(2);
 												<input type='hidden' name='type' value='createteam'>";
 
 					if (isset($_GET['errmsg'])) {
-						echo  "<div class=\"form-group shadow-sm bg-danger text-white px-2 py-1 rounded my-2 col-sm-12\">
+						echo "<div class=\"form-group col-sm-12 shadow-sm px-2 py-1 rounded my-2 alert alert-danger\" role=\"alert\">
 								        <p class=\"m-0\">{$_GET['errmsg']}</p>
 								   </div>";
 					}
