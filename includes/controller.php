@@ -16,8 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' )
     exit;
 }
 
-//TODO: REGISTER
-
 if ($_POST['type'] === 'register') {
 
     //set the data form the post methode to an variable
@@ -29,24 +27,21 @@ if ($_POST['type'] === 'register') {
     $passwordConfirm = htmlentities(trim($_POST['passwordconfirm']));
     $registers_date = date("Y-m-d H:i:s");
 
-    //TODO: checken of an field is empty
     //checks of an field is empty!
     if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($passwordConfirm)) {
         header("location: ../login.php?action=register&registermsg=1 of meer velden zijn leeg");
         exit;
     }
 
-    //TODO: email validade
     //checks of the email is an real email
     if (!Validator::EmailValidate($email)) {
         header('location: ../login.php?action=register&registermsg=email is not valid');
         exit;
     }
 
-    //TODO: password checken of gelijk is aan pwd confirm
     //checks of the variables $password and $passwordConfirm equels is to each other
     if (!Validator::PasswordConfirm($password, $passwordConfirm)) {
-        //TODO: send back to register page wit h error code (password not match.
+        //send back to register page wit h error code (password not match.
         header('location: ../login.php?action=register&registermsg=passwords don\'t match');
         exit;
     }
@@ -88,7 +83,6 @@ if ($_POST['type'] === 'register') {
         exit;
     }
 
-    //TODO: inserten in database.
     //create the account thats registering
     $sql = "INSERT INTO users (`firstname`, `middlename`, `lastname`, `email`, `password`, `registers_date`)
                   VALUES (:firstname, :middlename, :lastname, :email, :password, :registers_date)";
@@ -103,11 +97,9 @@ if ($_POST['type'] === 'register') {
     ]);
 
     $msg = "account succesfull created";
-    header("location: ../login.php");//?msg=$msg");
+    header("location: ../login.php");
     exit;
 }
-
-//TODO: LOGIN
 
 if ($_POST['type'] === 'login')
 {
@@ -205,8 +197,8 @@ if ($_POST['type'] === 'deleteteam' && isset($_SESSION['admin']))
     //checks of the $confirm is not empty, if its empty than send back!
     if(empty($confirm))
     {
-        $msg = "voer het naam in die u wilt verwijderen!";
-        header("location: ../team_detail.php?id=$teamId&delmsg=$msg");
+        $msg = "voer het naam in van de team die u wilt verwijderen!";
+        header("location: ../team_detail.php?id=$teamId&errmsg=$msg");
         exit;
     }
 
@@ -222,7 +214,7 @@ if ($_POST['type'] === 'deleteteam' && isset($_SESSION['admin']))
     if(strtolower($teamToDelete['name']) !== strtolower($confirm))
     {
         $msg = "Team namen kommen niet overeen";
-        header("location: ../team_detail.php?id=$teamId&delmsg=$msg");
+        header("location: ../team_detail.php?id=$teamId&errmsg=$msg");
         exit;
     }
 
@@ -242,16 +234,106 @@ if ($_POST['type'] === 'deleteteam' && isset($_SESSION['admin']))
 
 if($_POST['type'] === "editteam")
 {
+    $teamID  = htmlentities(trim($_POST['teamid']));
     $newName = htmlentities(trim($_POST['new-team-name']));
-//    TODO team naam aanpassen !! UPDATE!!
-//    use editmsg for to let see a error on the screen
-    if(empty($newName))
+    
+    if(strlen($newName) > 30)
     {
-        //code...
+        //send back
+        header("location: ../team_detail.php?id=$teamID&errmsg=de naam van de team kan niet groter zijn dan 30 karakters");
+        exit;
     }
-    //more code...
 
+    if (!empty($_POST['competitionSwitch'])) 
+    {
+        $competitionSwitch = htmlentities(trim($_POST['competitionSwitch']));
+        
+        if(!empty($newName))
+        {
+            $sql = "UPDATE `teams` 
+                    SET `name` =    :name,
+                        `entered` = :entered
+                    WHERE `id` = :id";
+            $prepare = $db->prepare($sql);
+            $prepare->execute([
+                'name' => $newName,
+                'entered' => $competitionSwitch,
+                'id' => $teamID
+            ]);
 
+            //send back
+            header("location: ../team_detail.php?id=$teamID&sucmsg=Aanpassingen opgeslagen");
+            exit;
+        }
+        else
+        {
+            $sql = "UPDATE `teams` 
+                    SET `entered` = :entered
+                    WHERE `id` = :id";
+            $prepare = $db->prepare($sql);
+            $prepare->execute([
+                'entered' => $competitionSwitch,
+                'id' => $teamID
+            ]);
+
+            //send back
+            header("location: ../team_detail.php?id=$teamID&sucmsg=jou team zit nu in de selectie van de competitie!");
+            exit;
+        }
+
+        //send back
+        header("location: ../team_detail.php?id=$teamID");
+        exit;
+    }
+    else if (empty($_POST['competitionSwitch']))
+    {
+        if(!empty($newName))
+        {
+            $sql = "UPDATE `teams` 
+                    SET `name` =    :name,
+                        `entered` = :entered
+                    WHERE `id` = :id";
+            $prepare = $db->prepare($sql);
+            $prepare->execute([
+                'name' => $newName,
+                'entered' => null,
+                'id' => $teamID
+            ]);
+
+            //send back
+            header("location: ../team_detail.php?id=$teamID&sucmsg=Aanpassingen opgeslagen, Jammer dat je niet meer deel neemt aan de competitie :(");
+            exit;
+        }
+        else
+        {
+            $sql = "UPDATE `teams` 
+                    SET `entered` = :entered
+                    WHERE `id` = :id";
+            $prepare = $db->prepare($sql);
+            $prepare->execute([
+                'entered' => null,
+                'id' => $teamID
+            ]);
+
+            //send back
+            header("location: ../team_detail.php?id=$teamID&sucmsg=U deelt niet meer mee aan een competitie");
+            exit;
+        }
+
+        //send back
+        header("location: ../team_detail.php?id=$teamID&errmsg=Er is iets fout gegaan");
+        exit;
+
+    }
+    else
+    {
+        //send back
+        header("location: ../team_detail.php?id=$teamID&errmsg=Er is iets fout gegaan");
+        exit;
+    }
+
+    //send back
+    header("location: ../team_detail.php?id=$teamID&errmsg=Er is iets fout gegaan");
     exit;
 }
 
@@ -260,25 +342,25 @@ if($_POST['type'] === "generate")
     // set post methode into variables
 
     //select every team
-    $sql = "SELECT * FROM `teams` WHERE `entered` = 1";
+    $sql = "SELECT * FROM `teams` WHERE `entered` = 0";
     $query = $db->query($sql);
     $teams = $query->fetchAll(2);
-    $teamCount = $query->rowCount();
-    
-    //checks of there is more than one team thats selected 
-    if ($teamCount < 1)
-    {
-        //errormsg
-    }
+    $teamCount = $query->rowCount();    
 
     //select the settings
     $sql = "SELECT * FROM `settings`";
     $query = $db->query($sql);
     $settings = $query->fetch(2);
+    
+    //checks of there is more than one team thats selected 
+    if ($teamCount < 2)
+    {
+        header("location: ../dashboard.php?errmsg=Er zijn niet genoeg teams om een competitie te starten!");
+        exit;
+    }
 
     //create 1 empty array for putting evrey team in it 
     $teamsArray = array();
-    // $compititionArry = array();
 
     //set every team in the teamArray
     foreach ($teams as $team) {
@@ -287,7 +369,7 @@ if($_POST['type'] === "generate")
     
     //set the settings into variables
     $fields = $settings['fields'];
-    $timeStart = '9:00:00';
+    $timeStart = '9:00:00'; //later kunnen instellen !
     $timeMatch = $settings['match_time'];
     $timeHalf = $settings['half_time']; 
     $timeBreak = $settings['break_time'];
@@ -298,15 +380,16 @@ if($_POST['type'] === "generate")
     $arrLength = count($teamsArray);
     $count = 1;
     $fieldCounter = 1;
-    // var_dump($settings);
 
+    //checks of there is more than 0 field
     if ($settings['fields'] == 0)
     {
         //sendback to dashboard
-        echo "no field sleceted";
+        header("location: ../dashboard.php?errmsg=Er zijn geen velden om tegen te spelen!");
+        exit;
     }
 
-    // delete the latest competition
+    // delete the latest competition and reset the table
     $resetmatches = "TRUNCATE TABLE `matches`";
     $prepare = $db->prepare($resetmatches);
     $prepare->execute();
@@ -322,7 +405,7 @@ if($_POST['type'] === "generate")
                     'team1' => $teamsArray[0],
                     'team2' => $teamsArray[$j],
                     'time' => date('H:i:s', $splitTime),
-                    'field' => $fields,
+                    'field' => $fieldCounter,
                 ]);
                 if ($fieldCounter < $fields)
                 {
@@ -332,7 +415,6 @@ if($_POST['type'] === "generate")
                 {
                     $fieldCounter = 1;
                 }
-                $count++;
                 $splitTime = strtotime("+$timeTotal minutes", strtotime($timeStart));
                 $timeStart = date('H:i:s', $splitTime);
             }
@@ -340,7 +422,9 @@ if($_POST['type'] === "generate")
         array_shift($teamsArray);
     }
 
-    exit;
+    //send back to the dashboard
+        header("location: ../dashboard.php?sucmsg=Competitie Gegenereerd!");
+        exit;
 }
 
 if ($_POST['type'] === "settingsEditor")
@@ -350,20 +434,20 @@ if ($_POST['type'] === "settingsEditor")
     {
         $matchTimeInMinutes = htmlentities(trim($_POST['matchTime']));
         
-        //controles of the number is not smaller than 0
-        if($matchTimeInMinutes < 0 || $matchTimeInMinutes > 1440)
-        {
-            //sendback
-        }
-        
         //controles of the input is still a number
         if(!is_numeric($matchTimeInMinutes))
         {
-            //sendback
+            header("location: ../dashboard.php?errmsg=De tijd van een match moet in minuten aangegeven worden, en geen text!");
+            exit;
         }
-        //            
-        //            
-        //             
+        
+        //controles of the number is not smaller than 0 or bigger than 1 day in minutes
+        if($matchTimeInMinutes < 0 || $matchTimeInMinutes > 1440)
+        {
+            header("location: ../dashboard.php?errmsg=Tijd van een wedstrijd kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
+            exit;
+        }
+
         $sql = "UPDATE `settings` 
                 SET `match_time`= :match_time
                 WHERE 1";
@@ -372,7 +456,7 @@ if ($_POST['type'] === "settingsEditor")
             'match_time' => $matchTimeInMinutes
         ]);
 
-        header("location: ../dashboard.php");
+        header("location: ../dashboard.php?sucmsg=Succesvol Wedstrijd tijd ingesteld");
         exit;
     }
 
@@ -381,15 +465,17 @@ if ($_POST['type'] === "settingsEditor")
     {
         $breakTimeInMinutes = htmlentities(trim($_POST['breakTime']));
         
+        if(!is_numeric($breakTimeInMinutes))
+        {
+            header("location: ../dashboard.php?errmsg=De tijd van een pauze moet in minuten aangegeven worden, en geen text!");
+            exit;
+        }
+        
         //controles of the number is not smaller than 0
         if($breakTimeInMinutes < 0 || $breakTimeInMinutes > 1440)
         {
-            //sendback
-        }
-        
-        if(!is_numeric($breakTimeInMinutes))
-        {
-
+            header("location: ../dashboard.php?errmsg=Tijd van een pauze kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
+            exit;
         }
         
         $sql = "UPDATE `settings` 
@@ -400,7 +486,7 @@ if ($_POST['type'] === "settingsEditor")
             'break_time' => $breakTimeInMinutes
         ]);
 
-        header("location: ../dashboard.php");
+        header("location: ../dashboard.php?sucmsg=Succesvol pauze tijd ingesteld");
         exit;
     }
     
@@ -409,15 +495,17 @@ if ($_POST['type'] === "settingsEditor")
     {
         $halfTimeInMinutes = htmlentities(trim($_POST['halftime']));
         
+        if(!is_numeric($halfTimeInMinutes))
+        {
+            header("location: ../dashboard.php?errmsg=De tijd van een wedstrijd rust moet in minuten aangegeven worden, en geen text!");
+            exit;
+        }
+
         //controles of the number is not smaller than 0
         if($halfTimeInMinutes < 0 || $halfTimeInMinutes > 1440)
         {
-            //sendback
-        }
-        
-        if(!is_numeric($halfTimeInMinutes))
-        {
-
+            header("location: ../dashboard.php?errmsg=Tijd van een wedstrijd rust kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
+            exit;
         }
         
         $sql = "UPDATE `settings` 
@@ -428,7 +516,7 @@ if ($_POST['type'] === "settingsEditor")
             'half_time' => $halfTimeInMinutes
         ]);
 
-        header("location: ../dashboard.php");
+        header("location: ../dashboard.php?sucmsg=Succesvol wedstrijd rust tijd ingesteld");
         exit;
     }
     
@@ -440,12 +528,14 @@ if ($_POST['type'] === "settingsEditor")
         //controles of the number is not smaller than 0
         if($fields < 0)
         {
-            //sendback
+            header("location: ../dashboard.php?errmsg=Je kan niet minder dan 0 velden hebben!");
+            exit;
         }
 
         if(!is_numeric($fields))
         {
-
+            header("location: ../dashboard.php?errmsg=De veldenmoet in Cijfers aangegeven worden, en geen text!");
+            exit;
         }
         
         $sql = "UPDATE `settings` 
@@ -456,15 +546,16 @@ if ($_POST['type'] === "settingsEditor")
             'fields' => $fields
         ]);
 
-        header("location: ../dashboard.php");
+        header("location: ../dashboard.php?sucmsg=Succesvol velden ingesteld");
+        exit;
+    }
+    else
+    {
+        header("location: ../dashboard.php?errmsg=OEPS er ging iets fout");
         exit;
     }
     
-    else
-    {
-
-    }
-    
+    header("location: ../dashboard.php?errmsg=OEPS er ging iets fout");
     exit;
 }
 
@@ -480,6 +571,102 @@ if ($_POST['type'] === "joinTeam")
         'user' => $user,
         'team' => $team
     ]);
+
     header("location: ../team_detail.php?id=$team");
     exit;
 }
+
+if ($_POST['type'] === "MatchEind")
+{
+    $matchID = htmlentities(trim($_POST['matchId']));
+    $scoreTeamOne = htmlentities(trim($_POST['scoreTeamOne']));
+    $scoreTeamTwo = htmlentities(trim($_POST['scoreTeamTwo']));
+
+    if(empty($_POST['scoreTeamOne']) || empty($_POST['scoreTeamTwo']))
+    {
+    
+        header("location: ../dashboard.php?errmsg=er waren 1 of meer velden niet ingevuld. bij het invullen van de eindstand");
+        exit;
+    }
+
+    if (!is_numeric($scoreTeamOne) || !is_numeric($scoreTeamTwo))
+    {
+    
+        header("location: ../dashboard.php?errmsg=De ingevulde waarde is geen cijfer");
+        exit;
+    }
+
+    $sql = "UPDATE `matches` 
+            SET `score_team1` = :score1, `score_team2` = :score2
+            WHERE id = :id";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'score1' => $scoreTeamOne,
+        'score2' => $scoreTeamTwo,
+        'id' => $matchID
+    ]);
+
+    
+    header("location: ../dashboard.php?sucmsg=Eindstand Succesvol ingesteld");
+    exit;
+
+}
+
+if ($_POST['type'] === "inviteMember")
+{
+    $player = htmlentities(trim($_POST['playerToInvite']));
+    $teamID = htmlentities(trim($_POST['teamId']));
+
+    if ($player === "" || empty($_POST['playerToInvite']))
+    {
+        header("location: ../team_detail.php?id=$teamID&errmsg=je hebt niemand geselecteerd om te inviten");
+        exit;
+    }
+
+    $sql = "SELECT `user_team`.`id` as user_team,
+                   `user_team`.`user` as user_id, 
+                   `user_team`.`team` as team_id, 
+                   `users`.`firstname` as fname, 
+                   `users`.`middlename` as Mname, 
+                   `users`.`lastname` as lname, 
+                   `teams`.`name` as Tname, 
+                   `teams`.`owner` as Towner, 
+                   `teams`.`goals` as goals, 
+                   `teams`.`wins` as wins, 
+                   `teams`.`loses` as Loses 
+            FROM `user_team`
+            INNER JOIN `users` ON user_team.user = users.id
+            INNER JOIN `teams` ON user_team.team = teams.id
+            WHERE user_team.team = :id AND user_team.user = :user";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'id' => $teamID,
+        'user' => $player
+    ]);
+    $players = $prepare->fetchAll(2);
+    $playerCount = $prepare->rowCount();
+
+    if ($playerCount > 0)
+    {
+        header("location: ../team_detail.php?id=$teamID&errmsg=gebruiker zit al in de team");
+        exit;
+    }
+
+    $sql = "INSERT INTO `user_team` (`user`, `team`) 
+            VALUES (:user, :team)";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'user' => $player,
+        'team' => $teamID
+    ]);
+
+    header("location: ../team_detail.php?id=$teamID&sucmsg=succesvol geinvited");
+    exit;
+}
+
+
+
+
+
+
+//selecteert de gebruikers die in de team zitten
