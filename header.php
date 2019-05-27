@@ -19,6 +19,7 @@ require 'includes/config.php';
 
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="./css/bootstrap.css">
+	<link rel="stylesheet" href="css/style.css">
 
 	<title>Fifa Project</title>
 </head>

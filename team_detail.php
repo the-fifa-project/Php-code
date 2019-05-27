@@ -9,9 +9,15 @@ $teamID = $_GET['id'];
 $sql = "SELECT * FROM `teams` WHERE id = :id";
 $prepare = $db->prepare($sql);
 $prepare->execute([
-    'id' => $teamID['id']
+    'id' => $teamID
 ]);
 $team = $prepare->fetch(2);
+
+$teamID = $_GET['id'];
+$sql = "SELECT * FROM `users`";
+$query = $db->query($sql);
+$users = $query->fetchAll(2);
+
 
 //TODO aanpassen
 $sql = "SELECT `user_team`.`id` as user_team, `user_team`.`user` as user_id, `user_team`.`team` as team_id, users.firstname as fname, users.middlename as Mname, users.lastname as lname, teams.name as Tname, teams.owner as Towner, teams.goals as goals, teams.wins as wins, teams.loses as Loses FROM `user_team`
@@ -20,7 +26,7 @@ INNER JOIN `teams` ON user_team.team = teams.id
 WHERE user_team.team = :id";
 $prepare = $db->prepare($sql);
 $prepare->execute([
-  'id' => $teamID['id']
+  'id' => $teamID
 ]);
 $player = $prepare->fetch(2);
 //var_dump($team);
@@ -105,6 +111,24 @@ $player = $prepare->fetch(2);
           <li>Goals: 33</li>
           <li>Wins: 4</li>
           <li>Loses: 5</li>
+          <!--<li>Time:<?php var_dump($registers_date); ?> </li>-->
+          <form action="team_time.php" method="POST">
+                <input type="hidden" name="type" value="create">
+                <label for="match_time">match_time</label>
+                <input type="time" name="match_time" id="match_time">
+                <br>
+                <label for="half_time">half_time</label>
+                <input type="time" name="half_time" id="half_time">
+                <br>
+                <label for="break_time">break_time</label>
+                <input type="time" name="break_time" id="break_time">
+                <br>
+                <input type="submit" id="register_button" value="Start">
+
+          </form>
+          <!-- to do the time
+          <li>Time: <?php echo $registers_date;    ?></li>
+          -->
         </ul>
       </div>
       <div class="col-md-8 col-lg-9">
@@ -226,13 +250,18 @@ $player = $prepare->fetch(2);
             </div>
             <div class="modal-body">
               <!-- form -->
-              <form action="" class="was-validated" method="post">
+              <form action="includes/controller.php" class="was-validated" method="post">
+                <input type='hidden' name='type' value='invietmember'>
+                <input type='hidden' name='team' value="<?=$teamID?>">
+
                 <div class="form-group">
-                  <select class="custom-select" required>
+                  <select name="speler" class="custom-select" required>
                     <option value="" selected>Selecteer een gebruiker</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <?php
+                    foreach ($users as $user) {
+                      echo "<option value='{$user['id']}'>{$user['firstname']} {$user['middlename']} {$user['lastname']}</option>";
+                    }
+                    ?> 
                   </select>
                   <div class="invalid-feedback">Example invalid custom select feedback</div>
                 </div>

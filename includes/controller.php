@@ -26,7 +26,7 @@ if ($_POST['type'] === 'register') {
     $email = htmlentities(trim($_POST['email']));
     $password = htmlentities(trim($_POST['password']));
     $passwordConfirm = htmlentities(trim($_POST['passwordconfirm']));
-    $registers_date = date("Y-m-d H:i:s");
+    $registers_date = date_add("Y-m-d H:i:s");
 
     //TODO: checken of an field is empty
     if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($passwordConfirm)) {
@@ -211,3 +211,23 @@ if($_POST['type'] === "editteam")
 //    TODO team naam aanpassen !! UPDATE!!
 //    use editmsg for to let see a error on the screen
 }
+
+if($_POST['type'] === "invietmember")
+{
+    $speler = htmlentities(trim($_POST['speler']));
+    $team = htmlentities(trim($_POST['team']));
+    
+    $sql = "INSERT INTO `user_team` ( `user`, `team`) VALUES ( :user, :team)";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'user' => $speler,
+        'team' => $team
+
+
+   ]);
+
+    header("location:../team_detail.php?id=$team");
+    
+    exit;
+}
+
