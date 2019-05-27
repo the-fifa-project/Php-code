@@ -1,161 +1,137 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: GekkeGlenn
- * Date: 16-4-2019
- * Time: 12:01
+ * User: Gebruiker
+ * Date: 9-5-2019
+ * Time: 15:45
  */
 
 require 'header.php';
-	
-$sql = "SELECT `users`.`firstname` as owner, `teams`.`name` as name, `teams`.`goals` as goals, `teams`.`wins` as wins, `teams`.`loses` as loses, `users`.`id` as ownerid 
-                FROM `teams` 
-                LEFT JOIN `users` 
-                ON `teams`.`owner` = `users`.id";
+// session_destroy();
+if (isset($_SESSION['id'])) 
+{
+	$sql = "SELECT `teams`.`id` as teamId, `users`.`firstname` as ownerName, `teams`.`name` as teamName, `teams`.`goals` as goals, `teams`.`wins` as wins, `teams`.`loses` as loses, `users`.`id` as ownerId
+	FROM `teams`
+	INNER JOIN `users` ON `teams`.`owner` = `users`.`id`
+	WHERE `teams`.`owner` = :ownerID";
+	$prepare = $db->prepare($sql);
+	$prepare->execute([
+		'ownerID' => $_SESSION['id']
+	]);
+	$yourTeams = $prepare->fetchAll(2);
+}
+
+
+$sql = "SELECT `teams`.`id` as teamId, `users`.`firstname` as ownerName, `teams`.`name` as teamName, `teams`.`goals` as goals, `teams`.`wins` as wins, `teams`.`loses` as loses, `users`.`id` as ownerId
+				FROM `teams`
+				INNER JOIN `users` ON `teams`.`owner` = `users`.`id`";
 $query = $db->query($sql);
-$teams = $query->fetchAll(2);
+$allTeams = $query->fetchAll(2);
+// echo '<pre>';
+// var_dump($yourTeams);
+// var_dump($allTeams);
+// die;
+?>
 
-if (isset($_SESSION['id']))
-{
-    $sql = "SELECT `users`.`firstname` as owner, `teams`.`name` as name, `teams`.`goals` as goals, `teams`.`wins` as wins, `teams`.`loses` as loses, `users`.`id` as ownerid 
-                FROM `teams` 
-                INNER JOIN `users` 
-                ON `teams`.`owner` = `users`.id 
-                WHERE `teams`.owner = :userid";
-    $prepare = $db->prepare($sql);
-    $prepare->execute([
-        ':userid' => $_SESSION['id']
-    ]);
-    $yourTeams = $prepare->fetchAll(2);
-}
-else
-{
+<main>
+	<div class="container">
+		<div class="row my-4">
 
-}
- ?>
 
-    <main>
-        <div class="container">
-            <div class="row">
+			<!-- your teams -->
+			<div class="col-md-6 col-lg-4 d-flex flex-column flex-fill">
+				<h2>Your Teams</h2>
+				<?php
+				if (!isset($_SESSION['id'])) {
+					echo '<p>Om een team aan te kunnen maken moet je <a href="login.php">ingelogd</a> zijn, heb je nog geen account? <a href="login.php?action=register">Registreer</a> dan direct!</p>';
+				} else {
+					foreach ($yourTeams as $yourteam) {
+						echo "<div class=\"my-1\">
+											<a href=\"team_detail.php?id={$yourteam['teamId']}\" class=\"bg-white border d-block p-1 rounded shadow-sm text-dark mx-1\">
+												<h2 class=\"h6\">{$yourteam['teamName']}</h2>
+												<div class=\"d-flex justify-content-between\">
+													<p class=\"m-0\">Goals: {$yourteam['goals']}</p>
+													<p class=\"m-0\">Wins: {$yourteam['wins']}</p>
+													<p class=\"m-0\">Loses: {$yourteam['loses']}</p>
+												</div>
+												<div class=\"d-flex justify-content-between\">
+													<p class=\"m-0\">Owner: {$yourteam['ownerName']}</p>
+													<p class=\"m-0\">Spelers: 3</p>
+												</div>
+											</a>
+										</div>";
+					}
 
-                <div class="teams your-teams">
-                    <h2>Your Teams</h2>
-                    <?php
-                    if (isset($_SESSION['id']))
-                    {
-                        foreach ($yourTeams as $yourTeam)
-                        {
-                            echo "<a href=\"team-detail.php?id=1\" class=\"team-card\">";
-                            echo "<h3>{$yourTeam['name']}</h3>";
-                            echo "<span class=\"stats\">";
-                            echo "
-                                 <p class=\"goals\">Goals: {$yourTeam['goals']}</p>
-                                 <p class=\"wins\">Wins: {$yourTeam['wins']}</p>
-                                 <p class=\"loses\">Loses: {$yourTeam['loses']}</p>";
-                            echo "</span>
-                             <span class=\"members\">";
-                            echo "<p class=\"owner\">Owner: {$yourTeam['owner']}</p>
-                                 <p class=\"players\">Players: 6</p>
-                                </span>
-                            </a>";
-                        }
-                        echo "
-                    <form action=\"includes/controller.php\" method=\"post\">
-                        <input type=\"hidden\" name=\"type\" value=\"createteam\">
-                        <input type=\"text\" name=\"teamname\" placeholder='team naam'>
-                        <input type=\"submit\" name=\"submit\"   value=\"Nieuw team aanmaken!\">
-                    </form>";
-                    }
-                    else
-                    {
-                        echo "<p>Om teams te kunnen aanmaken en of zien moet je <a href='login.php'>ingelogd</a> zijn, Nog geen account <a href='register.php'>registreer</a> nu!</p>.";
-                    }
-                    ?>
-<!--                        <a href="team-detail.php?id=1" class="team-card">-->
-<!--                            <h3>Amokes</h3>-->
-<!--                            <span class="stats">-->
-<!--                             <p class="goals">Goals: 3</p>-->
-<!--                             <p class="wins">Wins: 2</p>-->
-<!--                             <p class="loses">Loses: 1</p>-->
-<!--                         </span>-->
-<!--                         <span class="members">-->
-<!--                             <p class="owner">Owner: Glenn</p>-->
-<!--                             <p class="players">Players: 6</p>-->
-<!--                            </span>-->
-<!--                    </a>-->
 
-<!--                    als je hier op een div klikt moet er een popup komen!-->
-                </div>
-                <div id="teams">
-                    <h2>All Teams</h2>
-                    <div class="teams all-teams">
+					echo "<!-- modal btn -->
+								<button type=\"button\" class=\"btn btn-info btn-lg mx-1 my-1\" data-toggle=\"modal\" data-target=\"#myModal\">Team aanmaken</button>
+				
+								<!-- Modal -->
+								<div id=\"myModal\" class=\"modal fade\" role=\"dialog\">
+									<div class=\"modal-dialog\">
+				
+										<!-- Modal content-->
+										<div class=\"modal-content p-1\">
+											<div class=\"modal-header\">
+												<!-- <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button> -->
+												<h4 class=\"modal-title\">Team aanmaken</h4>
+											</div>
+											<div class=\"modal-body\">
+												<form class=\"form row \" action=\"includes/controller.php\" method=\"post\">
+												<input type='hidden' name='type' value='createteam'>";
 
-                    <?php
-                            foreach ($teams as $team)
-                            {
-                                echo "<a href=\"team-detail.php?id=1\" class=\"team-card\">";
-                                echo "<h3>{$team['name']}</h3>";
-                                echo "<span class=\"stats\">";
-                                echo "
-                             <p class=\"goals\">Goals: {$team['goals']}</p>
-                             <p class=\"wins\">Wins: {$team['wins']}</p>
-                             <p class=\"loses\">Loses: {$team['loses']}</p>";
-                                echo "</span>
-                         <span class=\"members\">";
-                                echo "<p class=\"owner\">Owner: {$team['owner']}</p>
-                             <p class=\"players\">Players: 6</p>
-                            </span>
-                        </a>";
-                            }
-                    ?>
+					if (isset($_GET['errmsg'])) {
+						echo "<div class=\"form-group col-sm-12 shadow-sm px-2 py-1 rounded my-2 alert alert-danger\" role=\"alert\">
+								        <p class=\"m-0\">{$_GET['errmsg']}</p>
+								   </div>";
+					}
 
-<!--                    <a href="team-detail.php?id=1" class="team-card">-->
-<!--                        <h3>Amokes</h3>-->
-<!--                        <span class="stats">-->
-<!--                             <p class="goals">Goals: 3</p>-->
-<!--                             <p class="wins">Wins: 2</p>-->
-<!--                             <p class="loses">Loses: 1</p>-->
-<!--                         </span>-->
-<!--                        <span class="members">-->
-<!--                             <p class="owner">Owner: Glenn</p>-->
-<!--                             <p class="players">Players: 6</p>-->
-<!--                            </span>-->
-<!--                    </a>-->
-<!---->
-<!--                    <a href="team-detail.php?id=1" class="team-card">-->
-<!--                        <h3>Amokes</h3>-->
-<!--                        <span class="stats">-->
-<!--                             <p class="goals">Goals: 3</p>-->
-<!--                             <p class="wins">Wins: 2</p>-->
-<!--                             <p class="loses">Loses: 1</p>-->
-<!--                         </span>-->
-<!--                        <span class="members">-->
-<!--                             <p class="owner">Owner: Glenn</p>-->
-<!--                             <p class="players">Players: 6</p>-->
-<!--                            </span>-->
-<!--                    </a>-->
-<!---->
-<!---->
-<!--                    <a href="team-detail.php?id=1" class="team-card">-->
-<!--                        <h3>Amokes</h3>-->
-<!--                        <span class="stats">-->
-<!--                             <p class="goals">Goals: 3</p>-->
-<!--                             <p class="wins">Wins: 2</p>-->
-<!--                             <p class="loses">Loses: 1</p>-->
-<!--                         </span>-->
-<!--                        <span class="members">-->
-<!--                             <p class="owner">Owner: Glenn</p>-->
-<!--                             <p class="players">Players: 6</p>-->
-<!--                            </span>-->
-<!--                    </a>-->
-                </div>
-            </div>
-            </div>
-        </div>
-    </main>
+					echo	"<input type=\"text\" placeholder=\"Team naam invoeren\" name=\"team-name\" class=\"col mr-1 form-control shadow-sm\" id=\"email-login\">			
+									<button type=\"submit\" class=\"col-4 btn btn-info\">Aanmaken</button>
+									</form>
+										</div>
+										<div class=\"modal-footer\">
+											<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>
+										</div>
+									</div>
+		
+								</div>
+							</div>";
+				}
+				?>
+			</div>
+
+
+
+			<!-- all teams -->
+			<div class="m-0 col-md-6 col-lg-8 row mb-auto">
+				<div class="col-sm-12">
+					<h2>All Teams</h2>
+				</div>
+				<?php
+
+				foreach ($allTeams as $allteam) {
+					echo "<div class=\"col-lg-6 my-1 p-0\">
+									<a href=\"team_detail.php?id={$allteam['teamId']}\" class=\"bg-white border d-block p-1 rounded shadow-sm text-dark mx-1\">
+										<h2 class=\"h6\">{$allteam['teamName']}</h2>
+										<div class=\"d-flex justify-content-between\">
+											<p class=\"m-0\">Goals: {$allteam['goals']}</p>
+											<p class=\"m-0\">Wins: {$allteam['wins']}</p>
+											<p class=\"m-0\">Loses: {$allteam['loses']}</p>
+										</div>
+										<div class=\"d-flex justify-content-between\">
+											<p class=\"m-0\">Owner: {$allteam['ownerName']}</p>
+											<p class=\"m-0\">Spelers: 3</p>
+										</div>
+									</a>
+								</div>";
+				}
+				?>
+			</div>
+		</div>
+	</div>
+</main>
+
 <?php
 require 'footer.php';
-
-
-
-
+?>

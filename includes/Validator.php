@@ -85,6 +85,17 @@ class Validator
       return $count > 0;
     }
 
+    public static function GetJson($filePath)
+    {
+        $json = file_get_contents($filePath);
+        return json_decode($json);
+    }
+
+    public static function SaveToJson($filePath, $array)
+    {
+        $json = json_encode($array);
+        File_put_contents($filePath, $json);
+    }
 
 
 

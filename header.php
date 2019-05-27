@@ -2,47 +2,66 @@
 /**
  * Created by PhpStorm.
  * User: Gebruiker
- * Date: 16-4-2019
- * Time: 12:05
+ * Date: 9-5-2019
+ * Time: 15:40
  */
 
 require 'includes/config.php';
-
 ?>
 
 <!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>The Fifa Project</title>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/normalize.css">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="./css/bootstrap.css">
+
+	<title>Fifa Project</title>
 </head>
-<body>
-    <header>
-        <div class="logo">
-            FIFA PROJECT
-        </div>
-        <div class="nav">
-        <a href="index.php">home</a>
-        <a href="teams.php">teams</a>
-        <a href="login.php">login</a>
-        <a href="register.php">register</a>
-        </div>
-        <div class="username">
-            <?php
-                if(isset($_SESSION['id']) || isset($_SESSION['username']) || isset($_SESSION['admin']))
-                {
-                    echo "<form action=\"includes/controller.php\" method=\"post\">
-                <input type=\"hidden\" name=\"type\" value=\"logout\">
-                <input type=\"submit\" name=\"submit\" value=\"Logout\">
-            </form>";
-                }
-            ?>
 
-        </div>
-    </header>
+<body>
+	<header class="bg-info">
+		<nav class="navbar navbar-expand-md navbar-dark">
+			<div class="container">
+				<a class="navbar-brand" href="index.php">Fifa Project</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarText">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="index.php">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="teams.php">Teams</a>
+						</li>
+						<!-- alleen als je bent ingelogd als admin -->
+                        <?php
+						    if (isset($_SESSION['admin']))
+						        {
+						            echo "<li class=\"nav-item\"><a class=\"nav-link\" href=\"dashboard.php\">Dashboard</a></li>";
+						        }
+						?>
+					</ul>
+					<ul class="navbar-nav">
+						<li class="nav-item">
+                            <?php
+							    if (isset($_SESSION['id']))
+                                {
+                                    echo "<a href=\"includes/logout.php\" class=\"nav-link\">Logout</a>";
+                                }
+							    else
+                                {
+                                    echo "<a href=\"login.php\" class=\"nav-link\">Login</a>";
+                                }
+							?>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>

@@ -1,32 +1,38 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: GekkeGlenn
- * Date: 16-4-2019
- * Time: 12:01
+ * User: Gebruiker
+ * Date: 9-5-2019
+ * Time: 15:40
  */
-
 require 'header.php';
+
+
 ?>
 
-    <main>
-        <div class="main-home">
-            <div class="home-welcome">
-        <h1>Home page</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At eos necessitatibus quas. Dolor, molestiae voluptatibus!
-            Ab animi aperiam blanditiis, dignissimos,
-            dolorem ducimus ea eius esse exercitationem facilis fugit magni mollitia nulla obcaecati odit officiis perferendis
-            quas quos sit vel? Accusamus adipisci animi aperiam dignissimos dolorum explicabo laboriosam necessitatibus
-            quaerat similique.</p>
-            </div>
-            <div class="home-download">
-                <h1>Download</h1>
-                <p>Download hier nu ook onze gok applicatie waar je kan gokken op welk team er zal gaan winnen!</p>
-                <input type="submit" name="download" value="download">
-            </div>
-        </div>
-    </main>
-
+<div class="container">
+  <div class="row mt-3">
+    <div class="col-md-8 my-5">
+      <h4 class="display-4">INFO</h4>
+      <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam laudantium reprehenderit inventore, ad est voluptate unde ullam explicabo, facilis id adipisci autem odit culpa architecto incidunt recusandae? Deserunt, dolorem ea?</p>
+    </div>
+    <div class="col-md-4 my-5">
+      <img class="img-thumbnail" src="img/foodball.jpg" alt="voetbal op het gras">
+    </div>
+    <div class="col-md-8 my-5">
+      <img class="img-thumbnail" src="img/voetbalwedstrijd-van-rb-leipzig-bezoeken-4.jpg" alt="">
+    </div>
+    <div class="col-md-4 my-5">
+      <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                      Architecto recusandae tempore repudiandae placeat mollitia id dolore rem vero! Ipsa esse nesciunt nostrum ex eius minima error sequi vitae corporis cum? 
+                      Beatae ex exercitationem enim et consequatur ratione expedita facilis tenetur cum perferendis aut sunt, 
+                      ducimus id, odio fuga nam, doloremque veniam accusantium! 
+                      Quasi explicabo natus asperiores nobis exercitationem deserunt veniam dolorem inventore sunt, 
+                      sapiente cum perspiciatis quibusdam animi quo? 
+                      Alias, consequuntur culpa amet reprehenderit ut deserunt quibusdam! Tempore, quaerat aperiam!</p>
+    </div>
+  </div>
+</div>
 <?php
 
 require 'footer.php';
