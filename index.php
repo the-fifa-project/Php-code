@@ -1,11 +1,13 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Gebruiker
- * Date: 9-5-2019
- * Time: 15:40
+ * User: GekkeGlenn
+ * Date: 16-4-2019
+ * Time: 12:01
  */
+
 require 'header.php';
+?>
 
 
 ?>
