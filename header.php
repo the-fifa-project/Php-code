@@ -43,7 +43,7 @@ require 'includes/config.php';
                         <?php
 						    if (isset($_SESSION['admin']))
 						        {
-						            echo "<li class=\"nav-item\"><a class=\"nav-link\" href=\"dashboard.php\">Dashboard</a></li>";
+						            echo "<li class=\"nav-item\"><a class=\"nav-link\" href=\"dashboard/dashboard_interconnector.php?navderection=2sH65u7^lj\">Dashboard</a></li>";
 						        }
 						?>
 					</ul>

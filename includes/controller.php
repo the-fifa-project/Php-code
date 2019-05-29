@@ -133,8 +133,8 @@ if ($_POST['type'] === 'login')
 
     //set the session id, username. (this is needed to login)
     $_SESSION['id'] = $user['id'];
-    $_SESSION['username'] = $user['firstname'];
-
+    $_SESSION['username'] = "{$user['firstname']} {$user['middlename']} {$user['lastname']}";
+    
     //checks of he has admin rights, if has admin rights then set the session admin
     if ($user['administrator'] !== null || $user['dev_admin'] !== null)
     {
@@ -143,7 +143,7 @@ if ($_POST['type'] === 'login')
 
     //send to the homepage
     $msg = "Logged in";
-    header("location: ../index.php?msg=$msg");
+    header("location: ../dashboard/dashboard_interconnector.php?navderection=2sH65u7^lj");
     exit;
 }
 
