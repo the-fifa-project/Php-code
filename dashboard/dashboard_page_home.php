@@ -28,24 +28,19 @@ else if (isset($_GET['succ']))
 ?>
 
 <div>
-	<h1>Top Vijf Teams</h1>
+	<h1 style="color: pink;">Top Vijf Teams:</h1>
 	<?php
 	$counter = 0;
+	
+	///// hier kan je de top van de temas halen van de datebase
 		foreach ($teams as $team) {
 			if ($counter < 5) 
 			{
-			echo "<h1> {$team['name']} : {$team['points']} </h1>";
+			echo "<h1 class='text-muted'> {$team['name']} : {$team['points']} </h1>";
 			}
 			$counter++;
 
 		}
 	?>
-
-
-
-
-
-
-
 <?php
 require 'dashboard_footer.php';
