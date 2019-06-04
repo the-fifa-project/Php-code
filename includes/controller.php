@@ -166,11 +166,11 @@ if ($_POST['type'] === 'createteam')
     $teamname = htmlentities(trim($_POST['team-name']));
     $createdAt = date("Y-m-d H:i:s");
 
-    //checks of the team name leght not longer is than 30 characters
+    //checks of the team name lenght not longer is than 30 characters
     if(strlen($teamname) > 30)
     {
-        $msg = "name is to long!";
-        header("location: ../index.php?errmsg=$msg");
+        $msg = "De naam van de team is te lang (een team naam mag maar 30 karakters hebben!";
+        header("location: ../dashboard/dashboard_page_owned_teams.php?err=$msg");
         exit;
     }
 
@@ -185,7 +185,7 @@ if ($_POST['type'] === 'createteam')
 
     //send to team page
     $msg = "team succesfull created!";
-    header("location: ../teams.php?msg=$msg");
+    header("location: ../dashboard/dashboard_page_owned_teams.php?succ=$msg");
     exit;
 }
 
@@ -337,9 +337,15 @@ if($_POST['type'] === "editteam")
     exit;
 }
 
-if($_POST['type'] === "generate")
+if($_POST['type'] === "competitionGenerate")
 {
-    // set post methode into variables
+    $startTime = htmlentities(trim($_POST['startTime']));
+
+    if (empty($startTime) || $startTime === "--:--" || $startTime === null)
+    {
+        header("location: ../dashboard/dashboard_admin_settingshp?err=Er zijn niet genoeg teams om een competitie te starten!");
+        exit;
+    }
 
     //select every team
     $sql = "SELECT * FROM `teams` WHERE `entered` = 0";
@@ -369,7 +375,7 @@ if($_POST['type'] === "generate")
     
     //set the settings into variables
     $fields = $settings['fields'];
-    $timeStart = '9:00:00'; //later kunnen instellen !
+    $timeStart = $startTime;
     $timeMatch = $settings['match_time'];
     $timeHalf = $settings['half_time']; 
     $timeBreak = $settings['break_time'];
@@ -427,135 +433,77 @@ if($_POST['type'] === "generate")
         exit;
 }
 
-if ($_POST['type'] === "settingsEditor")
+if ($_POST['type'] === "timeSettings")
 {
-    // when you have submited the matchtime form
-    if($_POST['setting'] === 'matchtime')
+    // in menutes
+    $match_time = htmlentities(trim($_POST['match_time']));
+    $half_time = htmlentities(trim($_POST['half_time']));
+    $break_time = htmlentities(trim($_POST['break_time']));
+
+    if (!is_numeric($match_time) || !is_numeric($half_time) || !is_numeric($break_time))
     {
-        $matchTimeInMinutes = htmlentities(trim($_POST['matchTime']));
-        
-        //controles of the input is still a number
-        if(!is_numeric($matchTimeInMinutes))
-        {
-            header("location: ../dashboard/dashboard_admin_settings.php?err=De tijd van een match moet in minuten aangegeven worden, en geen text!");
-            exit;
-        }
-        
-        //controles of the number is not smaller than 0 or bigger than 1 day in minutes
-        if($matchTimeInMinutes < 0 || $matchTimeInMinutes > 1440)
-        {
-            header("location: ../dashboard/dashboard_admin_settings.php?err=Tijd van een wedstrijd kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
-            exit;
-        }
-
-        $sql = "UPDATE `settings` 
-                SET `match_time`= :match_time
-                WHERE 1";
-        $prepare = $db->prepare($sql);
-        $prepare->execute([
-            'match_time' => $matchTimeInMinutes
-        ]);
-
-        header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol Wedstrijd tijd ingesteld");
+        header("location: ../dashboard/dashboard_admin_settings.php?err=Er is text ingevoert inplaats van een nummer!");
         exit;
     }
 
-    // when you have submited the breaktime form
-    else if($_POST['setting'] ==='Break')
+    if($match_time < 0 
+        || $match_time > 180 
+        || $half_time < 0 
+        || $half_time > 180)
     {
-        $breakTimeInMinutes = htmlentities(trim($_POST['breakTime']));
-        
-        if(!is_numeric($breakTimeInMinutes))
-        {
-            header("location: ../dashboard/dashboard_admin_settings.php?err=De tijd van een pauze moet in minuten aangegeven worden, en geen text!");
-            exit;
-        }
-        
-        //controles of the number is not smaller than 0
-        if($breakTimeInMinutes < 0 || $breakTimeInMinutes > 1440)
-        {
-            header("location: ../dashboard/dashboard_admin_settings.php?err=Tijd van een pauze kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
-            exit;
-        }
-        
-        $sql = "UPDATE `settings` 
-                SET `break_time`= :break_time
-                WHERE 1";
-        $prepare = $db->prepare($sql);
-        $prepare->execute([
-            'break_time' => $breakTimeInMinutes
-        ]);
+        header("location: ../dashboard/dashboard_admin_settings.php?err=een wedstrijd/rust kan niet kleiner zijn dan 0 minuten of groter zijn dan 3 uur (180 min)!");
+        exit;
+    }
 
-        header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol pauze tijd ingesteld");
+    if ($break_time < 0)
+    {
+        header("location: ../dashboard/dashboard_admin_settings.php?err=Tijd tussen wedstrijden kunnen niet kleiner zijn dan 0 minuten!");
+        exit;
+    }
+
+    $sql = "UPDATE `settings` 
+            SET `match_time`= :match_time, 
+                `half_time` = :half_time,
+                `break_time` = :break_time
+            WHERE 1";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'match_time' => $match_time,
+        'half_time' => $half_time,
+        'break_time' => $break_time
+    ]);
+
+    header("location: ../dashboard/dashboard_admin_settings.php?succ=Tijden succesvol ingesteld!");
+    exit;
+}
+
+if ($_POST['type'] === "fieldSettings")
+{
+    $fields = htmlentities(trim($_POST['fields']));
+    
+        
+    //controles of the number is not smaller than 0
+    if($fields < 0)
+    {
+        header("location: ../dashboard/dashboard_admin_settings.php?err=Je kan niet minder dan 0 velden hebben!");
+        exit;
+    }
+
+    if(!is_numeric($fields))
+    {
+        header("location: ../dashboard/dashboard_admin_settings.php?err=De veldenmoet in Cijfers aangegeven worden, en geen text!");
         exit;
     }
     
-    // when you have submited the halftime form
-    else if($_POST['setting'] === 'halftime')
-    {
-        $halfTimeInMinutes = htmlentities(trim($_POST['halftime']));
-        
-        if(!is_numeric($halfTimeInMinutes))
-        {
-            header("location: ../dashboard/dashboard_admin_settings.php?err=De tijd van een wedstrijd rust moet in minuten aangegeven worden, en geen text!");
-            exit;
-        }
+    $sql = "UPDATE `settings` 
+            SET `fields`= :fields
+            WHERE 1";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'fields' => $fields
+    ]);
 
-        //controles of the number is not smaller than 0
-        if($halfTimeInMinutes < 0 || $halfTimeInMinutes > 1440)
-        {
-            header("location: ../dashboard/dashboard_admin_settings.php?err=Tijd van een wedstrijd rust kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
-            exit;
-        }
-        
-        $sql = "UPDATE `settings` 
-                SET `half_time`= :half_time
-                WHERE 1";
-        $prepare = $db->prepare($sql);
-        $prepare->execute([
-            'half_time' => $halfTimeInMinutes
-        ]);
-
-        header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol wedstrijd rust tijd ingesteld");
-        exit;
-    }
-    
-    // when you have submited the fields form
-    else if($_POST['setting'] === 'fields')
-    {
-        $fields = htmlentities(trim($_POST['fields']));
-        
-        //controles of the number is not smaller than 0
-        if($fields < 0)
-        {
-            header("location: ../dashboard/dashboard_admin_settings.php?err=Je kan niet minder dan 0 velden hebben!");
-            exit;
-        }
-
-        if(!is_numeric($fields))
-        {
-            header("location: ../dashboard/dashboard_admin_settings.php?err=De veldenmoet in Cijfers aangegeven worden, en geen text!");
-            exit;
-        }
-        
-        $sql = "UPDATE `settings` 
-                SET `fields`= :fields
-                WHERE 1";
-        $prepare = $db->prepare($sql);
-        $prepare->execute([
-            'fields' => $fields
-        ]);
-
-        header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol velden ingesteld");
-        exit;
-    }
-    else
-    {
-        header("location: ../dashboard/dashboard_admin_settings.php?err=OEPS er ging iets fout");
-        exit;
-    }
-    
-    header("location: ../dashboard/dashboard_admin_settings.php?err=OEPS er ging iets fout");
+    header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol velden ingesteld");
     exit;
 }
 
