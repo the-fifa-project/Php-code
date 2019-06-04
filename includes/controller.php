@@ -198,7 +198,7 @@ if ($_POST['type'] === 'deleteteam' && isset($_SESSION['admin']))
     if(empty($confirm))
     {
         $msg = "voer het naam in van de team die u wilt verwijderen!";
-        header("location: ../team_detail.php?id=$teamId&errmsg=$msg");
+        header("location: ../dashboard/dashboard_page_team_details.php?id=$teamId&err=$msg");
         exit;
     }
 
@@ -214,7 +214,7 @@ if ($_POST['type'] === 'deleteteam' && isset($_SESSION['admin']))
     if(strtolower($teamToDelete['name']) !== strtolower($confirm))
     {
         $msg = "Team namen kommen niet overeen";
-        header("location: ../team_detail.php?id=$teamId&errmsg=$msg");
+        header("location: ../dashboard/dashboard_page_team_details.php?id=$teamId&err=$msg");
         exit;
     }
 
@@ -227,7 +227,7 @@ if ($_POST['type'] === 'deleteteam' && isset($_SESSION['admin']))
 
     //send back to index.php
     $msg = "Team succesvol verwijderd";
-    header("location: ../index.php?msg=$msg");
+    header("location: ../index.php?msg=$msg"); //TODO naar alleteams sturen
     exit;
 
 }
@@ -240,7 +240,7 @@ if($_POST['type'] === "editteam")
     if(strlen($newName) > 30)
     {
         //send back
-        header("location: ../team_detail.php?id=$teamID&errmsg=de naam van de team kan niet groter zijn dan 30 karakters");
+        header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&err=de naam van de team kan niet groter zijn dan 30 karakters");
         exit;
     }
 
@@ -262,7 +262,7 @@ if($_POST['type'] === "editteam")
             ]);
 
             //send back
-            header("location: ../team_detail.php?id=$teamID&sucmsg=Aanpassingen opgeslagen");
+            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=Aanpassingen opgeslagen");
             exit;
         }
         else
@@ -277,12 +277,12 @@ if($_POST['type'] === "editteam")
             ]);
 
             //send back
-            header("location: ../team_detail.php?id=$teamID&sucmsg=jou team zit nu in de selectie van de competitie!");
+            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=jou team zit nu in de selectie van de competitie!");
             exit;
         }
 
         //send back
-        header("location: ../team_detail.php?id=$teamID");
+        header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID");
         exit;
     }
     else if (empty($_POST['competitionSwitch']))
@@ -301,7 +301,7 @@ if($_POST['type'] === "editteam")
             ]);
 
             //send back
-            header("location: ../team_detail.php?id=$teamID&sucmsg=Aanpassingen opgeslagen, Jammer dat je niet meer deel neemt aan de competitie :(");
+            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=Aanpassingen opgeslagen, Jammer dat je niet meer deel neemt aan de competitie :(");
             exit;
         }
         else
@@ -316,24 +316,24 @@ if($_POST['type'] === "editteam")
             ]);
 
             //send back
-            header("location: ../team_detail.php?id=$teamID&sucmsg=U deelt niet meer mee aan een competitie");
+            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=U deelt niet meer mee aan een competitie");
             exit;
         }
 
         //send back
-        header("location: ../team_detail.php?id=$teamID&errmsg=Er is iets fout gegaan");
+        header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&err=Er is iets fout gegaan");
         exit;
 
     }
     else
     {
         //send back
-        header("location: ../team_detail.php?id=$teamID&errmsg=Er is iets fout gegaan");
+        header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&err=Er is iets fout gegaan");
         exit;
     }
 
     //send back
-    header("location: ../team_detail.php?id=$teamID&errmsg=Er is iets fout gegaan");
+    header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&err=Er is iets fout gegaan");
     exit;
 }
 
@@ -355,7 +355,7 @@ if($_POST['type'] === "generate")
     //checks of there is more than one team thats selected 
     if ($teamCount < 2)
     {
-        header("location: ../dashboard.php?errmsg=Er zijn niet genoeg teams om een competitie te starten!");
+        header("location: ../dashboard/dashboard_admin_settingshp?err=Er zijn niet genoeg teams om een competitie te starten!");
         exit;
     }
 
@@ -385,7 +385,7 @@ if($_POST['type'] === "generate")
     if ($settings['fields'] == 0)
     {
         //sendback to dashboard
-        header("location: ../dashboard.php?errmsg=Er zijn geen velden om tegen te spelen!");
+        header("location: ../dashboard/dashboard_admin_settings.php?err=Er zijn geen velden om tegen te spelen!");
         exit;
     }
 
@@ -423,7 +423,7 @@ if($_POST['type'] === "generate")
     }
 
     //send back to the dashboard
-        header("location: ../dashboard.php?sucmsg=Competitie Gegenereerd!");
+        header("location: ../dashboard/dashboard_admin_settings.php?succ=Competitie Gegenereerd!");
         exit;
 }
 
@@ -437,14 +437,14 @@ if ($_POST['type'] === "settingsEditor")
         //controles of the input is still a number
         if(!is_numeric($matchTimeInMinutes))
         {
-            header("location: ../dashboard.php?errmsg=De tijd van een match moet in minuten aangegeven worden, en geen text!");
+            header("location: ../dashboard/dashboard_admin_settings.php?err=De tijd van een match moet in minuten aangegeven worden, en geen text!");
             exit;
         }
         
         //controles of the number is not smaller than 0 or bigger than 1 day in minutes
         if($matchTimeInMinutes < 0 || $matchTimeInMinutes > 1440)
         {
-            header("location: ../dashboard.php?errmsg=Tijd van een wedstrijd kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
+            header("location: ../dashboard/dashboard_admin_settings.php?err=Tijd van een wedstrijd kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
             exit;
         }
 
@@ -456,7 +456,7 @@ if ($_POST['type'] === "settingsEditor")
             'match_time' => $matchTimeInMinutes
         ]);
 
-        header("location: ../dashboard.php?sucmsg=Succesvol Wedstrijd tijd ingesteld");
+        header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol Wedstrijd tijd ingesteld");
         exit;
     }
 
@@ -467,14 +467,14 @@ if ($_POST['type'] === "settingsEditor")
         
         if(!is_numeric($breakTimeInMinutes))
         {
-            header("location: ../dashboard.php?errmsg=De tijd van een pauze moet in minuten aangegeven worden, en geen text!");
+            header("location: ../dashboard/dashboard_admin_settings.php?err=De tijd van een pauze moet in minuten aangegeven worden, en geen text!");
             exit;
         }
         
         //controles of the number is not smaller than 0
         if($breakTimeInMinutes < 0 || $breakTimeInMinutes > 1440)
         {
-            header("location: ../dashboard.php?errmsg=Tijd van een pauze kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
+            header("location: ../dashboard/dashboard_admin_settings.php?err=Tijd van een pauze kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
             exit;
         }
         
@@ -486,7 +486,7 @@ if ($_POST['type'] === "settingsEditor")
             'break_time' => $breakTimeInMinutes
         ]);
 
-        header("location: ../dashboard.php?sucmsg=Succesvol pauze tijd ingesteld");
+        header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol pauze tijd ingesteld");
         exit;
     }
     
@@ -497,14 +497,14 @@ if ($_POST['type'] === "settingsEditor")
         
         if(!is_numeric($halfTimeInMinutes))
         {
-            header("location: ../dashboard.php?errmsg=De tijd van een wedstrijd rust moet in minuten aangegeven worden, en geen text!");
+            header("location: ../dashboard/dashboard_admin_settings.php?err=De tijd van een wedstrijd rust moet in minuten aangegeven worden, en geen text!");
             exit;
         }
 
         //controles of the number is not smaller than 0
         if($halfTimeInMinutes < 0 || $halfTimeInMinutes > 1440)
         {
-            header("location: ../dashboard.php?errmsg=Tijd van een wedstrijd rust kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
+            header("location: ../dashboard/dashboard_admin_settings.php?err=Tijd van een wedstrijd rust kan niet kleiner zein dan 0 minuten en niet groter dan 1 dag (1440 minuten)!");
             exit;
         }
         
@@ -516,7 +516,7 @@ if ($_POST['type'] === "settingsEditor")
             'half_time' => $halfTimeInMinutes
         ]);
 
-        header("location: ../dashboard.php?sucmsg=Succesvol wedstrijd rust tijd ingesteld");
+        header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol wedstrijd rust tijd ingesteld");
         exit;
     }
     
@@ -528,13 +528,13 @@ if ($_POST['type'] === "settingsEditor")
         //controles of the number is not smaller than 0
         if($fields < 0)
         {
-            header("location: ../dashboard.php?errmsg=Je kan niet minder dan 0 velden hebben!");
+            header("location: ../dashboard/dashboard_admin_settings.php?err=Je kan niet minder dan 0 velden hebben!");
             exit;
         }
 
         if(!is_numeric($fields))
         {
-            header("location: ../dashboard.php?errmsg=De veldenmoet in Cijfers aangegeven worden, en geen text!");
+            header("location: ../dashboard/dashboard_admin_settings.php?err=De veldenmoet in Cijfers aangegeven worden, en geen text!");
             exit;
         }
         
@@ -546,16 +546,16 @@ if ($_POST['type'] === "settingsEditor")
             'fields' => $fields
         ]);
 
-        header("location: ../dashboard.php?sucmsg=Succesvol velden ingesteld");
+        header("location: ../dashboard/dashboard_admin_settings.php?succ=Succesvol velden ingesteld");
         exit;
     }
     else
     {
-        header("location: ../dashboard.php?errmsg=OEPS er ging iets fout");
+        header("location: ../dashboard/dashboard_admin_settings.php?err=OEPS er ging iets fout");
         exit;
     }
     
-    header("location: ../dashboard.php?errmsg=OEPS er ging iets fout");
+    header("location: ../dashboard/dashboard_admin_settings.php?err=OEPS er ging iets fout");
     exit;
 }
 
@@ -572,7 +572,7 @@ if ($_POST['type'] === "joinTeam")
         'team' => $team
     ]);
 
-    header("location: ../team_detail.php?id=$team");
+    header("location: ../dashboard/dashboard_page_team_details.php?id=$team");
     exit;
 }
 
@@ -585,14 +585,14 @@ if ($_POST['type'] === "MatchEind")
     if(empty($_POST['scoreTeamOne']) || empty($_POST['scoreTeamTwo']))
     {
     
-        header("location: ../dashboard.php?errmsg=er waren 1 of meer velden niet ingevuld. bij het invullen van de eindstand");
+        header("location: ../dashboard/dashboard_page_competition.php?err=er waren 1 of meer velden niet ingevuld. bij het invullen van de eindstand");
         exit;
     }
 
     if (!is_numeric($scoreTeamOne) || !is_numeric($scoreTeamTwo))
     {
     
-        header("location: ../dashboard.php?errmsg=De ingevulde waarde is geen cijfer");
+        header("location: ../dashboard/dashboard_page_competition.php?err=De ingevulde waarde is geen cijfer");
         exit;
     }
 
@@ -607,7 +607,7 @@ if ($_POST['type'] === "MatchEind")
     ]);
 
     
-    header("location: ../dashboard.php?sucmsg=Eindstand Succesvol ingesteld");
+    header("location: ../dashboard/dashboard_page_competition.php?succ=Eindstand Succesvol ingesteld");
     exit;
 
 }
@@ -619,7 +619,7 @@ if ($_POST['type'] === "inviteMember")
 
     if ($player === "" || empty($_POST['playerToInvite']))
     {
-        header("location: ../team_detail.php?id=$teamID&errmsg=je hebt niemand geselecteerd om te inviten");
+        header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&err=je hebt niemand geselecteerd om te inviten");
         exit;
     }
 
@@ -648,7 +648,7 @@ if ($_POST['type'] === "inviteMember")
 
     if ($playerCount > 0)
     {
-        header("location: ../team_detail.php?id=$teamID&errmsg=gebruiker zit al in de team");
+        header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&err=gebruiker zit al in de team");
         exit;
     }
 
@@ -660,7 +660,7 @@ if ($_POST['type'] === "inviteMember")
         'team' => $teamID
     ]);
 
-    header("location: ../team_detail.php?id=$teamID&sucmsg=succesvol geinvited");
+    header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=succesvol geinvited");
     exit;
 }
 
