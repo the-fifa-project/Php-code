@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Gebruiker
- * Date: 9-5-2019
- * Time: 15:45
- */
-
 require 'header.php';
 if(isset($_SESSION['id']))
 {

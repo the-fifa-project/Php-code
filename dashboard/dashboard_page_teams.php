@@ -55,7 +55,7 @@ else if (isset($_GET['succ']))
     ?>
 
   </div>
-</div>
+
 
 
 <?php
