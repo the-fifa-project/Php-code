@@ -7,6 +7,7 @@ if (!isset($_SESSION['id']))
 {
   header('location: ./dashboard_interconnector.php');
   exit;
+
 }
 
 $sql = "SELECT t.*, u.firstname as owner  
@@ -15,6 +16,7 @@ $sql = "SELECT t.*, u.firstname as owner
         ON t.owner = u.id";
 $query = $db->query($sql);
 $teams = $query->fetchAll(2);
+
 
 echo'<div class="row justify-content-center">';
 
