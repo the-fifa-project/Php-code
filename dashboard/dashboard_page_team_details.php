@@ -73,7 +73,8 @@ else if (isset($_GET['succ']))
       </tbody>
     </table>
   </div>
-  <div class="col-md-3 ml-1 p-0 border">
+  <div class="col-md-3 ml-1 p-0 border mb-auto">
+    <h2 class="h6 ml-3">Opties</h2>
   <?php
           // checkt of there is someone logged in and of he is a admin or owner
           // if he is an onwer/admin he can edit the team.
@@ -96,7 +97,7 @@ else if (isset($_GET['succ']))
 
           // checks of an user is already in an team
           // if he is already in an team he can invite someone 
-          if (isset($_SESSION['id']) && $players[0]['user'] === $_SESSION['id']) {
+          if (isset($_SESSION['id']) && $team['owner'] === $_SESSION['id']) {
             echo "<div class=\"col-md-12\">
             <button type=\"button\" class=\"w-100 btn btn-primary btn-sm mx-0 my-1\" style=\"font-size: 1rem\" data-toggle=\"modal\" data-target=\"#Modal-invite\">Speler Toevoegen</button>
           </div>";
@@ -183,7 +184,7 @@ else if (isset($_GET['succ']))
               </div>";
       }
 
-      if (isset($_SESSION['id']) && $player['user'] === $_SESSION['id']) 
+      if (isset($_SESSION['id']) && $team['owner'] === $_SESSION['id']) 
       {
         echo "<div id=\"Modal-invite\" class=\"modal fade\" role=\"dialog\">
         <div class=\"modal-dialog\">
@@ -228,7 +229,7 @@ else if (isset($_GET['succ']))
                     <div class=\"modal-body\">
                       <p>Weet je zeker dat je deze team wilt joinen eenmaal gejoint kan je niet meer uit de team</p>
                       <input type=\"hidden\" name=\"type\" value=\"joinTeam\">
-                      <input type=\"hidden\" name=\"teamId\" value=\"$teamID\">
+                      <input type=\"hidden\" name=\"teamId\" value=\"$team_id\">
                     </div>
 
                     <div class=\"modal-footer\">

@@ -43,7 +43,12 @@ else if (isset($_GET['succ']))
         <th scope="col">Team 2</th>
         <th scope="col">Tijd</th>
         <th scope="col">Veld</th>
-        <?="<th scope=\"col\">Optie</th>"?>
+        <?php 
+          if (isset($_SESSION['admin']))
+          {
+            echo '<th scope=\"col\">Optie</th>';
+          }
+        ?>
       </tr>
     </thead>
     <tbody>
