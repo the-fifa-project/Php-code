@@ -57,6 +57,37 @@ else if (isset($_GET['succ']))
     ?>
 
   </div>
+  <div class="col-12 p-1">
+    <button type="button" class="btn btn-info btn-lg w-100" data-toggle="modal" data-target="#myModal">Team aanmaken</button>
+  </div>
+</div>
+								
+				
+<!-- Modal create team -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <form class="modal-content p-1 form" action="../includes/controller.php" method="post">
+      <div class="modal-header">
+        <h4 class="modal-title">Team aanmaken</h4>
+      </div>
+
+      <div class="modal-body row">
+        <input type='hidden' name='type' value='createteam'>
+        <label for="team-name ml-2">Team naam</label>
+        <input type="text" placeholder="Bijvoorbeeld: Warriors" name="team-name" class=" mr-1 form-control shadow-sm" id="team-name">
+        <small id="team-name" class="form-text text-muted ml-2">Een team naam kan maar 30 karakters lang zijn</small>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="col-4 btn btn-success">Aanmaken</button>
+      </div>
+    </form>
+
+  </div>
 </div>
 
 

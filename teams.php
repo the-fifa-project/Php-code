@@ -61,42 +61,6 @@ $allTeams = $query->fetchAll(2);
 											</a>
 										</div>";
 					}
-
-
-					echo "<!-- modal btn -->
-								<button type=\"button\" class=\"btn btn-info btn-lg mx-1 my-1\" data-toggle=\"modal\" data-target=\"#myModal\">Team aanmaken</button>
-				
-								<!-- Modal -->
-								<div id=\"myModal\" class=\"modal fade\" role=\"dialog\">
-									<div class=\"modal-dialog\">
-				
-										<!-- Modal content-->
-										<div class=\"modal-content p-1\">
-											<div class=\"modal-header\">
-												<!-- <button type=\"button\" class=\"close\" data-dismiss=\"modal\">&times;</button> -->
-												<h4 class=\"modal-title\">Team aanmaken</h4>
-											</div>
-											<div class=\"modal-body\">
-												<form class=\"form row \" action=\"includes/controller.php\" method=\"post\">
-												<input type='hidden' name='type' value='createteam'>";
-
-					if (isset($_GET['errmsg'])) {
-						echo "<div class=\"form-group col-sm-12 shadow-sm px-2 py-1 rounded my-2 alert alert-danger\" role=\"alert\">
-								        <p class=\"m-0\">{$_GET['errmsg']}</p>
-								   </div>";
-					}
-
-					echo	"<input type=\"text\" placeholder=\"Team naam invoeren\" name=\"team-name\" class=\"col mr-1 form-control shadow-sm\" id=\"email-login\">			
-									<button type=\"submit\" class=\"col-4 btn btn-info\">Aanmaken</button>
-									</form>
-										</div>
-										<div class=\"modal-footer\">
-											<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>
-										</div>
-									</div>
-		
-								</div>
-							</div>";
 				}
 				?>
 			</div>

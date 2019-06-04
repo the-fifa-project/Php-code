@@ -8,7 +8,12 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['admin']))
   exit;
 }
 
-echo'<div class="row">';
+$sql = "SELECT * from `users`";
+$query = $db->query($sql);
+$users = $query->fetchAll(2);
+
+
+echo'<div class="row p-1">';
 
 if (isset($_GET['err']))
 {
@@ -23,7 +28,53 @@ else if (isset($_GET['succ']))
   
 ?>
 
+<div class="col-12 p-0">
+  <h2 class="h4 p-1 bg-light rounded m-1 border shadow-sm">Users</h2>
+</div>
 
+<div class="col-12 p-1 border rounded shadow-sm">
+  <table class="table table-hover table-borderless">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Voornaam</th>
+        <th scope="col">Achternaam</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Rol</th>
+        <th scope="col">opties</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+        $count = 1;
+        foreach ($users as $user)
+        {
+          echo '<tr>';
+          echo "<td scope=\"row\">$count</td>";
+          echo "<td>{$user['firstname']}</td>";
+          echo "<td>{$user['middlename']} {$user['lastname']}</td>";
+          echo "<td>{$user['email']}</td>";
+          if ($user['dev_admin'] !== null)
+          {
+            echo "<td class='text-success'>Developer</td>";
+          }
+          else if ($user['administrator'] !== null)
+          {
+            echo "<td class='text-danger'>Administrator</td>";
+          }
+          else 
+          {
+            echo "<td class='text-muted'>Gebruiker</td>";
+          }
+          
+          
+          echo '</tr>';
+          $count++;
+        }
+      ?>
+    </tbody>
+  </table>
+</div>
 
 
 
