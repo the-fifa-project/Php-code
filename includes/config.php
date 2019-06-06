@@ -31,4 +31,6 @@ try {
  }
 
 // and a session_start for checking if there is an user thats logged in
+
 session_start();
+

@@ -8,6 +8,7 @@
 
 require 'config.php';
 require 'Validator.php';
+require 'Calculator.php';
 
 //controles of there is a post methode sended if not then send back!
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' )
@@ -524,15 +525,18 @@ if ($_POST['type'] === "joinTeam")
     exit;
 }
 
-if ($_POST['type'] === "MatchEind")
+if ($_POST['type'] === "MatchEnd")
 {
-    $matchID = htmlentities(trim($_POST['matchId']));
+    $matchID = htmlentities(trim($_POST['match_id']));
     $scoreTeamOne = htmlentities(trim($_POST['scoreTeamOne']));
     $scoreTeamTwo = htmlentities(trim($_POST['scoreTeamTwo']));
+    $id_team1 = htmlentities(trim($_POST['id_team1']));
+    $id_team2 = htmlentities(trim($_POST['id_team2']));
+    $pointsTeam1 = 0;
+    $pointsTeam2 = 0;
 
     if(empty($_POST['scoreTeamOne']) || empty($_POST['scoreTeamTwo']))
     {
-    
         header("location: ../dashboard/dashboard_page_competition.php?err=er waren 1 of meer velden niet ingevuld. bij het invullen van de eindstand");
         exit;
     }
@@ -544,20 +548,11 @@ if ($_POST['type'] === "MatchEind")
         exit;
     }
 
-    $sql = "UPDATE `matches` 
-            SET `score_team1` = :score1, `score_team2` = :score2
-            WHERE id = :id";
-    $prepare = $db->prepare($sql);
-    $prepare->execute([
-        'score1' => $scoreTeamOne,
-        'score2' => $scoreTeamTwo,
-        'id' => $matchID
-    ]);
-
+    Calculator::MatchPointsCalculator($scoreTeamOne, $scoreTeamTwo, $db, $matchID, "matches");
+    Calculator::TeamPointsCalculator($id_team1, $id_team2, $db);
     
     header("location: ../dashboard/dashboard_page_competition.php?succ=Eindstand Succesvol ingesteld");
     exit;
-
 }
 
 if ($_POST['type'] === "inviteMember")

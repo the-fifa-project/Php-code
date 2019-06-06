@@ -8,13 +8,22 @@ if (!isset($_SESSION['id']))
   exit;
 }
 
-$sql = "SELECT m.id as match_id, m.time as time, m.field as field, t1.name as team1, t2.name as team2, m.score_team1 as scoreT1, m.score_team2 as scoreT2
+$sql = "SELECT m.id as match_id,
+               m.team1 as id_team1,
+               m.team2 as id_team2,
+               m.time as time, 
+               m.field as field, 
+               t1.name as team1, 
+               t2.name as team2, 
+               m.score_team1 as scoreT1, 
+               m.score_team2 as scoreT2
         FROM `matches` m 
         INNER JOIN `teams` t1 ON m.team1 = t1.id
         INNER JOIN `teams` t2 ON m.team2 = t2.id";
 $query = $db->query($sql);
 $matches = $query->fetchAll(2);
 $matchesCount = $query->rowCount();
+
 
 echo'<div class="row justify-content-center">';
 
@@ -82,15 +91,17 @@ else if (isset($_GET['succ']))
 </div>
 
 <?php
-if($matchesCount > 0)
+if($matchesCount > 0 && isset($_SESSION['admin']))
   {
     foreach($matches as $match)
     {
       echo "<div class=\"modal fade\" id=\"m{$match['match_id']}\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"{$match['match_id']}Label\" aria-hidden=\"true\">
               <div class=\"modal-dialog\" role=\"document\">
                 <form class=\"modal-content form\" action=\"../includes/controller.php\" method='post'>
-                  <input type='hidden' name='type' value='MatchEind'>
+                  <input type='hidden' name='type' value='MatchEnd'>
                   <input type='hidden' name='match_id' value='{$match['match_id']}'>
+                  <input type='hidden' name='id_team1' value='{$match['id_team1']}'>
+                  <input type='hidden' name='id_team2' value='{$match['id_team2']}'>
                   <div class=\"modal-header\">
                     <h5 class=\"modal-title\" id=\"{$match['match_id']}Label\">Eind Stand {$match['team1']} - {$match['team2']}</h5>
                   </div>
@@ -110,7 +121,7 @@ if($matchesCount > 0)
                     <button type=\"button\" name=\"cancle\" value=\"cancle\" class=\"btn text-danger\" data-dismiss=\"modal\">Annuleer</button>";
                     if($match['scoreT1'] !== NULL ||$match['scoreT2'] !== NULL)
                     {
-                      echo "<button type=\"submit\" class=\"btn btn-success\" disabled>Opslaan</button>";
+                      echo "<button type=\"submit\" class=\"btn btn-success\">Opslaan</button>";
                     } 
                     else 
                     {
