@@ -88,11 +88,11 @@ if ($_POST['type'] === 'register') {
                   VALUES (:firstname, :middlename, :lastname, :email, :password, :registers_date)";
     $prepare = $db->prepare($sql);
     $prepare->execute([
-        ':firstname' => $firstName,
+        ':firstname'  => $firstName,
         ':middlename' => $middleName,
-        ':lastname' => $lastName,
-        ':email' => $email,
-        ':password' => $passwordHash,
+        ':lastname'   => $lastName,
+        ':email'      => $email,
+        ':password'   => $passwordHash,
         ':registers_date' => $registers_date
     ]);
 
@@ -622,11 +622,11 @@ if ($_POST['type'] === "inviteMember")
         header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&err=je hebt niemand geselecteerd om te inviten");
         exit;
     }
-
+    /// here we get some information form the datebase with short way
     $sql = "SELECT `user_team`.`id` as user_team,
                    `user_team`.`user` as user_id, 
                    `user_team`.`team` as team_id, 
-                   `users`.`firstname` as fname, 
+                   `users`.`firs4tname` as fname, 
                    `users`.`middlename` as Mname, 
                    `users`.`lastname` as lname, 
                    `teams`.`name` as Tname, 

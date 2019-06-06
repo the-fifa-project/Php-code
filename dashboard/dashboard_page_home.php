@@ -32,7 +32,7 @@ else if (isset($_GET['succ']))
 	<?php
 	$counter = 0;
 	
-	///// hier kan je de top van de temas halen van de datebase
+	///// hier kan je de top vijf van de temas halen van de datebase
 		foreach ($teams as $team) {
 			if ($counter < 5) 
 			{

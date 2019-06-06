@@ -1,5 +1,5 @@
 <?php
-require 'header.php';
+
 
 //checks of er een id is meegegeven
 if (!isset($_GET['id'])) {
