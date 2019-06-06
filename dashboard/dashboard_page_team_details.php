@@ -32,6 +32,16 @@ $prepare->execute([
 ]);
 $team = $prepare->fetch(2);
 
+$isMember = false;
+
+foreach($players as $player)
+{
+  if ($_SESSION['id'] === $player['user'])
+  {
+    $isMember = true;
+  }
+}
+
 echo'<div class="row">';
 
 if (isset($_GET['err']))
@@ -96,15 +106,16 @@ else if (isset($_GET['succ']))
           }
 
           // checks of an user is already in an team
-          // if he is already in an team he can invite someone 
-          if (isset($_SESSION['id']) && $team['owner'] === $_SESSION['id']) {
+          // if he is already in an team he can invite someone
+          if ($isMember === true) {
             echo "<div class=\"col-md-12\">
             <button type=\"button\" class=\"w-100 btn btn-primary btn-sm mx-0 my-1\" style=\"font-size: 1rem\" data-toggle=\"modal\" data-target=\"#Modal-invite\">Speler Toevoegen</button>
           </div>";
           }
 
           // here prints out a button to join the team if he isn't joined the team
-          else if (isset($_SESSION['id'])) {
+          else
+          {
             echo "<!-- alleen te zien als je niet in de team zit en bent ingelogd -->
             <div class=\"col-md-12\">
               <button type=\"button\" class=\"w-100 btn btn-info text-white btn-sm mx-0 my-1\" style=\"font-size: 1rem\" data-toggle=\"modal\" data-target=\"#Modal-join\">Deelnemen</button>
@@ -184,7 +195,7 @@ else if (isset($_GET['succ']))
               </div>";
       }
 
-      if (isset($_SESSION['id']) && $team['owner'] === $_SESSION['id']) 
+      if ($isMember === true) 
       {
         echo "<div id=\"Modal-invite\" class=\"modal fade\" role=\"dialog\">
         <div class=\"modal-dialog\">
@@ -216,7 +227,7 @@ else if (isset($_GET['succ']))
         </div>
       </div>";
       } 
-      else if (isset($_SESSION['id'])) 
+      else
       {
         echo "<div id=\"Modal-join\" class=\"modal fade\" role=\"dialog\">
                 <div class=\"modal-dialog\">

@@ -8,6 +8,10 @@ if (!isset($_SESSION['id']))
   exit;
 }
 
+$sql = "SELECT * FROM `teams` ORDER BY points DESC";
+$query = $db->query($sql);
+$teams = $query->fetchAll(2);
+
 echo'<div class="row">';
 
 if (isset($_GET['err']))
@@ -22,8 +26,20 @@ else if (isset($_GET['succ']))
 }
   
 ?>
+    
+  <div class="col-11 p-0">
+    <h2 class="h4 p-1 bg-light rounded m-1 border shadow-sm">Top 5 teams</h2>
+  </div>
 
-
+<?php
+      for($i = 0; $i < 5; $i++)
+      {
+        echo "<div class=\"col-md-2 border shadow-ms m-1 p-1 rounded\">";
+        $num = $i + 1;
+        echo '<p>' . 'Positie: ' . $num . '<br> Team: ' . $teams[$i]['name'] . '<br>Punten: ' . $teams[$i]['points'] . '</p>';
+        echo "</div>";
+      }
+    ?>
 
 
 
