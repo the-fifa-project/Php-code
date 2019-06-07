@@ -248,6 +248,13 @@ if($_POST['type'] === "editteam")
     if (!empty($_POST['competitionSwitch'])) 
     {
         $competitionSwitch = htmlentities(trim($_POST['competitionSwitch']));
+        $playerCount = Validator::PlayerRowCounter($teamID, $db);
+
+        if ($playerCount < 2)
+        {
+            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&err=Als je mee wilt doen aan een competitie moet je minimaal 2 spelers in uw team hebben");
+            exit;
+        }
         
         if(!empty($newName))
         {
@@ -278,7 +285,7 @@ if($_POST['type'] === "editteam")
             ]);
 
             //send back
-            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=jou team zit nu in de selectie van de competitie!");
+            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=Aanpassingen opgeslagen");
             exit;
         }
 
@@ -302,7 +309,7 @@ if($_POST['type'] === "editteam")
             ]);
 
             //send back
-            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=Aanpassingen opgeslagen, Jammer dat je niet meer deel neemt aan de competitie :(");
+            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=Aanpassingen opgeslagen");
             exit;
         }
         else
@@ -317,7 +324,7 @@ if($_POST['type'] === "editteam")
             ]);
 
             //send back
-            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=U deelt niet meer mee aan een competitie");
+            header("location: ../dashboard/dashboard_page_team_details.php?id=$teamID&succ=Aanpassingen opgeslagen");
             exit;
         }
 
@@ -397,9 +404,11 @@ if($_POST['type'] === "competitionGenerate")
     }
 
     // delete the latest competition and reset the table
-    $resetmatches = "TRUNCATE TABLE `matches`";
-    $prepare = $db->prepare($resetmatches);
-    $prepare->execute();
+    $resetMatchesSql = "TRUNCATE TABLE `matches`";
+    $query = $db->query($resetMatchesSql);
+
+    $resetPointsSql = "UPDATE `teams` SET points = 0";
+    $query = $db->query($resetPointsSql);
 
     // make the new competition
     for ($i = 0; $i < $arrLength; $i++) {
@@ -580,21 +589,9 @@ if ($_POST['type'] === "inviteMember")
         exit;
     }
 
-    $sql = "SELECT `user_team`.`id` as user_team,
-                   `user_team`.`user` as user_id, 
-                   `user_team`.`team` as team_id, 
-                   `users`.`firstname` as fname, 
-                   `users`.`middlename` as Mname, 
-                   `users`.`lastname` as lname, 
-                   `teams`.`name` as Tname, 
-                   `teams`.`owner` as Towner, 
-                   `teams`.`goals` as goals, 
-                   `teams`.`wins` as wins, 
-                   `teams`.`loses` as Loses 
+    $sql = "SELECT *
             FROM `user_team`
-            INNER JOIN `users` ON user_team.user = users.id
-            INNER JOIN `teams` ON user_team.team = teams.id
-            WHERE user_team.team = :id AND user_team.user = :user";
+            WHERE team = :id AND user = :user";
     $prepare = $db->prepare($sql);
     $prepare->execute([
         'id' => $teamID,

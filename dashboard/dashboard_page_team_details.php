@@ -10,6 +10,7 @@ if (!isset($_SESSION['id']) || !isset($_GET['id']))
 
 $team_id = $_GET['id'];
 
+// sql query for print out players that joined the team
 $sql = "SELECT ut.user as user,
                u.firstname as first,
                u.middlename as middle,
@@ -24,18 +25,27 @@ $prepare->execute([
 ]);
 $players = $prepare->fetchAll(2);
 
-$sql = "SELECT * from `teams` t
-        WHERE t.id = :team";
+// sql query for all users that you can invite
+$sql = "SELECT * FROM `users`";
+$query = $db->query($sql);
+$usersToInvite = $query->fetchAll(2);
+
+//sql query for all details about the team
+$sql = "SELECT * from `teams`
+        WHERE id = :team";
 $prepare = $db->prepare($sql);
 $prepare->execute([
   'team' => $team_id
 ]);
 $team = $prepare->fetch(2);
 
+//set isMember standart value to false
 $isMember = false;
 
 foreach($players as $player)
 {
+  // search of the inlogged user joined the team and set the ismember to true,
+  // if he joined the team
   if ($_SESSION['id'] === $player['user'])
   {
     $isMember = true;
@@ -44,6 +54,7 @@ foreach($players as $player)
 
 echo'<div class="row">';
 
+// checks of there is set a error or succes msg
 if (isset($_GET['err']))
 {
   $error = $_GET['err'];
@@ -73,6 +84,7 @@ else if (isset($_GET['succ']))
       </thead>
       <tbody>
         <?php
+          //print out all players that joined the team
           foreach ($players as $player) 
           {
             echo '<tr>';
@@ -85,10 +97,10 @@ else if (isset($_GET['succ']))
   </div>
   <div class="col-md-3 ml-1 p-0 border mb-auto">
     <h2 class="h6 ml-3">Opties</h2>
-  <?php
-          // checkt of there is someone logged in and of he is a admin or owner
+      <?php
+          // checkt of the logged in player an admin or owner is
           // if he is an onwer/admin he can edit the team.
-          if (isset($_SESSION['id']) && $team['owner'] === $_SESSION['id'] || isset($_SESSION['admin'])) {
+          if ($team['owner'] === $_SESSION['id'] || isset($_SESSION['admin'])) {
             echo "
             <!-- alleen te zien als je owner van een team bent! -->
             <div class=\"col-md-12\">
@@ -112,7 +124,6 @@ else if (isset($_GET['succ']))
             <button type=\"button\" class=\"w-100 btn btn-primary btn-sm mx-0 my-1\" style=\"font-size: 1rem\" data-toggle=\"modal\" data-target=\"#Modal-invite\">Speler Toevoegen</button>
           </div>";
           }
-
           // here prints out a button to join the team if he isn't joined the team
           else
           {
@@ -121,7 +132,19 @@ else if (isset($_GET['succ']))
               <button type=\"button\" class=\"w-100 btn btn-info text-white btn-sm mx-0 my-1\" style=\"font-size: 1rem\" data-toggle=\"modal\" data-target=\"#Modal-join\">Deelnemen</button>
             </div>";
           }
-          ?> 
+        ?> 
+  </div>
+  <div class="col">
+    <?php
+      if ($team['owner']) // checks of te inlogged user is an owner
+      {
+        echo "Als je wilt mee doen aan de compentitie moet jou team minimaal 2 spelers hebben, en moet je de optie aan zetten in de \"team aanpas\" knop";
+      }
+      if ($team['entered']) // checks of the team is enterd the compenition
+      {
+        echo "<p>Jullie team doet mee aan de compentitie, Klik <a href='./dashboard_page_competition.php'>hier</a> om de comepetitie te zien</p>";
+      }
+    ?>
   </div>
 </div>
 
@@ -147,7 +170,8 @@ else if (isset($_GET['succ']))
                       </div>
                       <input type=\"text\" name=\"new-team-name\" placeholder='bijv: snollebolekers' class=\"col form-control mx-2 shadow-sm\" id=\"team-name\">
                     </div>";
-
+        // checks of the team is joined the competition for
+        // seting the button on or off 
         if ($team['entered'] !== null) {
           echo "<div class=\"form-group col-sm-12 mx-3 custom-control custom-switch\">
                               <input type=\"checkbox\" class=\"custom-control-input\" name='competitionSwitch' id=\"competitionSwitch\" checked>
@@ -211,9 +235,9 @@ else if (isset($_GET['succ']))
               <div class=\"form-group\">
                 <select name=\"playerToInvite\" class=\"custom-select\" required>
                   <option value=\"\" selected>Selecteer een gebruiker</option>";
-                  foreach ($users as $user) 
+                  foreach ($usersToInvite as $userToInvite) 
                   {
-                    echo "<option value=\"{$user['id']}\">{$user['firstname']} {$user['middlename']} {$user['lastname']} </option>";
+                    echo "<option value=\"{$userToInvite['id']}\">{$userToInvite['firstname']} {$userToInvite['middlename']} {$userToInvite['lastname']} </option>";
                   }
                   echo "</select>
                 <div class=\"invalid-feedback\">Geen gebruiker geselecteerd</div>

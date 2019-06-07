@@ -85,6 +85,16 @@ class Validator
       return $count > 0;
     }
 
+    public static function PlayerRowCounter($team_id, $db)
+    {
+        $sql = "SELECT * FROM `user_team` WHERE team = :id";
+        $prepare = $db->prepare($sql);
+        $prepare->execute([
+          'id' => $team_id
+        ]);
+        return $prepare->rowCount();
+    }
+
     public static function GetJson($filePath)
     {
         $json = file_get_contents($filePath);
