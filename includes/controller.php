@@ -528,23 +528,37 @@ if ($_POST['type'] === "joinTeam")
 if ($_POST['type'] === "MatchEnd")
 {
     $matchID = htmlentities(trim($_POST['match_id']));
-    $scoreTeamOne = htmlentities(trim($_POST['scoreTeamOne']));
-    $scoreTeamTwo = htmlentities(trim($_POST['scoreTeamTwo']));
+    (int) $scoreTeamOne = htmlentities(trim($_POST['scoreTeamOne']));
+    (int) $scoreTeamTwo = htmlentities(trim($_POST['scoreTeamTwo']));
     $id_team1 = htmlentities(trim($_POST['id_team1']));
     $id_team2 = htmlentities(trim($_POST['id_team2']));
     $pointsTeam1 = 0;
     $pointsTeam2 = 0;
 
-    if(empty($_POST['scoreTeamOne']) || empty($_POST['scoreTeamTwo']))
+    
+    
+    if(empty($scoreTeamOne) || empty($scoreTeamTwo))
     {
-        header("location: ../dashboard/dashboard_page_competition.php?err=er waren 1 of meer velden niet ingevuld. bij het invullen van de eindstand");
+        if ($scoreTeamOne == 0 || $scoreTeamTwo == 0)
+        {
+            return;
+        }
+        else
+        {
+            header("location: ../dashboard/dashboard_page_competition.php?err=er waren 1 of meer velden niet ingevuld. bij het invullen van de eindstand");
+            exit;
+        }
+    }
+    
+    if (!is_numeric($scoreTeamOne) || !is_numeric($scoreTeamTwo))
+    {
+        header("location: ../dashboard/dashboard_page_competition.php?err=De ingevulde waarde is geen cijfer");
         exit;
     }
 
-    if (!is_numeric($scoreTeamOne) || !is_numeric($scoreTeamTwo))
+    if ($scoreTeamOne < 0 || $scoreTeamTwo < 0 || $scoreTeamOne > 99 || $scoreTeamTwo > 99 )
     {
-    
-        header("location: ../dashboard/dashboard_page_competition.php?err=De ingevulde waarde is geen cijfer");
+        header("location: ../dashboard/dashboard_page_competition.php?err=De score moet tussen 0 - 99 zitten.");
         exit;
     }
 

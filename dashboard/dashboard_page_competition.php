@@ -67,8 +67,8 @@ else if (isset($_GET['succ']))
         {
           echo '<tr>';
           echo "<td scope=\"row\">$matchCount</td>";
-          echo "<td>{$match['team1']}</td>";
-          echo "<td>{$match['team2']}</td>";
+          echo "<td><a href='./dashboard_page_team_details.php?id={$match['id_team1']}' class='text-dark'>{$match['team1']}</a></td>";
+          echo "<td><a href='./dashboard_page_team_details.php?id={$match['id_team2']}' class='text-dark'>{$match['team2']}</a></td>";
           echo "<td>{$match['time']}</td>";
           echo "<td>{$match['field']}</td>";
           if (isset($_SESSION['admin']))
@@ -109,11 +109,11 @@ if($matchesCount > 0 && isset($_SESSION['admin']))
                   <div class=\"modal-body\">
                       <div class=\"form-group\">
                         <label for=\"scoreTeamOne\">{$match['team1']}</label>
-                        <input type=\"number\" name=\"scoreTeamOne\" min='0' class=\"form-control mb-2 mr-sm-2\" id=\"scoreTeamOne\" placeholder=\"Score {$match['team1']}\" required>
+                        <input type=\"number\" name=\"scoreTeamOne\" min='0' max='99' class=\"form-control mb-2 mr-sm-2\" id=\"scoreTeamOne\" placeholder=\"Score {$match['team1']}\" required>
                       </div>
                       <div class=\"form-group\">
                         <label for=\"scoreTeamTwo\">{$match['team2']}</label>
-                        <input type=\"number\" name=\"scoreTeamTwo\" min='0' class=\"form-control mb-2 mr-sm-2\" id=\"scoreTeamTwo\" placeholder=\"Score {$match['team2']}\" required>
+                        <input type=\"number\" name=\"scoreTeamTwo\" min='0' max='99' class=\"form-control mb-2 mr-sm-2\" id=\"scoreTeamTwo\" placeholder=\"Score {$match['team2']}\" required>
                       </div>
                   </div>
             

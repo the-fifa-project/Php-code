@@ -9,9 +9,6 @@
 require 'header.php';
 ?>
 
-
-?>
-
 <div class="container">
   <div class="row mt-3">
     <div class="col-md-8 my-5">
