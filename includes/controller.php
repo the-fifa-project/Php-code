@@ -176,12 +176,12 @@ if ($_POST['type'] === 'createteam')
     }
 
     //create the team 
-    $sql = "INSERT INTO teams (`owner`, `name`, `created-at`) VALUES (:owner, :name, :created_at)";
+    $sql = "INSERT INTO teams (`owner`, `name`, `created-at`, `edit-at`) VALUES (:owner, :name, :created_at, :edit)";
     $prepare = $db->prepare($sql);
     $prepare->execute([
-        ':owner' => $owner,
-        ':name' => $teamname,
-        ':created_at' => $createdAt
+        'owner' => $owner,
+        'name' => $teamname,
+        'created_at' => $createdAt
     ]);
 
     //send to team page
@@ -237,6 +237,7 @@ if($_POST['type'] === "editteam")
 {
     $teamID  = htmlentities(trim($_POST['teamid']));
     $newName = htmlentities(trim($_POST['new-team-name']));
+    $editAt =  date("Y-m-d H:i:s");
     
     if(strlen($newName) > 30)
     {
@@ -260,12 +261,14 @@ if($_POST['type'] === "editteam")
         {
             $sql = "UPDATE `teams` 
                     SET `name` =    :name,
-                        `entered` = :entered
+                        `entered` = :entered,
+                        `edit-at`= :edit
                     WHERE `id` = :id";
             $prepare = $db->prepare($sql);
             $prepare->execute([
                 'name' => $newName,
                 'entered' => $competitionSwitch,
+                'edit' => $editAt,
                 'id' => $teamID
             ]);
 
@@ -276,11 +279,13 @@ if($_POST['type'] === "editteam")
         else
         {
             $sql = "UPDATE `teams` 
-                    SET `entered` = :entered
+                    SET `entered` = :entered,
+                        `edit-at`= :edit
                     WHERE `id` = :id";
             $prepare = $db->prepare($sql);
             $prepare->execute([
                 'entered' => $competitionSwitch,
+                'edit' => $editAt,
                 'id' => $teamID
             ]);
 
@@ -299,12 +304,14 @@ if($_POST['type'] === "editteam")
         {
             $sql = "UPDATE `teams` 
                     SET `name` =    :name,
-                        `entered` = :entered
+                        `entered` = :entered,
+                        `edit-at`= :edit
                     WHERE `id` = :id";
             $prepare = $db->prepare($sql);
             $prepare->execute([
                 'name' => $newName,
                 'entered' => null,
+                'edit' => $editAt,
                 'id' => $teamID
             ]);
 
@@ -315,11 +322,13 @@ if($_POST['type'] === "editteam")
         else
         {
             $sql = "UPDATE `teams` 
-                    SET `entered` = :entered
+                    SET `entered` = :entered,
+                        `edit-at`= :edit
                     WHERE `id` = :id";
             $prepare = $db->prepare($sql);
             $prepare->execute([
                 'entered' => null,
+                'edit' => $editAt,
                 'id' => $teamID
             ]);
 
