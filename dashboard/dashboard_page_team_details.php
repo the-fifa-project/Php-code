@@ -31,13 +31,19 @@ $query = $db->query($sql);
 $usersToInvite = $query->fetchAll(2);
 
 //sql query for all details about the team
-$sql = "SELECT * from `teams`
-        WHERE id = :team";
+$sql = "SELECT t.*, 
+               u.firstname as first,
+               u.middlename as middle,
+               u.lastname as last
+        FROM `teams` t
+        INNER JOIN `users` u ON t.owner = u.id
+        WHERE t.id = :id";
 $prepare = $db->prepare($sql);
 $prepare->execute([
-  'team' => $team_id
+  'id' => $team_id
 ]);
 $team = $prepare->fetch(2);
+$ownerName = "{$team['first']} {$team['middle']} {$team['last']}";
 
 //set isMember standart value to false
 $isMember = false;
@@ -70,7 +76,10 @@ else if (isset($_GET['succ']))
   
   <div class="col-12 p-0">
     <div class="bg-light rounded m-1 border shadow-sm d-flex justify-content-between">
-      <h2 class="h4 p-1 ml-2">Team: <?=$team['name']?></h2>
+      <div class="d-flex align-items-center">
+      <h2 class="h4 p-1 ml-2">Team: <?=$team['name']?></h2>        
+      <small class="form-text text-muted m-0 ml-1 h6">Eigenaar: <?=$ownerName?></small>
+      </div>
       <p class="h4 p-1 mr-5">Points: <?=$team['points']?></p>
     </div>
   </div>

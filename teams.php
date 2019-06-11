@@ -32,7 +32,7 @@ $teams = $query->fetchAll(2);
 				{
 					echo "
         	<div class=\"col-xl-3 col-lg-4 col-md-6 my-1 p-0\">
-          	<a href=\"dashboard_page_team_details.php?id={$team['teamId']}\" class=\"bg-white border d-block p-1  px-2 rounded shadow-sm text-dark mx-1\">
+          	<a href=\"team_detail.php?id={$team['teamId']}\" class=\"bg-white border d-block p-1  px-2 rounded shadow-sm text-dark mx-1\">
             	<h2 class=\"h6\">{$team['teamName']}</h2>
             	<div class=\"d-flex justify-content-between\">
               	<p class=\"m-0\">Owner: {$team['ownerName']}</p>

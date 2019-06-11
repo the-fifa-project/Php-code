@@ -41,7 +41,7 @@ require 'includes/config.php';
 						</li>
 						<!-- alleen als je bent ingelogd als admin -->
             <?php
-							if (isset($_SESSION['admin']))
+							if (isset($_SESSION['id']))
 							{
 									echo "<li class=\"nav-item\">
 													<a class=\"nav-link\" href=\"dashboard/dashboard_interconnector.php?navderection=2sH65u7^lj\">Dashboard</a>
