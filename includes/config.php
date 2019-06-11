@@ -6,17 +6,17 @@
  * Time: 12:08
  */
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // here comes the database connection.
 $dbHost = "localhost";
-// $dbName = "the-fifa-project";
-// $dbUser = "root";
-// $dbPass = "";
-$dbName = "glennea309_fifaProject";
-$dbUser = "glennea309_glennea309";
-$dbPass = "sPpDEZokJ";
+$dbName = "the-fifa-project";
+$dbUser = "root";
+$dbPass = "";
+// $dbName = "glennea309_fifaProject";
+// $dbUser = "glennea309_glennea309";
+// $dbPass = "sPpDEZokJ";
 
 // here we try to connect to the database if it can't connect. you get a error messega.
 try {

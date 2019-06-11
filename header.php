@@ -18,7 +18,7 @@ require 'includes/config.php';
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="./css/bootstrap.css">
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
 
 	<title>Fifa Project</title>
 </head>
@@ -40,24 +40,26 @@ require 'includes/config.php';
 							<a class="nav-link" href="teams.php">Teams</a>
 						</li>
 						<!-- alleen als je bent ingelogd als admin -->
-                        <?php
-						    if (isset($_SESSION['admin']))
-						        {
-						            echo "<li class=\"nav-item\"><a class=\"nav-link\" href=\"dashboard/dashboard_interconnector.php?navderection=2sH65u7^lj\">Dashboard</a></li>";
-						        }
+            <?php
+							if (isset($_SESSION['admin']))
+							{
+									echo "<li class=\"nav-item\">
+													<a class=\"nav-link\" href=\"dashboard/dashboard_interconnector.php?navderection=2sH65u7^lj\">Dashboard</a>
+												</li>";
+							}
 						?>
 					</ul>
 					<ul class="navbar-nav">
 						<li class="nav-item">
-                            <?php
-							    if (isset($_SESSION['id']))
-                                {
-                                    echo "<a href=\"includes/logout.php\" class=\"nav-link\">Logout</a>";
-                                }
-							    else
-                                {
-                                    echo "<a href=\"login.php\" class=\"nav-link\">Login</a>";
-                                }
+              <?php
+								if (isset($_SESSION['id']))
+								{
+										echo "<a href=\"includes/logout.php\" class=\"nav-link\">Uitloggen</a>";
+								}
+								else
+								{
+										echo "<a href=\"login.php\" class=\"nav-link\">Inloggen / Registreren</a>";
+								}
 							?>
 						</li>
 					</ul>

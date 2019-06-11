@@ -30,7 +30,8 @@ function generateRandomString($length) {
   return $randomString;
 }
 
-//echo generateRandomString(100);
+echo generateRandomString(15);
+exit;
 ?>
 
 

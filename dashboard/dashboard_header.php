@@ -1,5 +1,5 @@
 <?php
-  require '../includes/config.php';
+require '../includes/config.php';
 ?>
 
 <!doctype html>
@@ -15,10 +15,10 @@
 
   <title>Fifa Project | dashboard</title>
   <style>
-  header {
-    z-index: 1000000;
-  }
-</style>
+    header {
+      z-index: 1000000;
+    }
+  </style>
 </head>
 
 <body>
@@ -27,9 +27,9 @@
       <div class="brand">
         <h1 class="h6 text-white m-0 p-1"><a href="../index.php" class="text-white">Dashboard | THE FIFA PROJECT</a></h1>
       </div>
-      
+
       <div class="dropdown login">
-        <p class="h6 text-white m-0 p-1 dropdown-toggle" data-toggle="dropdown" style="cursor: pointer;"><?=$_SESSION['username']?></p>     
+        <p class="h6 text-white m-0 p-1 dropdown-toggle" data-toggle="dropdown" style="cursor: pointer;"><?= $_SESSION['username'] ?></p>
         <div class="dropdown-menu dropdown-menu-right py-0">
           <a class="dropdown-item" href="#">Account</a>
           <a class="dropdown-item" href="#">Download</a>
@@ -42,4 +42,4 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-2"></div>
-        <main class="col">
+      <main class="col">

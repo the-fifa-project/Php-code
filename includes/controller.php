@@ -181,7 +181,8 @@ if ($_POST['type'] === 'createteam')
     $prepare->execute([
         'owner' => $owner,
         'name' => $teamname,
-        'created_at' => $createdAt
+        'created_at' => $createdAt,
+        'edit' => "0000-00-00 00:00:00"
     ]);
 
     //send to team page
@@ -228,7 +229,7 @@ if ($_POST['type'] === 'deleteteam' && isset($_SESSION['admin']))
 
     //send back to index.php
     $msg = "Team succesvol verwijderd";
-    header("location: ../index.php?msg=$msg"); //TODO naar alleteams sturen
+    header("location: ../dashboard/dashboard_page_teams.php?succ=$msg"); //TODO naar alleteams sturen
     exit;
 
 }
@@ -250,6 +251,11 @@ if($_POST['type'] === "editteam")
     {
         $competitionSwitch = htmlentities(trim($_POST['competitionSwitch']));
         $playerCount = Validator::PlayerRowCounter($teamID, $db);
+        
+        if ($competitionSwitch == "on") 
+        {
+            $competitionSwitch = 1;
+        }
 
         if ($playerCount < 2)
         {
@@ -360,15 +366,15 @@ if($_POST['type'] === "competitionGenerate")
 
     if (empty($startTime) || $startTime === "--:--" || $startTime === null)
     {
-        header("location: ../dashboard/dashboard_admin_settingshp?err=Er zijn niet genoeg teams om een competitie te starten!");
+        header("location: ../dashboard/dashboard_admin_settings.php?err=Er zijn niet genoeg teams om een competitie te starten!");
         exit;
     }
 
     //select every team
-    $sql = "SELECT * FROM `teams` WHERE `entered` = 0";
+    $sql = "SELECT * FROM `teams` WHERE `entered` = 1";
     $query = $db->query($sql);
     $teams = $query->fetchAll(2);
-    $teamCount = $query->rowCount();    
+    $teamCount = $query->rowCount();
 
     //select the settings
     $sql = "SELECT * FROM `settings`";
@@ -378,7 +384,7 @@ if($_POST['type'] === "competitionGenerate")
     //checks of there is more than one team thats selected 
     if ($teamCount < 2)
     {
-        header("location: ../dashboard/dashboard_admin_settingshp?err=Er zijn niet genoeg teams om een competitie te starten!");
+        header("location: ../dashboard/dashboard_admin_settings.php?err=Er zijn niet genoeg teams om een competitie te starten!");
         exit;
     }
 
@@ -420,17 +426,22 @@ if($_POST['type'] === "competitionGenerate")
     $query = $db->query($resetPointsSql);
 
     // make the new competition
-    for ($i = 0; $i < $arrLength; $i++) {
-        for ($j = 0; $j < count($teamsArray); $j++) {
-            if ($teamsArray[0] !== $teamsArray[$j]) {
-                $sql = "INSERT INTO `matches`(`team1`, `team2`, `time`, `field`) 
-                        VALUES (:team1, :team2, :time, :field)";
+    for ($i = 0; $i < $arrLength; $i++) 
+    {
+        for ($j = 0; $j < count($teamsArray); $j++) 
+        {
+            if ($teamsArray[0] !== $teamsArray[$j]) 
+            {
+                $sql = "INSERT INTO `matches`(`team1`, `team2`, `time`, `field`, `points_team1`, `points_team2`) 
+                        VALUES (:team1, :team2, :time, :field, :points1, :points2)";
                 $prepare = $db->prepare($sql);
                 $prepare->execute([
                     'team1' => $teamsArray[0],
                     'team2' => $teamsArray[$j],
                     'time' => date('H:i:s', $splitTime),
                     'field' => $fieldCounter,
+                    'points1' => 0,
+                    'points2' => 0
                 ]);
                 if ($fieldCounter < $fields)
                 {

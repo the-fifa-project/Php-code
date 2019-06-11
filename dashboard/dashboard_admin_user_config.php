@@ -41,7 +41,7 @@ else if (isset($_GET['succ']))
         <th scope="col">Achternaam</th>
         <th scope="col">E-mail</th>
         <th scope="col">Rol</th>
-        <th scope="col">opties</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -66,7 +66,19 @@ else if (isset($_GET['succ']))
           {
             echo "<td class='text-muted'>Gebruiker</td>";
           }
-          
+
+          echo "<td> 
+                <div class='dropdown login'>
+                  <p class='h6 text-dark m-0 p-1 dropdown-toggle' data-toggle='dropdown' style='cursor: pointer;'>Opties</p>     
+                    <div class='dropdown-menu dropdown-menu-right py-0'>
+                      <button class='dropdown-item'>Rol veranderen</button>
+                      <div class='dropdown-divider my-0'></div>
+                      <h6 class='dropdown-header'>Gebruiker aanpassen</h6>
+                        <button class='dropdown-item'>Gegevens</button>
+                        <button class='dropdown-item'>Wachtwoord veranderen</button>
+                    </div> 
+                  </div>
+                </td>"; 
           
           echo '</tr>';
           $count++;

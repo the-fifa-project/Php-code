@@ -16,15 +16,15 @@
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">Teams</h6>
       
       <li class="nav-item">
-        <a class="nav-link" href="./dashboard_interconnector.php?navderection=6L$6IQo2$c">Alle Teams</a>
+        <a class="nav-link" href="./dashboard_interconnector.php?navderection=6L$6IQo2$c">Alle teams</a>
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" href="./dashboard_interconnector.php?navderection=7hHIh1Lz$1">Gejoinde Teams</a>
+        <a class="nav-link" href="./dashboard_interconnector.php?navderection=7hHIh1Lz$1">Toegetreden teams</a>
       </li>
       
       <li class="nav-item">
-        <a class="nav-link" href="./dashboard_interconnector.php?navderection=50cKcixZ*o">Owned Teams</a>
+        <a class="nav-link" href="./dashboard_interconnector.php?navderection=50cKcixZ*o">Eigen teams</a>
       </li>
       
       <li class="nav-item">
@@ -41,11 +41,11 @@
 
               <ul class=\"nav flex-column mb-2\">
                 <li class=\"nav-item\">
-                  <a class=\"nav-link\" href=\"./dashboard_interconnector.php?navderection=yUOnR0A0l\">Settings</a>
+                  <a class=\"nav-link\" href=\"./dashboard_interconnector.php?navderection=yUOnR0A0l\">Instellingen</a>
                 </li>
           
                 <li class=\"nav-item\">
-                  <a class=\"nav-link\" href=\"./dashboard_interconnector.php?navderection=4t1J62oOs\">Users Config</a>
+                  <a class=\"nav-link\" href=\"./dashboard_interconnector.php?navderection=4t1J62oOs\">Gebruikers Config</a>
                 </li>
           
               </ul>";

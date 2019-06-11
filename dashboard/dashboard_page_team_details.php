@@ -184,7 +184,7 @@ else if (isset($_GET['succ']))
                             </div>";
         }
         echo "<div class=\"modal-footer\">
-                            <button type=\"button\" class=\"btn btn-default text-danger\" data-dismiss=\"modal\">Annulleer</button>
+                            <button type=\"button\" class=\"btn btn-default text-danger\" data-dismiss=\"modal\">Annuleer</button>
                             <button type=\"submit\" class=\"col-4 btn btn-warning text-white\">Aanpassen</button>
                           </div>
                         </form>

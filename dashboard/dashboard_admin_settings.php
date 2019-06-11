@@ -71,6 +71,7 @@ else if (isset($_GET['succ']))
 
 <div class="col-md-3 border rounded shadow-sm m-1 mb-auto">
   <h2 class="h3 border-bottom py-2">Velden</h2>
+  <small id="break_time" class="form-text text-muted">Velden die u beschikbaar</small>
   <form action="../includes/controller.php" method="post">
     <input type="hidden" name="type" value="fieldSettings">
     <div class="form-group w-100">
