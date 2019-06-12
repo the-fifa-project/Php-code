@@ -31,7 +31,7 @@ try {
                     there is no connection with the database, contact a developer!
                 </p>
               </div>";
-    die($e->getMessage());
+    die;
  }
 
 // and a session_start for checking if there is an user thats logged in

@@ -32,7 +32,7 @@ require '../includes/config.php';
         <p class="h6 text-white m-0 p-1 dropdown-toggle" data-toggle="dropdown" style="cursor: pointer;"><?= $_SESSION['username'] ?></p>
         <div class="dropdown-menu dropdown-menu-right py-0">
           <a class="dropdown-item" href="#">Account</a>
-          <a class="dropdown-item" href="#">Download</a>
+          <a class="dropdown-item" href="downloads/Fifa Project.zip">Download</a>
           <div class="dropdown-divider my-0"></div>
           <a class="dropdown-item" href="../includes/logout.php">Uitloggen</a>
         </div>

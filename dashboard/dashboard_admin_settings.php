@@ -15,6 +15,10 @@ $sql = "SELECT entered FROM `teams` WHERE entered is not null";
 $query = $db->query($sql);
 $totalTeams = $query->rowCount();
 
+$sql = "SELECT * FROM api_keys";
+$query = $db->query($sql);
+$apikeys = $query->fetchAll(2);
+
 echo'<div class="row">';
 
 if (isset($_GET['err']))
@@ -104,7 +108,50 @@ else if (isset($_GET['succ']))
   </form>
 </div>
 
+<div class="col-md-3 border rounded shadow-sm m-1 mb-3">
+  <h2 class="h3 border-bottom py-2">Api</h2>
+  <p>Genereer jou api-key(sleutel) hier, de key wordt automaties opgeslagen.</p>
+  <form action="../includes/controller.php" method="post">
+    <input type="hidden" name="type" value="apikey">
+    <button type="submit" class="btn btn-info w-100">Genereer Api-key</button>
+  </form>
+  <button type="button" class="btn btn-primary w-100 my-1 mb-2" data-toggle="modal" data-target="#apikey">Alle Api-key(s)</button>
+</div>
 
+<div class="modal fade" id="apikey" tabindex="-1" role="dialog" aria-labelledby="apikeyLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="apikeyLabel">Api_key(s)</h5>
+      </div>
+
+      <div class="modal-body">
+        <table class="w-100 table-sm table-borderless table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Api-key</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+              //print out all players that joined the team
+              foreach ($apikeys as $key) 
+              {
+                echo '<tr>';
+                echo "<td class='rounded px-2'>{$key['apikey']}</td>";
+                echo '</tr>';
+              }
+            ?>
+          </tbody>
+          </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" name="cancle" value="cancle" class="btn text-muted" data-dismiss="modal">sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

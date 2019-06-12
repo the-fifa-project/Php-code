@@ -638,9 +638,44 @@ if ($_POST['type'] === "inviteMember")
     exit;
 }
 
+if ($_POST['type'] === "apikey")
+{
+    $generatedApiKey = ApiKeyGenerator();
+    $createdAt = date("Y-m-d H:i:s");
 
+    // get every api key from the database
+    $sql = "SELECT * FROM api_keys";
+    $query = $db->query($sql);
+    $apiKeys = $query->fetchAll(2);
 
+    for($i = 0; $i < count($apiKeys); $i++)
+    {
+        if ($apiKeys[$i]['apikey'] === $generatedApiKey)
+        {
+            $generatedApiKey = ApiKeyGenerator();
+            $i = 0;
+        }
+    }
 
+    $sql = "INSERT INTO api_keys (apikey, `created-at`) VALUES (:api, :createdAt)";
+    $prepare = $db->prepare($sql);
+    $prepare->execute([
+        'api' => $generatedApiKey,
+        'createdAt' => $createdAt
+    ]);
+    
+    header("location: ../dashboard/dashboard_admin_settings.php?succ=De Api-key is succesvoll gegenereerd!");
+    exit;
+}
 
-
-//selecteert de gebruikers die in de team zitten
+function ApiKeyGenerator() {
+    $length = 15;
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#%^*';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) 
+    {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
