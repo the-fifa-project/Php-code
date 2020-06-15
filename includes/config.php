@@ -14,9 +14,6 @@ $dbHost = "localhost";
 $dbName = "the-fifa-project";
 $dbUser = "root";
 $dbPass = "";
-// $dbName = "glennea309_fifaProject";
-// $dbUser = "glennea309_glennea309";
-// $dbPass = "sPpDEZokJ";
 
 // here we try to connect to the database if it can't connect. you get a error messega.
 try {
